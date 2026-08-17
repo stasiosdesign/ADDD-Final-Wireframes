@@ -46,17 +46,16 @@
    A slim scrollbar: enough to show position and page length, without the
    default chrome. The document height is pinned across page transitions in
    site.js so the bar never drops out and shifts the layout. */
-html {
-  -webkit-text-size-adjust: 100%;
-  scrollbar-width: thin;                /* Firefox */
-  scrollbar-color: #555 transparent;    /* thumb, track */
-}
+html { -webkit-text-size-adjust: 100%; }
+
 /*width*/
 ::-webkit-scrollbar {
 width:6px;
 }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #555; }
+/*track*/
+::-webkit-scrollbar-track {
+background:rgb(89, 89, 89);
+}
 
 body {
   margin: 0;
