@@ -21,6 +21,8 @@ build index               "ADDD &mdash; Technology strategy for architecture pra
 build workshops-audits    "Workshops &amp; Audits &mdash; ADDD"
 build technology-blueprint "Technology Blueprint &mdash; ADDD"
 build advisory            "Advisory &mdash; ADDD"
+build stack-diagnostic    "Stack Diagnostic &mdash; ADDD"
+build software-licensing-audit "Software &amp; Licensing Audit &mdash; ADDD"
 build reports             "Reports &mdash; ADDD"
 build report-template     "The ultimate BIM 2.0 report &mdash; ADDD"
 build newsletter          "Newsletter &mdash; ADDD"
