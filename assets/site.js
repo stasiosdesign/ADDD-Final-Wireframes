@@ -222,6 +222,23 @@ barba.hooks.enter(data => {
   initBarbaNavUpdate(data);
 })
 
+// Hold the document height for the length of the transition. Without it the
+// page briefly has no in-flow content — the outgoing container is removed and
+// the incoming one is position:fixed — so the scrollbar drops out and returns,
+// shifting the layout by its width twice. Registered ahead of the afterEnter
+// hook below so the height is released before Lenis re-measures.
+barba.hooks.beforeLeave(() => {
+  const height = Math.max(
+    document.body.scrollHeight,
+    document.documentElement.scrollHeight
+  );
+  document.documentElement.style.minHeight = `${height}px`;
+});
+
+barba.hooks.afterEnter(() => {
+  document.documentElement.style.minHeight = "";
+});
+
 barba.hooks.afterEnter(data => {
   // Run page functions
   initAfterEnterFunctions(data.next.container);

@@ -43,17 +43,21 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 /* Smooth scrolling is handled by Lenis.
-   The scrollbar is hidden site-wide — scrolling still works by wheel, trackpad,
-   touch, keyboard and drag, there is simply nothing drawn. This also removes
-   the layout shift the bar used to cause when it came and went during a page
-   transition or while the mobile menu locked body overflow. */
+   A slim scrollbar: enough to show position and page length, without the
+   default chrome. The document height is pinned across page transitions in
+   site.js so the bar never drops out and shifts the layout. */
 html {
   -webkit-text-size-adjust: 100%;
-  scrollbar-width: none;      /* Firefox */
-  -ms-overflow-style: none;   /* legacy Edge */
+  scrollbar-width: thin;                              /* Firefox */
+  scrollbar-color: rgba(13, 13, 13, .28) transparent; /* thumb, track */
 }
-html::-webkit-scrollbar,
-body::-webkit-scrollbar { width: 0; height: 0; display: none; }
+html::-webkit-scrollbar { width: 6px; height: 6px; }
+html::-webkit-scrollbar-track { background: transparent; }
+html::-webkit-scrollbar-thumb {
+  background-color: rgba(13, 13, 13, .28);
+  border-radius: 999px;
+}
+html::-webkit-scrollbar-thumb:hover { background-color: rgba(13, 13, 13, .45); }
 
 body {
   margin: 0;
