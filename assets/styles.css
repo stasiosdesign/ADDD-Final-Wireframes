@@ -54,11 +54,11 @@ width:6px;
 }
 /*track*/
 ::-webkit-scrollbar-track {
-background:rgb(251, 251, 251);
+background:rgb(0, 0, 0);
 }
 /*thumb*/
 ::-webkit-scrollbar-thumb {
-background:rgb(36, 36, 36);
+background:rgb(255, 255, 255);
 }
 
 body {
