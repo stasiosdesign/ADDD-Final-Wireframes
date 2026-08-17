@@ -42,7 +42,16 @@
    ============================================================ */
 *, *::before, *::after { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; }  /* smooth scrolling is handled by Lenis */
+html {
+  -webkit-text-size-adjust: 100%;  /* smooth scrolling is handled by Lenis */
+
+  /* Reserve the scrollbar gutter permanently. During a page transition the
+     outgoing container is removed while the incoming one is position:fixed,
+     so for a moment nothing is in flow and the scrollbar would otherwise
+     vanish and take the layout sideways with it. Also covers the mobile
+     menu, which locks body overflow. */
+  scrollbar-gutter: stable;
+}
 
 body {
   margin: 0;
