@@ -138,35 +138,30 @@
 
 /* ============================================================
    ADDD nav instance
-   Dark blocks on the white bar; the thin light lines between them
-   are the button's own column gaps showing the bar through.
-   The button stretches to the full bar height and sits flush to
-   the right edge, replacing the old solid Contact block.
+   White blocks and pill on a dark field, dark label — the reference
+   colourway. The dark field is the Contact cell (.is--cta below),
+   which runs the full bar height and out to the right edge; the gaps
+   between the white blocks read as dark lines through it.
    ============================================================ */
 .mega-nav .button-059 {
-  --button-059-color: var(--c-white);
-  --button-059-color-background: #141414;
-  --button-059-color-focus: #141414;
-  --button-059-padding: 0 2em;
-  --button-059-border-radius: .25em;
-  --button-059-block-border-radius: .25em;
-  --button-059-focus-inset: .125em;
+  --button-059-color: #131313;
+  --button-059-color-background: var(--c-white);
+  --button-059-color-focus: var(--c-white);
+  --button-059-padding: 1.15em 1.75em;
+  --button-059-border-radius: 2px;
+  --button-059-block-border-radius: 2px;
+  --button-059-focus-inset: -0.25em;
 
-  align-self: stretch;
   font-family: var(--font-body);
   font-size: 1.0625em;
-  font-weight: 500;
+  font-weight: 600;
 
-  /* the light lines are the gaps between the dark blocks */
+  /* the dark lines are the gaps between the white blocks */
   grid-column-gap: 7px;
   grid-row-gap: 7px;
 }
 
-/* the outer blocks square off against the bar edge and the divider */
-.mega-nav .button-059 .button-059__block:first-child { border-radius: 0; }
-.mega-nav .button-059 .button-059__block:last-child { border-radius: 0; }
-
-/* Thickness of the dark bars. The reference hardcodes .375em in three
+/* Thickness of the white bars. The reference hardcodes .375em in three
    places — the block itself, the collapsed hover element, and the
    default element once it collapses on hover — so all three are
    overridden together to keep the swap animation coherent. */
@@ -189,15 +184,18 @@
 /* text is centred by the element, so padding only sets the measured width */
 .mega-nav .button-059__text { line-height: 1.5; }
 
+/* the dark field the button sits on */
+.mega-nav__bar-action.is--cta {
+  background-color: #1c1c1c;
+  align-items: center;
+  padding: 0 1.5em;
+}
+
 @media screen and (max-width: 991px) {
-  .mega-nav .button-059 {
-    --button-059-padding: 1em 2em;
-    --button-059-border-radius: 6px;
-    --button-059-block-border-radius: 6px;
-    align-self: auto;
+  .mega-nav__bar-action.is--cta {
+    border-radius: 6px;
+    padding: .75em 1em;
     justify-content: center;
-    flex: 1;
   }
-  .mega-nav .button-059 .button-059__block:first-child,
-  .mega-nav .button-059 .button-059__block:last-child { border-radius: 6px; }
+  .mega-nav .button-059 { --button-059-padding: .9em 1.5em; }
 }
