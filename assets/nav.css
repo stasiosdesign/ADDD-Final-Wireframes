@@ -282,6 +282,20 @@
 .mega-nav__card-cta-label { font-size: .9375em; font-weight: 500; line-height: 1.2; }
 .mega-nav__card-cta-icon { width: 1.25em; }
 
+/* Centre the link list against the bar itself rather than the space
+   left over between the logo and the actions. Taking it out of flow
+   means the logo and the Sign in / Contact block keep their positions.
+   The 0.75em offset compensates for the container's left padding, so
+   50% lands on the true centre of the bar. */
+@media screen and (min-width: 992px) {
+  .mega-nav__bar-inner > .mega-nav__bar-list:not(.is--actions) {
+    position: absolute;
+    top: 50%;
+    left: calc(50% - .75em);
+    transform: translate(-50%, -50%);
+  }
+}
+
 @media screen and (max-width: 1200px) {
   .mega-nav__bar-list { grid-column-gap: 1.25em; }
   .mega-nav__bar-cta { padding: 0 1.5em; }
