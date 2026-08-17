@@ -148,8 +148,8 @@
   --button-059-color-background: #141414;
   --button-059-color-focus: #141414;
   --button-059-padding: 0 2em;
-  --button-059-border-radius: .25em;
-  --button-059-block-border-radius: .25em;
+  --button-059-border-radius: 0;
+  --button-059-block-border-radius: 0;
   --button-059-focus-inset: .125em;
 
   align-self: stretch;
@@ -192,12 +192,12 @@
 @media screen and (max-width: 991px) {
   .mega-nav .button-059 {
     --button-059-padding: 1em 2em;
-    --button-059-border-radius: 6px;
-    --button-059-block-border-radius: 6px;
+    --button-059-border-radius: 0;
+    --button-059-block-border-radius: 0;
     align-self: auto;
     justify-content: center;
     flex: 1;
   }
   .mega-nav .button-059 .button-059__block:first-child,
-  .mega-nav .button-059 .button-059__block:last-child { border-radius: 6px; }
+  .mega-nav .button-059 .button-059__block:last-child { border-radius: 0; }
 }
