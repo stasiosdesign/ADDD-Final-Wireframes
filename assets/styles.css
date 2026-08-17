@@ -42,12 +42,18 @@
    ============================================================ */
 *, *::before, *::after { box-sizing: border-box; }
 
-/* smooth scrolling is handled by Lenis.
-   Note: no scrollbar-gutter here on purpose — reserving a gutter leaves a
-   strip of page background beside the fixed transition panel. The scrollbar
-   is kept alive through a transition by pinning the document height in
-   site.js instead, which holds the real scrollbar rather than its space. */
-html { -webkit-text-size-adjust: 100%; }
+/* Smooth scrolling is handled by Lenis.
+   The scrollbar is hidden site-wide — scrolling still works by wheel, trackpad,
+   touch, keyboard and drag, there is simply nothing drawn. This also removes
+   the layout shift the bar used to cause when it came and went during a page
+   transition or while the mobile menu locked body overflow. */
+html {
+  -webkit-text-size-adjust: 100%;
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* legacy Edge */
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar { width: 0; height: 0; display: none; }
 
 body {
   margin: 0;
