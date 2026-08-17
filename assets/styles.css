@@ -51,9 +51,12 @@ html {
   scrollbar-width: thin;                /* Firefox */
   scrollbar-color: #555 transparent;    /* thumb, track */
 }
-html::-webkit-scrollbar { width: 4px; height: 4px; }
-html::-webkit-scrollbar-track { background: transparent; }
-html::-webkit-scrollbar-thumb { background: #555; }
+/*width*/
+::-webkit-scrollbar {
+width:6px;
+}
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #555; }
 
 body {
   margin: 0;
