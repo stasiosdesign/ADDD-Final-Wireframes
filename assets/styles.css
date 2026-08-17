@@ -70,7 +70,7 @@ background:rgb(0, 0, 0);
 }
 /*thumb*/
 ::-webkit-scrollbar-thumb {
-background:rgb(255, 255, 255);
+background:rgb(200, 200, 200);
 }
 
 body {
