@@ -41,12 +41,24 @@
    base
    ============================================================ */
 *, *::before, *::after { box-sizing: border-box; }
+/* Smooth scrolling is handled by Lenis. */
+html {
+  -webkit-text-size-adjust: 100%;
 
-/* Smooth scrolling is handled by Lenis.
-   A slim scrollbar: enough to show position and page length, without the
-   default chrome. The document height is pinned across page transitions in
-   site.js so the bar never drops out and shifts the layout. */
-html { -webkit-text-size-adjust: 100%; }
+  /* Always render the scrollbar, whether or not the page currently overflows.
+     Mid-transition the outgoing container is removed and the incoming one is
+     position:fixed, so for a moment nothing is in flow — without this the bar
+     would vanish and take the layout sideways with it. */
+  overflow-y: scroll;
+}
+
+/* Barba calls lenis.stop() on every navigation, and lenis.css answers that with
+   `.lenis.lenis-stopped { overflow: clip }` — which removes the scrollbar and
+   shifts the layout by its width, then shifts it back on start(). Re-assert the
+   scrollbar at higher specificity. Only overflow-y is set, so Lenis keeps its
+   overflow-x: clip. Scrolling stays disabled during the transition regardless:
+   Lenis calls preventDefault on wheel and touch while stopped. */
+html.lenis.lenis-stopped { overflow-y: scroll; }
 
 /*width*/
 ::-webkit-scrollbar {
