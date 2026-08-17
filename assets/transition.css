@@ -26,16 +26,16 @@
 .transition__label {
   color: var(--c-white);
   text-transform: uppercase;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-weight: 500;
-  letter-spacing: -.06em;
-  font-size: 2.5em;
+  letter-spacing: 0;
+  font-size: 1.125em;
   text-align: center;
   padding: 0 var(--page-pad);
 }
 
 @media (max-width: 991px) {
-  .transition__label { font-size: 1.5em; }
+  .transition__label { font-size: 1em; }
 }
 
 /* the incoming container is pinned by Barba while it animates in */
