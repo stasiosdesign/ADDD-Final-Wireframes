@@ -14,8 +14,18 @@
 <link rel="stylesheet" href="assets/nav.css">
 <link rel="stylesheet" href="assets/media.css">
 <link rel="stylesheet" href="assets/button-059.css">
+<link rel="stylesheet" href="assets/transition.css">
 </head>
-<body>
+<body data-barba="wrapper">
+<div data-transition-wrap class="transition">
+  <div data-transition-panel class="transition__panel">
+    <span data-transition-label class="transition__label">
+      <span>[ </span>
+      <span data-transition-label-text>Welcome</span>
+      <span> ]</span>
+    </span>
+  </div>
+</div>
 <nav data-menu-open="false" data-menu-wrap="" class="mega-nav">
   <div class="mega-nav__bar">
     <div class="mega-nav__container">
@@ -193,6 +203,7 @@
 
   <div data-menu-backdrop="" class="mega-nav__backdrop"></div>
 </nav>
+<div data-barba="container" data-page-name="Newsletter">
 <main>
 
   <section class="pg-hero pg-hero--center">
@@ -361,8 +372,11 @@
     </div>
   </div>
 </footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@barba/core@2.10.3/dist/barba.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.2.3/dist/lenis.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/CustomEase.min.js"></script>
 <script src="assets/site.js"></script>
 </body>
 </html>

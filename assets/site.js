@@ -1,10 +1,392 @@
-/* Lenis smooth scroll */
-const lenis = new Lenis({
-  autoRaf: true,
+// -----------------------------------------
+// OSMO PAGE TRANSITION BOILERPLATE
+// -----------------------------------------
+
+gsap.registerPlugin(CustomEase);
+
+history.scrollRestoration = "manual";
+
+let lenis = null;
+let nextPage = document;
+let onceFunctionsInitialized = false;
+
+const hasLenis = typeof window.Lenis !== "undefined";
+const hasScrollTrigger = typeof window.ScrollTrigger !== "undefined";
+
+const rmMQ = window.matchMedia("(prefers-reduced-motion: reduce)");
+let reducedMotion = rmMQ.matches;
+rmMQ.addEventListener?.("change", e => (reducedMotion = e.matches));
+rmMQ.addListener?.(e => (reducedMotion = e.matches));
+
+const has = (s) => !!nextPage.querySelector(s);
+
+let staggerDefault = 0.05;
+let durationDefault = 0.6;
+
+CustomEase.create("osmo", "0.625, 0.05, 0, 1");
+gsap.defaults({ ease: "osmo", duration: durationDefault });
+
+
+
+// -----------------------------------------
+// FUNCTION REGISTRY
+// -----------------------------------------
+
+function initOnceFunctions() {
+  initLenis();
+  if (onceFunctionsInitialized) return;
+  onceFunctionsInitialized = true;
+
+  // The nav and the Contact button live outside the Barba container, so
+  // they survive every navigation and are only ever wired up once.
+  initMegaNavDirectionalHover();
+
+  // Width measurement waits on the webfont so the label is not measured
+  // against the fallback face.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(initButton059);
+  } else {
+    initButton059();
+  }
+}
+
+function initBeforeEnterFunctions(next) {
+  nextPage = next || document;
+
+  // Page-level behaviour — rebound on every navigation because the
+  // container these live in is replaced.
+  if (has('[data-carousel]')) initCarousel();
+}
+
+function initAfterEnterFunctions(next) {
+  nextPage = next || document;
+
+  if (hasLenis) {
+    lenis.resize();
+  }
+
+  if (hasScrollTrigger) {
+    ScrollTrigger.refresh();
+  }
+}
+
+
+
+// -----------------------------------------
+// PAGE TRANSITIONS
+// -----------------------------------------
+
+function runPageOnceAnimation(next) {
+  const tl = gsap.timeline();
+
+  tl.call(() => {
+    resetPage(next);
+  }, null, 0);
+
+  return tl;
+}
+
+function runPageLeaveAnimation(current, next) {
+  const transitionWrap = document.querySelector("[data-transition-wrap]");
+  const transitionPanel = transitionWrap.querySelector("[data-transition-panel]");
+  const transitionLabel = transitionWrap.querySelector("[data-transition-label]");
+  const transitionLabelText = transitionWrap.querySelector("[data-transition-label-text]");
+
+  const nextPageName = next.getAttribute("data-page-name")
+  transitionLabelText.innerText = nextPageName || "Hi there";
+
+  const tl = gsap.timeline({
+    onComplete: () => { current.remove() }
+  });
+
+  if (reducedMotion) {
+    // Immediate swap behavior if user prefers reduced motion
+    return tl.set(current, { autoAlpha: 0 });
+  }
+
+  tl.set(transitionPanel, {
+    autoAlpha: 1
+  }, 0);
+
+  tl.set(next, {
+    autoAlpha: 0
+  }, 0);
+
+  tl.fromTo(transitionPanel, {
+    yPercent: 0
+  }, {
+    yPercent: -100,
+    duration: 0.8,
+  }, 0);
+
+  tl.fromTo(transitionLabel, {
+    autoAlpha: 0
+  }, {
+    autoAlpha: 1
+  }, "<+=0.2");
+
+  tl.fromTo(current, {
+    y: "0vh"
+  }, {
+    y: "-15vh",
+    duration: 0.8,
+  }, 0);
+}
+
+function runPageEnterAnimation(next) {
+  const transitionWrap = document.querySelector("[data-transition-wrap]");
+  const transitionPanel = transitionWrap.querySelector("[data-transition-panel]");
+  const transitionLabel = transitionWrap.querySelector("[data-transition-label]");
+  const transitionLabelText = transitionWrap.querySelector("[data-transition-label-text]");
+
+  const tl = gsap.timeline();
+
+  if (reducedMotion) {
+    // Immediate swap behavior if user prefers reduced motion
+    tl.set(next, { autoAlpha: 1 });
+    tl.add("pageReady")
+    tl.call(resetPage, [next], "pageReady");
+    return new Promise(resolve => tl.call(resolve, null, "pageReady"));
+  }
+
+  tl.add("startEnter", 1.25);
+
+  tl.set(next, {
+    autoAlpha: 1,
+  }, "startEnter");
+
+  tl.fromTo(transitionPanel, {
+    yPercent: -100,
+  }, {
+    yPercent: -200,
+    duration: 1,
+    overwrite: "auto",
+    immediateRender: false
+  }, "startEnter");
+
+  tl.set(transitionPanel, {
+    autoAlpha: 0
+  }, ">");
+
+  tl.fromTo(transitionLabel, {
+    autoAlpha: 1
+  }, {
+    autoAlpha: 0,
+    duration: 0.4,
+    overwrite: "auto",
+    immediateRender: false
+  }, "startEnter+=0.1");
+
+  tl.from(next, {
+    y: "15vh",
+    duration: 1,
+  }, "startEnter");
+
+  tl.add("pageReady");
+  tl.call(resetPage, [next], "pageReady");
+
+  return new Promise(resolve => {
+    tl.call(resolve, null, "pageReady");
+  });
+}
+
+
+// -----------------------------------------
+// BARBA HOOKS + INIT
+// -----------------------------------------
+
+barba.hooks.beforeEnter(data => {
+  // Position new container on top
+  gsap.set(data.next.container, {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+  });
+
+  if (lenis && typeof lenis.stop === "function") {
+    lenis.stop();
+  }
+
+  initBeforeEnterFunctions(data.next.container);
+  applyThemeFrom(data.next.container);
 });
 
+barba.hooks.afterLeave(() => {
+  if (hasScrollTrigger) {
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+  }
+});
+
+barba.hooks.enter(data => {
+  initBarbaNavUpdate(data);
+})
+
+barba.hooks.afterEnter(data => {
+  // Run page functions
+  initAfterEnterFunctions(data.next.container);
+
+  // Settle
+  if (hasLenis) {
+    lenis.resize();
+    lenis.start();
+  }
+
+  if (hasScrollTrigger) {
+    ScrollTrigger.refresh();
+  }
+});
+
+barba.init({
+  debug: false,
+  timeout: 7000,
+  preventRunning: true,
+  transitions: [
+    {
+      name: "default",
+      sync: true,
+
+      // First load
+      async once(data) {
+        initOnceFunctions();
+        initBeforeEnterFunctions(data.next.container);
+
+        return runPageOnceAnimation(data.next.container);
+      },
+
+      // Current page leaves
+      async leave(data) {
+        return runPageLeaveAnimation(data.current.container, data.next.container);
+      },
+
+      // New page enters
+      async enter(data) {
+        return runPageEnterAnimation(data.next.container);
+      }
+    }
+  ],
+});
+
+
+
+// -----------------------------------------
+// GENERIC + HELPERS
+// -----------------------------------------
+
+const themeConfig = {
+  light: {
+    nav: "dark",
+    transition: "light"
+  },
+  dark: {
+    nav: "light",
+    transition: "dark"
+  }
+};
+
+function applyThemeFrom(container) {
+  const pageTheme = container?.dataset?.pageTheme || "light";
+  const config = themeConfig[pageTheme] || themeConfig.light;
+
+  document.body.dataset.pageTheme = pageTheme;
+  const transitionEl = document.querySelector('[data-theme-transition]');
+  if (transitionEl) {
+    transitionEl.dataset.themeTransition = config.transition;
+  }
+
+  const nav = document.querySelector('[data-theme-nav]');
+  if (nav) {
+    nav.dataset.themeNav = config.nav;
+  }
+}
+
+function initLenis() {
+  if (lenis) return; // already created
+  if (!hasLenis) return;
+
+  lenis = new Lenis({
+    lerp: 0.165,
+    wheelMultiplier: 1.25,
+  });
+
+  if (hasScrollTrigger) {
+    lenis.on("scroll", ScrollTrigger.update);
+  }
+
+  gsap.ticker.add((time) => {
+    lenis.raf(time * 1000);
+  });
+
+  gsap.ticker.lagSmoothing(0);
+}
+
+function resetPage(container) {
+  window.scrollTo(0, 0);
+  gsap.set(container, { clearProps: "position,top,left,right" });
+
+  if (hasLenis) {
+    lenis.resize();
+    lenis.start();
+  }
+}
+
+function debounceOnWidthChange(fn, ms) {
+  let last = innerWidth,
+    timer;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      if (innerWidth !== last) {
+        last = innerWidth;
+        fn.apply(this, args);
+      }
+    }, ms);
+  };
+}
+
+function initBarbaNavUpdate(data) {
+  var tpl = document.createElement('template');
+  tpl.innerHTML = data.next.html.trim();
+  var nextNodes = tpl.content.querySelectorAll('[data-barba-update]');
+  var currentNodes = document.querySelectorAll('nav [data-barba-update]');
+
+  currentNodes.forEach(function (curr, index) {
+    var next = nextNodes[index];
+    if (!next) return;
+
+    // Aria-current sync
+    var newStatus = next.getAttribute('aria-current');
+    if (newStatus !== null) {
+      curr.setAttribute('aria-current', newStatus);
+    } else {
+      curr.removeAttribute('aria-current');
+    }
+
+    // Class list sync
+    var newClassList = next.getAttribute('class') || '';
+    curr.setAttribute('class', newClassList);
+  });
+}
+
+
+
+// -----------------------------------------
+// YOUR FUNCTIONS GO BELOW HERE
+// -----------------------------------------
+
+/* Research carousel arrows — scoped to the incoming page. */
+function initCarousel() {
+  nextPage.querySelectorAll('[data-carousel] .arrows button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      const track = b.closest('[data-carousel]').querySelector('.research__track, .scroller');
+      if (track) track.scrollBy({ left: Number(b.dataset.scroll), behavior: 'smooth' });
+    });
+  });
+}
+
 /* ============================================================
-   Mega nav — directional hover dropdowns, mobile slide-over panels
+   Mega nav — directional hover dropdowns, mobile slide-over panels.
+   Lives outside the Barba container, so this runs once per session.
    ============================================================ */
 function initMegaNavDirectionalHover() {
   const DUR = {
@@ -492,6 +874,18 @@ function initMegaNavDirectionalHover() {
     if (name) { e.preventDefault(); openMobilePanel(name); }
   }
 
+  // Close the menu when a navigation starts, so the panel does not sit
+  // open over the incoming page.
+  function closeEverything() {
+    if (state.isMobile) {
+      if (state.mobilePanelActive) closeMobilePanel();
+      if (state.mobileMenuOpen) closeMobileMenu();
+    } else if (state.isOpen) {
+      clearTimers();
+      closeDropdown();
+    }
+  }
+
   // RESIZE
   let resizeTimer = null;
   let lastWidth = window.innerWidth;
@@ -560,12 +954,14 @@ function initMegaNavDirectionalHover() {
 
   window.addEventListener("resize", handleResize);
 
+  barba.hooks.beforeLeave(closeEverything);
+
   // INIT
   state.isMobile ? setupMobile() : resetDesktop();
 }
 
 /* ============================================================
-   Button 059 — measures each label so the two halves can swap width
+   Button 059 — measures each label so the two halves swap width
    ============================================================ */
 function initButton059() {
   const buttons = document.querySelectorAll('[data-button-059]');
@@ -604,22 +1000,3 @@ function initButton059() {
     };
   });
 }
-
-document.addEventListener('DOMContentLoaded', function () {
-  initMegaNavDirectionalHover();
-
-  // measure once the webfont has settled, so the width is not taken from the fallback
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(initButton059);
-  } else {
-    initButton059();
-  }
-
-  // research carousel arrows (homepage only)
-  document.querySelectorAll('.arrows button').forEach(function (b) {
-    b.addEventListener('click', function () {
-      const track = document.querySelector('.research__track');
-      if (track) track.scrollBy({ left: Number(b.dataset.scroll), behavior: 'smooth' });
-    });
-  });
-});

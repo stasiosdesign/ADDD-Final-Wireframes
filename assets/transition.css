@@ -1,0 +1,42 @@
+/* ============================================================
+   Page name wipe — panel colours mapped to the ADDD palette.
+   Sits above the nav (z-index 100) so the wipe covers the whole
+   viewport, including the persistent navigation.
+   ============================================================ */
+.transition {
+  z-index: 200;
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  overflow: clip;
+}
+
+.transition__panel {
+  background-color: var(--c-dark-fg);
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+
+.transition__label {
+  color: var(--c-white);
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: -.06em;
+  font-size: 2.5em;
+  text-align: center;
+  padding: 0 var(--page-pad);
+}
+
+@media (max-width: 991px) {
+  .transition__label { font-size: 1.5em; }
+}
+
+/* the incoming container is pinned by Barba while it animates in */
+[data-barba="container"] { will-change: transform; }
