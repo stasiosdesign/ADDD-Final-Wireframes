@@ -564,8 +564,56 @@ function initMegaNavDirectionalHover() {
   state.isMobile ? setupMobile() : resetDesktop();
 }
 
+/* ============================================================
+   Button 059 — measures each label so the two halves can swap width
+   ============================================================ */
+function initButton059() {
+  const buttons = document.querySelectorAll('[data-button-059]');
+  if (buttons.length === 0) return;
+
+  const resizeCallbacks = new Set();
+  let resizeTimeout;
+
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      resizeCallbacks.forEach((callback) => callback());
+    }, 60);
+  });
+
+  const addResizeCallback = (callback) => {
+    resizeCallbacks.add(callback);
+    return () => resizeCallbacks.delete(callback);
+  };
+
+  buttons.forEach((element) => {
+    const elements = element.querySelectorAll('[data-button-059-element]');
+
+    const updateWidth = (el) => {
+      const text = el.querySelector('[data-button-059-text]');
+      const width = text.offsetWidth;
+      el.style.setProperty('--button-059-width', `${width}px`);
+    };
+
+    const updateAll = () => { elements.forEach(updateWidth); };
+    updateAll();
+    const removeResize = addResizeCallback(updateAll);
+
+    return () => {
+      removeResize?.();
+    };
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   initMegaNavDirectionalHover();
+
+  // measure once the webfont has settled, so the width is not taken from the fallback
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(initButton059);
+  } else {
+    initButton059();
+  }
 
   // research carousel arrows (homepage only)
   document.querySelectorAll('.arrows button').forEach(function (b) {

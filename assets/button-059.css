@@ -1,0 +1,179 @@
+/* ============================================================
+   Button 059 — reference implementation (unmodified)
+   ============================================================ */
+:root {
+  --button-059-color: #131313;
+  --button-059-color-background: #fff;
+  --button-059-color-focus: #fff;
+  --button-059-padding: 0.75em 1em;
+  --button-059-border-radius: 1.3em;
+  --button-059-block-border-radius: 0.125em;
+  --button-059-focus-inset: -0.125em;
+  --button-059-ease-hover: cubic-bezier(0.32, 0.72, 0, 1);
+  --button-059-ease-focus: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.button-059 {
+  grid-column-gap: .125em;
+  grid-row-gap: .125em;
+  color: var(--button-059-color);
+  -webkit-user-select: none;
+  user-select: none;
+  background-color: #0000;
+  outline-style: none;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 0;
+  line-height: 1;
+  text-decoration: none;
+  display: inline-flex;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.button-059::after {
+  content: '';
+  display: block;
+  position: absolute;
+  inset: var(--button-059-focus-inset);
+  border-radius: var(--button-059-block-border-radius);
+  transition: box-shadow 0.3s var(--button-059-ease-focus);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.button-059:is(:focus-visible)::after {
+  box-shadow: 0 0 0 0.125em var(--button-059-color-focus);
+}
+
+.button-059__block {
+  pointer-events: none;
+  background-color: var(--button-059-color-background);
+  border-radius: var(--button-059-block-border-radius);
+  width: .375em;
+  padding: 0;
+}
+
+.button-059__element {
+  pointer-events: none;
+  background-color: var(--button-059-color-background);
+  border-radius: var(--button-059-border-radius);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  overflow: clip;
+  will-change: width;
+  transition: width 0.3s var(--button-059-ease-hover), border-radius 0.3s var(--button-059-ease-hover);
+}
+
+.button-059__element.is--default {
+  width: var(--button-059-width);
+}
+
+.button-059__element.is--default .button-059__text {
+  transform-origin: left;
+  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), filter 0.2s, scale 0.2s var(--button-059-ease-hover);
+}
+
+.button-059__element.is--hover {
+  border-radius: var(--button-059-block-border-radius);
+  width: 0.375em;
+}
+
+.button-059__element.is--hover .button-059__text {
+  opacity: 0;
+  filter: blur(0.1875em);
+  scale: 0.8;
+  transform-origin: right;
+  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), filter 0.2s, scale 0.2s var(--button-059-ease-hover);
+}
+
+.button-059__text {
+  white-space: nowrap;
+  padding: var(--button-059-padding);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .button-059:is(:hover, :focus-visible) .button-059__element,
+  [data-hover]:is(:hover, :focus-visible) .button-059 .button-059__element {
+    transition: width 0.5s var(--button-059-ease-hover), border-radius 0.5s var(--button-059-ease-hover);
+    transition-delay: 0.05s;
+  }
+
+  .button-059:is(:hover, :focus-visible) .button-059__element.is--default,
+  [data-hover]:is(:hover, :focus-visible) .button-059 .button-059__element.is--default {
+    width: 0.375em;
+    border-radius: var(--button-059-block-border-radius);
+  }
+
+  .button-059:is(:hover, :focus-visible) .button-059__element.is--default .button-059__text,
+  [data-hover]:is(:hover, :focus-visible) .button-059 .button-059__element.is--default .button-059__text {
+    opacity: 0;
+    filter: blur(0.1875em);
+    scale: 0.8;
+    transition-delay: 0.05s;
+  }
+
+  .button-059:is(:hover, :focus-visible) .button-059__element.is--hover,
+  [data-hover]:is(:hover, :focus-visible) .button-059 .button-059__element.is--hover {
+    width: var(--button-059-width);
+    border-radius: var(--button-059-border-radius);
+  }
+
+  .button-059:is(:hover, :focus-visible) .button-059__element.is--hover .button-059__text,
+  [data-hover]:is(:hover, :focus-visible) .button-059 .button-059__element.is--hover .button-059__text {
+    opacity: 1;
+    filter: blur(0);
+    scale: 1;
+    transition-delay: 0.125s;
+  }
+
+  .button-059:is(:hover, :focus-visible) .button-059__hover,
+  [data-hover]:is(:hover, :focus-visible) .button-059 .button-059__hover {
+    opacity: 1;
+    scale: 1;
+    transition-delay: 0.05s;
+  }
+}
+
+/* ============================================================
+   ADDD nav instance
+   Dark blocks on the white bar; the thin light lines between them
+   are the button's own column gaps showing the bar through.
+   The button stretches to the full bar height and sits flush to
+   the right edge, replacing the old solid Contact block.
+   ============================================================ */
+.mega-nav .button-059 {
+  --button-059-color: var(--c-white);
+  --button-059-color-background: #141414;
+  --button-059-color-focus: #141414;
+  --button-059-padding: 0 2em;
+  --button-059-border-radius: .25em;
+  --button-059-block-border-radius: .25em;
+  --button-059-focus-inset: .125em;
+
+  align-self: stretch;
+  font-family: var(--font-body);
+  font-size: 1.0625em;
+  font-weight: 500;
+}
+
+/* the outer blocks square off against the bar edge and the divider */
+.mega-nav .button-059 .button-059__block:first-child { border-radius: 0; }
+.mega-nav .button-059 .button-059__block:last-child { border-radius: 0; }
+
+/* text is centred by the element, so padding only sets the measured width */
+.mega-nav .button-059__text { line-height: 1.5; }
+
+@media screen and (max-width: 991px) {
+  .mega-nav .button-059 {
+    --button-059-padding: 1em 2em;
+    --button-059-border-radius: 6px;
+    --button-059-block-border-radius: 6px;
+    align-self: auto;
+    justify-content: center;
+    flex: 1;
+  }
+  .mega-nav .button-059 .button-059__block:first-child,
+  .mega-nav .button-059 .button-059__block:last-child { border-radius: 6px; }
+}
