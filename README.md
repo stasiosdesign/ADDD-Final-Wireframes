@@ -48,8 +48,13 @@ Never edit the root `.html` files directly — `build.sh` overwrites them.
 - **Fonts** — headings use BDO Grotesk, which is licensed and not included. The font
   stack requests it first and falls back to Inter Tight (Google Fonts). Drop in the
   webfont files and add an `@font-face` rule to use the real face.
-- **Imagery** — all photography and video is a black placeholder at the exact
-  proportions from the design. The ADDD logo is a real vector (`assets/logo.svg`).
+- **Imagery** — every image slot uses `assets/images/allister-presenting.jpg`,
+  applied as a `background-image` in `assets/media.css`. One rule covers all of
+  them, so giving a slot its own artwork means overriding `background-image` on
+  that selector only. Proportions come from the Figma design and are unchanged.
+- **Logos** — client logos live in `assets/logos/` (ADAM, OBMI, Studio Seiler) and
+  appear in the homepage logo strip, the case-study tab row and the research
+  cards. The ADDD brand mark is a separate vector, `assets/logo.svg`.
 - **Smooth scroll** — [Lenis](https://github.com/darkroomengineering/lenis) 1.2.3 via CDN.
 - **Navigation** — mega nav with directional hover dropdowns, mobile slide-over
   panels and an animated burger, built on GSAP 3.15 via CDN.
