@@ -156,6 +156,10 @@
   font-family: var(--font-body);
   font-size: 1.0625em;
   font-weight: 500;
+
+  /* the light lines are the gaps between the dark blocks — widen them */
+  grid-column-gap: .3125em;
+  grid-row-gap: .3125em;
 }
 
 /* the outer blocks square off against the bar edge and the divider */
