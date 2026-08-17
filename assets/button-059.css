@@ -166,6 +166,26 @@
 .mega-nav .button-059 .button-059__block:first-child { border-radius: 0; }
 .mega-nav .button-059 .button-059__block:last-child { border-radius: 0; }
 
+/* Thickness of the dark bars. The reference hardcodes .375em in three
+   places — the block itself, the collapsed hover element, and the
+   default element once it collapses on hover — so all three are
+   overridden together to keep the swap animation coherent. */
+.mega-nav .button-059 { --button-059-block-width: .875em; }
+
+.mega-nav .button-059 .button-059__block,
+.mega-nav .button-059 .button-059__element.is--hover {
+  width: var(--button-059-block-width);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .mega-nav .button-059:is(:hover, :focus-visible) .button-059__element.is--default {
+    width: var(--button-059-block-width);
+  }
+  .mega-nav .button-059:is(:hover, :focus-visible) .button-059__element.is--hover {
+    width: var(--button-059-width);
+  }
+}
+
 /* text is centred by the element, so padding only sets the measured width */
 .mega-nav .button-059__text { line-height: 1.5; }
 
