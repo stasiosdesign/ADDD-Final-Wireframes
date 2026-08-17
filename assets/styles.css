@@ -48,16 +48,12 @@
    site.js so the bar never drops out and shifts the layout. */
 html {
   -webkit-text-size-adjust: 100%;
-  scrollbar-width: thin;                              /* Firefox */
-  scrollbar-color: rgba(13, 13, 13, .28) transparent; /* thumb, track */
+  scrollbar-width: thin;                /* Firefox */
+  scrollbar-color: #555 transparent;    /* thumb, track */
 }
-html::-webkit-scrollbar { width: 6px; height: 6px; }
+html::-webkit-scrollbar { width: 4px; height: 4px; }
 html::-webkit-scrollbar-track { background: transparent; }
-html::-webkit-scrollbar-thumb {
-  background-color: rgba(13, 13, 13, .28);
-  border-radius: 999px;
-}
-html::-webkit-scrollbar-thumb:hover { background-color: rgba(13, 13, 13, .45); }
+html::-webkit-scrollbar-thumb { background: #555; }
 
 body {
   margin: 0;
