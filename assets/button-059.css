@@ -157,9 +157,9 @@
   font-size: 1.0625em;
   font-weight: 500;
 
-  /* the light lines are the gaps between the dark blocks — widen them */
-  grid-column-gap: .3125em;
-  grid-row-gap: .3125em;
+  /* the light lines are the gaps between the dark blocks */
+  grid-column-gap: 7px;
+  grid-row-gap: 7px;
 }
 
 /* the outer blocks square off against the bar edge and the divider */
@@ -170,7 +170,7 @@
    places — the block itself, the collapsed hover element, and the
    default element once it collapses on hover — so all three are
    overridden together to keep the swap animation coherent. */
-.mega-nav .button-059 { --button-059-block-width: .5em; }
+.mega-nav .button-059 { --button-059-block-width: 6px; }
 
 .mega-nav .button-059 .button-059__block,
 .mega-nav .button-059 .button-059__element.is--hover {
