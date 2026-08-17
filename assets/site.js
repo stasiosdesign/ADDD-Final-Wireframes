@@ -61,6 +61,8 @@ function initBeforeEnterFunctions(next) {
 function initAfterEnterFunctions(next) {
   nextPage = next || document;
 
+  initWebflowForms();
+
   if (hasLenis) {
     lenis.resize();
   }
@@ -1015,5 +1017,54 @@ function initButton059() {
     return () => {
       removeResize?.();
     };
+  });
+}
+
+
+// -----------------------------------------
+// WEBFLOW SPA FORMS + TURNSTILE RESET
+// -----------------------------------------
+
+let webflowFormsFirstLoad = true;
+
+function initWebflowForms() {
+  if (webflowFormsFirstLoad) {
+    webflowFormsFirstLoad = false;
+    return;
+  }
+  requestAnimationFrame(() => {
+    resetWebflowForms();
+    resetTurnstile();
+  });
+}
+
+function resetWebflowForms() {
+  const w = window.Webflow;
+  if (!w) return;
+  w.destroy();
+  w.ready();
+  if (w.require) {
+    const forms = w.require("forms");
+    if (forms && forms.preview) forms.preview();
+  }
+  document.querySelectorAll(".w-form").forEach((wrapper) => {
+    wrapper.classList.remove("w-form-loading");
+    wrapper.querySelectorAll('[type="submit"]').forEach((btn) => {
+      btn.classList.remove("w-form-loading");
+      btn.removeAttribute("disabled");
+    });
+  });
+}
+
+function resetTurnstile() {
+  if (!window.turnstile) return;
+  document.querySelectorAll(".w-form form").forEach((form) => {
+    const sitekey = form.getAttribute("data-turnstile-sitekey");
+    if (!sitekey) return;
+    form.querySelectorAll('[id^="cf-chl-widget"]').forEach((el) => el.remove());
+    form.querySelectorAll(".cf-turnstile").forEach((el) => el.remove());
+    const container = document.createElement("div");
+    form.appendChild(container);
+    window.turnstile.render(container, { sitekey });
   });
 }
