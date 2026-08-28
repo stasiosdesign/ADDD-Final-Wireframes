@@ -16,9 +16,15 @@
   --c-placeholder: #0d0d0d;
 
   /* type */
-  --font-display: "BDO Grotesk", "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-body: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "neue-haas-grotesk-display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-body: "neue-haas-grotesk-display", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: "Martian Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* weight scale — Neue Haas Grotesk Display only ships 300/700 (+500 medium) via this kit.
+     Headings (h1/h2) use 500 or 700; everything else uses 300 (the lightest weight loaded). */
+  --fw-heading-bold: 700;
+  --fw-heading-medium: 500;
+  --fw-body: 300;
 
   --t-h1: 72px;
   --t-h2: 52px;
@@ -78,6 +84,7 @@ body {
   background: var(--c-white);
   color: var(--c-text);
   font-family: var(--font-body);
+  font-weight: var(--fw-body);
   font-size: var(--t-rg);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -94,9 +101,10 @@ button, input { font: inherit; color: inherit; }
    ============================================================ */
 .h1, .h2, .h3, .h4 {
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: var(--fw-body);
   margin: 0;
 }
+.h1, .h2 { font-weight: var(--fw-heading-bold); }
 .h1 { font-size: var(--t-h1); line-height: 1.2; letter-spacing: -0.03em; }
 .h2 { font-size: var(--t-h2); line-height: 1.2; letter-spacing: -0.04em; }
 .h3 { font-size: var(--t-h3); line-height: 1.2; letter-spacing: -0.02em; }
@@ -117,7 +125,7 @@ button, input { font: inherit; color: inherit; }
 .tagline--sm { font-size: 13px; }
 .tagline--plain {
   font-family: var(--font-body);
-  font-weight: 600;
+  font-weight: var(--fw-body);
   font-size: var(--t-rg);
   letter-spacing: 0;
   text-transform: none;
@@ -168,7 +176,7 @@ button, input { font: inherit; color: inherit; }
   padding: 10px 24px;
   border-radius: 6px;
   border: 1px solid transparent;
-  font-weight: 500;
+  font-weight: var(--fw-body);
   font-size: var(--t-rg);
   line-height: 1.5;
   cursor: pointer;
@@ -326,14 +334,14 @@ button, input { font: inherit; color: inherit; }
 }
 .quote {
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: var(--fw-body);
   font-size: 30px;
   line-height: 1.3;
   letter-spacing: -0.02em;
 }
 .avatar { display: flex; flex-direction: column; align-items: center; gap: 16px; }
 .avatar__img { width: 56px; height: 56px; border-radius: 50%; background: var(--c-placeholder); }
-.avatar__name { font-weight: 600; }
+.avatar__name { font-weight: var(--fw-body); }
 .case__tabs { display: flex; }
 .case__tab {
   flex: 1 0 0;
@@ -421,10 +429,10 @@ button, input { font: inherit; color: inherit; }
   gap: 16px;
   scroll-snap-align: start;
 }
-.research-card__logo { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+.research-card__logo { display: flex; align-items: center; gap: 10px; font-weight: var(--fw-body); }
 .research-card__logo span { width: 20px; height: 20px; background: rgba(255,255,255,.55); border-radius: 3px; }
 .research-card__author { line-height: 1.5; }
-.research-card__author strong { display: block; font-weight: 600; font-size: var(--t-sm); }
+.research-card__author strong { display: block; font-weight: var(--fw-body); font-size: var(--t-sm); }
 .research-card__author em { font-style: normal; font-size: var(--t-sm); opacity: .8; }
 .research__controls {
   display: flex;
@@ -488,7 +496,7 @@ button, input { font: inherit; color: inherit; }
 }
 .footer__links { flex: 1 0 0; min-width: 0; display: flex; gap: 40px; align-items: flex-start; }
 .footer__col { flex: 1 0 0; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
-.footer__col h3 { margin: 0; font-size: var(--t-rg); font-weight: 600; font-family: var(--font-body); }
+.footer__col h3 { margin: 0; font-size: var(--t-rg); font-weight: var(--fw-body); font-family: var(--font-body); }
 .footer__col li a { display: block; padding: 8px 0; font-size: var(--t-sm); }
 .footer__col li a:hover { opacity: .7; }
 .footer__logo { width: 40px; height: 40px; }
