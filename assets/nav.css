@@ -90,7 +90,7 @@
 }
 .mega-nav__bar-link:hover { opacity: .6; }
 
-.mega-nav__bar-link-label { font-size: 1.0625em; font-weight: 300; line-height: 1.5; }
+.mega-nav__bar-link-label { font-size: 1.0625em; font-weight: 400; line-height: 1.5; }
 .mega-nav__bar-link-icon { width: 1.25em; flex: none; }
 
 .mega-nav__bar-end {
@@ -110,11 +110,11 @@
   padding: 0 2.5em;
   text-decoration: none;
   display: flex;
-  font-weight: 300;
+  font-weight: 400;
   white-space: nowrap;
 }
 .mega-nav__bar-cta:hover { background-color: #000; }
-.mega-nav__bar-cta .mega-nav__bar-link-label { font-size: 1.0625em; font-weight: 300; }
+.mega-nav__bar-cta .mega-nav__bar-link-label { font-size: 1.0625em; font-weight: 400; }
 
 .mega-nav__bar-cta.is--secondary {
   color: var(--c-text);
@@ -248,8 +248,8 @@
   display: flex;
 }
 .mega-nav__panel-link:hover .mega-nav__panel-link-text { opacity: .6; }
-.mega-nav__panel-link-text { font-size: 1.125em; font-weight: 300; line-height: 1.35; }
-.mega-nav__panel-link-desc { color: #6b6b6b; font-size: .9375em; font-weight: 300; line-height: 1.4; }
+.mega-nav__panel-link-text { font-size: 1.125em; font-weight: 400; line-height: 1.35; }
+.mega-nav__panel-link-desc { color: #6b6b6b; font-size: .9375em; font-weight: 400; line-height: 1.4; }
 
 .mega-nav__card {
   background-color: var(--c-white);
@@ -279,7 +279,7 @@
   text-decoration: none;
   display: flex;
 }
-.mega-nav__card-cta-label { font-size: .9375em; font-weight: 300; line-height: 1.2; }
+.mega-nav__card-cta-label { font-size: .9375em; font-weight: 400; line-height: 1.2; }
 .mega-nav__card-cta-icon { width: 1.25em; }
 
 /* Centre the link list against the bar itself rather than the space

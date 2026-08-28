@@ -155,7 +155,7 @@
   align-self: stretch;
   font-family: var(--font-body);
   font-size: 1.0625em;
-  font-weight: 300;
+  font-weight: 400;
 
   /* the light lines are the gaps between the dark blocks */
   grid-column-gap: 4px;

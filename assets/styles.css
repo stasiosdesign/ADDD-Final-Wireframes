@@ -16,15 +16,15 @@
   --c-placeholder: #0d0d0d;
 
   /* type */
-  --font-display: "neue-haas-grotesk-display", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-body: "neue-haas-grotesk-display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "elza", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-body: "elza", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: "Martian Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
-  /* weight scale — Neue Haas Grotesk Display only ships 300/700 (+500 medium) via this kit.
-     Headings (h1/h2) use 500 or 700; everything else uses 300 (the lightest weight loaded). */
-  --fw-heading-bold: 700;
+  /* weight scale — the elza Typekit kit only ships 400/500, no true bold or light.
+     Headings (h1/h2) use 500 (the heaviest available); everything else uses 400. */
+  --fw-heading-bold: 500;
   --fw-heading-medium: 500;
-  --fw-body: 300;
+  --fw-body: 400;
 
   --t-h1: 72px;
   --t-h2: 52px;
