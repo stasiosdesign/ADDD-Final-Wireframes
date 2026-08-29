@@ -272,7 +272,7 @@
 .mega-nav__card-cta {
   color: var(--c-white);
   background-color: #141414;
-  border-radius: 6px;
+  border-radius: 4px;
   justify-content: center;
   align-items: center;
   padding: .5em 1em;
@@ -337,7 +337,7 @@
   .mega-nav__bar-end { display: flex; }
   .mega-nav__bar-action { flex: 1; }
   .mega-nav__bar-cta {
-    border-radius: 6px;
+    border-radius: 4px;
     padding: .875em 1em;
     flex: 1;
     text-align: center;
