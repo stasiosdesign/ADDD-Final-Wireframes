@@ -108,13 +108,13 @@ function buildLogoRevealLoader() {
   }
 
   return gsap
-    .timeline({ defaults: { ease: "loader", duration: 3 } })
+    .timeline({ defaults: { ease: "loader", duration: 1.5 } })
     .to(progressBar, { scaleX: 1 })
     .to(logo, { clipPath: "inset(0% 0% 0% 0%)" }, "<")
-    .to(container, { autoAlpha: 0, duration: 0.5 })
-    .to(progressBar, { scaleX: 0, transformOrigin: "right center", duration: 0.5 }, "<")
+    .to(container, { autoAlpha: 0, duration: 0.25 })
+    .to(progressBar, { scaleX: 0, transformOrigin: "right center", duration: 0.25 }, "<")
     .add("hideContent", "<")
-    .to(bg, { yPercent: -101, duration: 1 }, "hideContent")
+    .to(bg, { yPercent: -101, duration: 0.5 }, "hideContent")
     .set(wrap, { display: "none" });
 }
 
