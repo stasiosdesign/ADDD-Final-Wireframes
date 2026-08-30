@@ -25,7 +25,6 @@
 
 .transition__label {
   color: var(--c-white);
-  text-transform: uppercase;
   font-family: var(--font-body);
   font-weight: 400;
   letter-spacing: 0;

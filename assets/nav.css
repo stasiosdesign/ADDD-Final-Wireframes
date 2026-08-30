@@ -3,7 +3,7 @@
    Sign in / Contact blocks and a white mega dropdown
    ============================================================ */
 
-[data-menu-wrap] { --nav-height: 4em; }
+[data-menu-wrap] { --nav-height: 4.6em; }
 
 .mega-nav {
   z-index: 100;
@@ -218,7 +218,6 @@
 
 .mega-nav__panel-label {
   color: var(--c-text);
-  text-transform: uppercase;
   font-family: var(--font-mono);
   font-weight: 500;
   font-size: .8125em;

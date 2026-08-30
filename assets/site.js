@@ -2,7 +2,7 @@
 // OSMO PAGE TRANSITION BOILERPLATE
 // -----------------------------------------
 
-gsap.registerPlugin(CustomEase);
+gsap.registerPlugin(CustomEase, ScrollTrigger);
 
 history.scrollRestoration = "manual";
 
@@ -56,6 +56,7 @@ function initBeforeEnterFunctions(next) {
   // Page-level behaviour — rebound on every navigation because the
   // container these live in is replaced.
   if (has('[data-carousel]')) initCarousel();
+  if (has('[data-marquee-scroll-direction-target]')) initMarqueeScrollDirection(nextPage);
 }
 
 function initAfterEnterFunctions(next) {

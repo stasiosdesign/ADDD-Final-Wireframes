@@ -120,7 +120,6 @@ button, input { font: inherit; color: inherit; }
   font-size: 15px;
   line-height: 1.5;
   letter-spacing: -0.12em;
-  text-transform: uppercase;
 }
 .tagline--sm { font-size: 13px; }
 .tagline--plain {
@@ -128,7 +127,6 @@ button, input { font: inherit; color: inherit; }
   font-weight: var(--fw-body);
   font-size: var(--t-rg);
   letter-spacing: 0;
-  text-transform: none;
 }
 
 /* ============================================================
@@ -222,7 +220,7 @@ button, input { font: inherit; color: inherit; }
 .logos { padding: 142px 0; text-align: center; }
 .logos__title { margin-bottom: 58px; }
 .logos__track { overflow: hidden; }
-.logos__row { display: flex; gap: 24px; justify-content: center; }
+.logos__row { display: flex; gap: 24px; }
 .logo-tile {
   flex: none;
   width: 201px;
@@ -233,6 +231,13 @@ button, input { font: inherit; color: inherit; }
   justify-content: center;
 }
 .logo-tile__mark { background: var(--c-placeholder); }
+
+/* Reusable GSAP marquee (see assets/marquee.js) — logo-style continuously
+   scrolling carousels only. */
+.marquee-advanced { overflow: hidden; }
+.marquee-advanced__scroll { display: flex; }
+.marquee-advanced__collection { display: flex; flex: none; align-items: center; }
+.logos .marquee-advanced__collection { gap: 24px; }
 
 /* ============================================================
    3 — problems
