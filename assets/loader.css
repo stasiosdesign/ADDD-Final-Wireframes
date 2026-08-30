@@ -1,0 +1,66 @@
+/* ============================================================
+   First-load logo reveal — sits above the page-name wipe so it
+   covers the whole viewport on the initial paint.
+   ============================================================ */
+.loader {
+  z-index: 300;
+  width: 100%;
+  height: 100dvh;
+  position: fixed;
+  inset: 0 0 auto;
+  overflow: clip;
+}
+
+.loader__bg {
+  background-color: var(--c-dark-fg);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+.loader__bg-bar {
+  z-index: 1;
+  transform-origin: 0% 50%;
+  background-color: var(--c-red);
+  width: 100%;
+  height: 4px;
+  position: absolute;
+  inset: auto 0 0;
+  transform: scaleX(0);
+}
+
+.loader__container {
+  z-index: 2;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: relative;
+}
+
+.loader__logo-wrap {
+  width: 120px;
+  height: 120px;
+  position: relative;
+}
+
+.loader__logo-item {
+  width: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+.loader__logo-item.is--base { opacity: 0.2; }
+
+.loader__logo-item.is--top { clip-path: inset(0% 100% 0% 0%); }
+
+.loader__logo-img {
+  width: 100%;
+  display: block;
+}
+
+@media (max-width: 991px) {
+  .loader__logo-wrap { width: 88px; height: 88px; }
+}

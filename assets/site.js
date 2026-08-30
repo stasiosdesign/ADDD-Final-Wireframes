@@ -24,6 +24,7 @@ let staggerDefault = 0.05;
 let durationDefault = 0.6;
 
 CustomEase.create("osmo", "0.625, 0.05, 0, 1");
+CustomEase.create("loader", "0.65, 0.01, 0.05, 0.99");
 gsap.defaults({ ease: "osmo", duration: durationDefault });
 
 
@@ -84,7 +85,37 @@ function runPageOnceAnimation(next) {
     resetPage(next);
   }, null, 0);
 
+  const loader = buildLogoRevealLoader();
+  if (loader) tl.add(loader, 0);
+
   return tl;
+}
+
+// First-load logo reveal. The full-opacity logo is wiped in over a
+// low-opacity copy of itself with a clip-path while the bottom bar fills;
+// the content then fades and the background slides up out of view.
+function buildLogoRevealLoader() {
+  const wrap = document.querySelector("[data-load-wrap]");
+  if (!wrap) return null;
+
+  const container = wrap.querySelector("[data-load-container]");
+  const bg = wrap.querySelector("[data-load-bg]");
+  const progressBar = wrap.querySelector("[data-load-progress]");
+  const logo = wrap.querySelector("[data-load-logo]");
+
+  if (reducedMotion) {
+    return gsap.timeline().set(wrap, { display: "none" });
+  }
+
+  return gsap
+    .timeline({ defaults: { ease: "loader", duration: 3 } })
+    .to(progressBar, { scaleX: 1 })
+    .to(logo, { clipPath: "inset(0% 0% 0% 0%)" }, "<")
+    .to(container, { autoAlpha: 0, duration: 0.5 })
+    .to(progressBar, { scaleX: 0, transformOrigin: "right center", duration: 0.5 }, "<")
+    .add("hideContent", "<")
+    .to(bg, { yPercent: -101, duration: 1 }, "hideContent")
+    .set(wrap, { display: "none" });
 }
 
 function runPageLeaveAnimation(current, next) {
