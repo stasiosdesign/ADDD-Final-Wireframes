@@ -24,6 +24,9 @@
 }
 
 .transition__label {
+  /* above .dots-grid, which sits at z-index 0 inside the panel */
+  z-index: 1;
+  position: relative;
   color: var(--c-white);
   font-family: var(--font-body);
   font-weight: 400;

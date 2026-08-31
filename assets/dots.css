@@ -1,0 +1,44 @@
+/* ============================================================
+   Dotted grid background — one shared implementation, used by
+   the first-load loader and the page-transition panel.
+
+   A pure-CSS take on the Osmo interactive dots grid: same even
+   circular grid (0.125em dots on a 1em gap, so a 1.125em pitch)
+   and same edge-to-edge coverage, with none of the pointer
+   interaction — no canvas, no listeners, no rAF loop. It is a
+   single repeating radial-gradient, so it costs one paint and
+   then rides along with whatever transform moves its parent.
+
+   Drop it inside any element that owns the background colour:
+     <div class="dots-grid" aria-hidden="true"></div>
+   and keep that element's foreground content on a z-index above
+   the dots' own z-index: 0.
+   ============================================================ */
+.dots-grid {
+  --dots-gap: 1em;
+  --dots-size: 0.125em;
+  --dots-color: rgba(255, 255, 255, 0.18);
+
+  /* the grid pitch, matching the reference: dot + gap */
+  --dots-pitch: calc(var(--dots-size) + var(--dots-gap));
+  --dots-radius: calc(var(--dots-size) / 2);
+
+  z-index: 0;
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+
+  /* pinned so the em-based pitch never drifts with inherited type */
+  font-size: var(--t-rg);
+
+  /* the half-pixel run-out is what antialiases the dot edge; a hard
+     colour stop renders them as squares at this size */
+  background-image: radial-gradient(
+    circle at center,
+    var(--dots-color) 0,
+    var(--dots-color) var(--dots-radius),
+    transparent calc(var(--dots-radius) + 0.5px)
+  );
+  background-size: var(--dots-pitch) var(--dots-pitch);
+  background-repeat: repeat;
+}
