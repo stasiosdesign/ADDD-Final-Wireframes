@@ -250,6 +250,45 @@
 .mega-nav__panel-link-text { font-size: 1.125em; font-weight: 400; line-height: 1.35; }
 .mega-nav__panel-link-desc { color: #6b6b6b; font-size: .9375em; font-weight: 400; line-height: 1.4; }
 
+/* Services panel — one card per service, grouped by the column each sits
+   in, so the Start here / Core strategy / Ongoing split is carried by the
+   existing panel labels and dividers rather than a second system. The
+   Blueprint column is the colored one, and its card is the featured
+   treatment: it fills the column, sizes its title up and carries the CTA. */
+.mega-nav__service-grid {
+  grid-row-gap: .75em;
+  flex-flow: column;
+  flex: 1;
+  width: 100%;
+  display: flex;
+}
+
+.mega-nav__service-card {
+  background-color: var(--c-white);
+  border: 1px solid var(--c-border);
+  border-radius: .5em;
+  grid-row-gap: .125em;
+  flex-flow: column;
+  align-items: flex-start;
+  padding: 1em 1.25em;
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  transition: border-color .2s ease;
+}
+
+.mega-nav__service-card:hover { border-color: var(--c-text); }
+
+.mega-nav__service-card.is--featured {
+  grid-row-gap: .5em;
+  flex: 1;
+  justify-content: flex-start;
+  padding: 1.5em;
+}
+
+.mega-nav__service-card.is--featured .mega-nav__panel-link-text { font-size: 1.375em; }
+.mega-nav__service-card.is--featured .mega-nav__card-cta { margin-top: auto; }
+
 .mega-nav__card {
   background-color: var(--c-white);
   border: 1px solid var(--c-border);
