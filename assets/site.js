@@ -217,8 +217,10 @@ function runPageEnterAnimation(next) {
   const tl = gsap.timeline();
 
   if (reducedMotion) {
-    // Immediate swap behavior if user prefers reduced motion
-    tl.set(next, { autoAlpha: 1 });
+    // Immediate swap behavior if user prefers reduced motion. Set outside the
+    // timeline so the container comes back in the same frame nextAdded hid it,
+    // rather than a frame later.
+    gsap.set(next, { autoAlpha: 1 });
     tl.add("pageReady")
     tl.call(resetPage, [next], "pageReady");
     return new Promise(resolve => tl.call(resolve, null, "pageReady"));
@@ -269,6 +271,16 @@ function runPageEnterAnimation(next) {
 // -----------------------------------------
 // BARBA HOOKS + INIT
 // -----------------------------------------
+
+// Hide the incoming container the instant Barba puts it in the DOM. The leave
+// timeline also sets autoAlpha: 0 on it, but a timeline's set() is a
+// zero-duration tween that does not render until the ticker's next frame — so
+// between insertion and that frame the browser gets to paint the new page,
+// fixed and full-bleed on top of the old one. That paint is the flash. A bare
+// gsap.set applies synchronously, before any paint can happen.
+barba.hooks.nextAdded(data => {
+  gsap.set(data.next.container, { autoAlpha: 0 });
+});
 
 barba.hooks.beforeEnter(data => {
   // Position new container on top
