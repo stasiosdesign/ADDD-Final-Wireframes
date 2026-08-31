@@ -250,45 +250,79 @@
 .mega-nav__panel-link-text { font-size: 1.125em; font-weight: 400; line-height: 1.35; }
 .mega-nav__panel-link-desc { color: #6b6b6b; font-size: .9375em; font-weight: 400; line-height: 1.4; }
 
-/* Services panel — one card per service, grouped by the column each sits
-   in, so the Start here / Core strategy / Ongoing split is carried by the
-   existing panel labels and dividers rather than a second system. The
-   Blueprint column is the colored one, and its card is the featured
-   treatment: it fills the column, sizes its title up and carries the CTA. */
+/* Services panel — four equal cards on one grid. Every card is the same
+   width and footprint; the groups are carried by the labels on the row
+   above (Start here spans its two columns) and by the card colour, so
+   Blueprint reads as the core offer without taking up more room. */
+.mega-nav__panel-col.is--services { flex: 1; }
+
 .mega-nav__service-grid {
-  grid-row-gap: .75em;
-  flex-flow: column;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-column-gap: .75em;
+  grid-row-gap: 1.25em;
+  align-items: stretch;
   flex: 1;
   width: 100%;
-  display: flex;
+  display: grid;
 }
+
+.mega-nav__panel-label.is--start { grid-area: 1 / 1 / 2 / 3; }
+.mega-nav__panel-label.is--core { grid-area: 1 / 3 / 2 / 4; }
+.mega-nav__panel-label.is--ongoing { grid-area: 1 / 4 / 2 / 5; }
 
 .mega-nav__service-card {
   background-color: var(--c-white);
   border: 1px solid var(--c-border);
   border-radius: .5em;
+  grid-row: 2;
   grid-row-gap: .125em;
   flex-flow: column;
   align-items: flex-start;
-  padding: 1em 1.25em;
+  padding: 1.25em;
   color: inherit;
   text-decoration: none;
   display: flex;
-  transition: border-color .2s ease;
+  transition: border-color .2s ease, background-color .2s ease;
 }
 
-.mega-nav__service-card:hover { border-color: var(--c-text); }
+/* Start here shares one colour across both of its cards. */
+.mega-nav__service-card.is--start {
+  background-color: var(--c-light-fg);
+  border-color: transparent;
+}
+.mega-nav__service-card.is--start:hover { border-color: var(--c-text); }
 
-.mega-nav__service-card.is--featured {
-  grid-row-gap: .5em;
-  flex: 1;
-  justify-content: flex-start;
-  padding: 1.5em;
+.mega-nav__service-card.is--core {
+  color: var(--c-white);
+  background-color: var(--c-dark-fg);
+  border-color: var(--c-dark-fg);
+}
+.mega-nav__service-card.is--core .mega-nav__panel-link-desc { color: rgba(255,255,255,.7); }
+.mega-nav__service-card.is--core:hover {
+  background-color: var(--c-dark-bg);
+  border-color: var(--c-dark-bg);
 }
 
-.mega-nav__service-card.is--featured .mega-nav__panel-link-text { font-size: 1.375em; }
-.mega-nav__service-card.is--featured .mega-nav__card-cta { margin-top: auto; }
+.mega-nav__service-card.is--ongoing:hover { border-color: var(--c-text); }
 
+/* Stacked, each label still sitting above the cards it covers. The labels
+   are authored ahead of the cards for the desktop grid, so the single
+   column re-sequences them. */
+@media screen and (max-width: 991px) {
+  .mega-nav__service-grid { grid-template-columns: 1fr; grid-template-rows: none; }
+  .mega-nav__panel-label.is--start,
+  .mega-nav__panel-label.is--core,
+  .mega-nav__panel-label.is--ongoing { grid-area: auto; }
+  .mega-nav__service-card { grid-row: auto; }
+
+  .mega-nav__panel-label.is--start { order: 1; }
+  .mega-nav__service-card.is--start { order: 2; }
+  .mega-nav__panel-label.is--core { order: 3; }
+  .mega-nav__service-card.is--core { order: 4; }
+  .mega-nav__panel-label.is--ongoing { order: 5; }
+  .mega-nav__service-card.is--ongoing { order: 6; }
+}
 .mega-nav__card {
   background-color: var(--c-white);
   border: 1px solid var(--c-border);
