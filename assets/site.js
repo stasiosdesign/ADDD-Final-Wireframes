@@ -93,16 +93,12 @@ function initBeforeEnterFunctions(next) {
   }
 }
 
+// Page functions that need the container live and on screen. Lenis and
+// ScrollTrigger are deliberately not re-measured here — that happens once, in
+// beforeEnter, while the panel still covers the viewport, so a re-measure can
+// never shift the layout the user is already looking at.
 function initAfterEnterFunctions(next) {
   nextPage = next || document;
-
-  if (hasLenis) {
-    lenis.resize();
-  }
-
-  if (hasScrollTrigger) {
-    ScrollTrigger.refresh();
-  }
 }
 
 
@@ -194,6 +190,10 @@ function runPageLeaveAnimation(current, nextHref) {
 
   transitionLabelText.innerText = pageNameFromUrl(nextHref);
 
+  // A navigation that starts while the panel is still settling from the last
+  // one would otherwise fight the tweens already on it.
+  gsap.killTweensOf([transitionPanel, transitionLabel]);
+
   const tl = gsap.timeline({
     onComplete: () => { current.remove() }
   });
@@ -226,6 +226,12 @@ function runPageLeaveAnimation(current, nextHref) {
     y: "-15vh",
     duration: 0.8,
   }, 0);
+
+  // Barba awaits whatever leave() hands back, and a GSAP timeline is
+  // thenable. Returning it is what holds the rest of the lifecycle — the
+  // swap, the enter animation — until the panel has actually covered the
+  // viewport. Without it Barba reads undefined and races straight on.
+  return tl;
 }
 
 function runPageEnterAnimation(next) {
@@ -304,21 +310,27 @@ barba.hooks.nextAdded(data => {
   gsap.set(data.next.container, { autoAlpha: 0 });
 });
 
+// Everything expensive or jarring happens here, in the covered window between
+// the panel arriving and the enter animation revealing anything: the scroll
+// reset, the theme swap, page init and the one ScrollTrigger refresh. None of
+// it is on screen, so none of it can read as a jump.
 barba.hooks.beforeEnter(data => {
-  // Position new container on top
-  gsap.set(data.next.container, {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-  });
-
   if (lenis && typeof lenis.stop === "function") {
     lenis.stop();
   }
 
+  resetScroll();
+
+  // The incoming container is in normal flow — the outgoing one is already
+  // gone by this point — so the height hold has done its job and can be
+  // released here rather than at the reveal.
+  document.documentElement.style.minHeight = "";
+
   initBeforeEnterFunctions(data.next.container);
   applyThemeFrom(data.next.container);
+
+  if (hasLenis) lenis.resize();
+  if (hasScrollTrigger) ScrollTrigger.refresh();
 });
 
 // Safety net for anything the page cleanups missed. Only triggers whose
@@ -355,23 +367,13 @@ barba.hooks.beforeLeave(() => {
   document.documentElement.style.minHeight = `${height}px`;
 });
 
-barba.hooks.afterEnter(() => {
-  document.documentElement.style.minHeight = "";
-});
-
 barba.hooks.afterEnter(data => {
   // Run page functions
   initAfterEnterFunctions(data.next.container);
 
-  // Settle
-  if (hasLenis) {
-    lenis.resize();
-    lenis.start();
-  }
-
-  if (hasScrollTrigger) {
-    ScrollTrigger.refresh();
-  }
+  // Everything else already settled while the panel was covering; all that
+  // is left is handing scrolling back to the user.
+  if (hasLenis) lenis.start();
 });
 
 barba.init({
@@ -461,8 +463,18 @@ function initLenis() {
   gsap.ticker.lagSmoothing(0);
 }
 
-function resetPage(container) {
+// Scroll to the top in a way Lenis agrees with. Setting window.scrollY behind
+// its back leaves its internal position stale, and it snaps back to the old
+// offset the moment it is started again.
+function resetScroll() {
+  if (hasLenis && lenis) {
+    lenis.scrollTo(0, { immediate: true, force: true });
+  }
   window.scrollTo(0, 0);
+}
+
+function resetPage(container) {
+  resetScroll();
   gsap.set(container, { clearProps: "position,top,left,right" });
 
   if (hasLenis) {
