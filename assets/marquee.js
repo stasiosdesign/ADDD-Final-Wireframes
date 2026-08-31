@@ -6,11 +6,24 @@
          [data-marquee-collection-target]      (one set of items, duplicated)
    ============================================================ */
 
-let marqueeAnimations = [];
+let marqueeInstances = [];
+
+/* Every tween and ScrollTrigger this module creates is tracked, so leaving
+   the page tears down exactly what it built and nothing else. Without this
+   the scrub timelines outlive their markup and the next visit inherits a
+   marquee stuck at whatever offset and timeScale the dead triggers left. */
+function destroyMarqueeScrollDirection() {
+  marqueeInstances.forEach(({ animation, directionTrigger, scrubTimeline }) => {
+    animation.kill();
+    directionTrigger.kill();
+    if (scrubTimeline.scrollTrigger) scrubTimeline.scrollTrigger.kill();
+    scrubTimeline.kill();
+  });
+  marqueeInstances = [];
+}
 
 function initMarqueeScrollDirection(root) {
-  marqueeAnimations.forEach(anim => anim.kill());
-  marqueeAnimations = [];
+  destroyMarqueeScrollDirection();
 
   (root || document).querySelectorAll('[data-marquee-scroll-direction-target]').forEach((marquee) => {
     const marqueeScroll = marquee.querySelector('[data-marquee-scroll-target]');
@@ -78,9 +91,7 @@ function initMarqueeScrollDirection(root) {
 
     marquee.setAttribute('data-marquee-status', 'normal');
 
-    marqueeAnimations.push(animation);
-
-    ScrollTrigger.create({
+    const directionTrigger = ScrollTrigger.create({
       trigger: marquee,
       start: 'top bottom',
       end: 'bottom top',
@@ -119,5 +130,7 @@ function initMarqueeScrollDirection(root) {
       { x: `${scrollStart}vw` },
       { x: `${scrollEnd}vw`, ease: 'none' }
     );
+
+    marqueeInstances.push({ animation, directionTrigger, scrubTimeline: tl });
   });
 }

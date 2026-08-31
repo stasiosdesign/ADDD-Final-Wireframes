@@ -51,13 +51,46 @@ function initOnceFunctions() {
   }
 }
 
+// Page-scoped teardown. Anything a page-level init leaves behind that would
+// outlive the DOM it was built from — GSAP tweens, ScrollTriggers, listeners
+// on window/document, timers, observers — registers an undo here, and it is
+// run against the outgoing page in beforeLeave, before the next page inits.
+let pageCleanups = [];
+
+function registerPageCleanup(fn) {
+  pageCleanups.push(fn);
+}
+
+function runPageCleanups() {
+  const cleanups = pageCleanups;
+  pageCleanups = [];
+  cleanups.forEach(fn => {
+    try {
+      fn();
+    } catch (err) {
+      console.error("page cleanup failed", err);
+    }
+  });
+}
+
 function initBeforeEnterFunctions(next) {
   nextPage = next || document;
+
+  // Barba's once() inits the first container, and beforeEnter inits every
+  // one after it. Marking the container keeps a stray second call from
+  // binding the same DOM twice.
+  if (nextPage.dataset) {
+    if (nextPage.dataset.pageInit === "true") return;
+    nextPage.dataset.pageInit = "true";
+  }
 
   // Page-level behaviour — rebound on every navigation because the
   // container these live in is replaced.
   if (has('[data-carousel]')) initCarousel();
-  if (has('[data-marquee-scroll-direction-target]')) initMarqueeScrollDirection(nextPage);
+  if (has('[data-marquee-scroll-direction-target]')) {
+    initMarqueeScrollDirection(nextPage);
+    registerPageCleanup(destroyMarqueeScrollDirection);
+  }
 }
 
 function initAfterEnterFunctions(next) {
@@ -254,10 +287,18 @@ barba.hooks.beforeEnter(data => {
   applyThemeFrom(data.next.container);
 });
 
+// Safety net for anything the page cleanups missed. It must not kill every
+// trigger on the page: this is a sync transition, so beforeEnter has already
+// built the incoming page's ScrollTriggers by the time afterLeave runs, and a
+// blanket kill would tear down the page that is arriving. Only triggers whose
+// element has left the document are stale.
 barba.hooks.afterLeave(() => {
-  if (hasScrollTrigger) {
-    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-  }
+  if (!hasScrollTrigger) return;
+
+  ScrollTrigger.getAll().forEach(trigger => {
+    const el = trigger.trigger || trigger.vars.trigger;
+    if (!el || !document.contains(el)) trigger.kill();
+  });
 });
 
 barba.hooks.enter(data => {
@@ -270,6 +311,10 @@ barba.hooks.enter(data => {
 // shifting the layout by its width twice. Registered ahead of the afterEnter
 // hook below so the height is released before Lenis re-measures.
 barba.hooks.beforeLeave(() => {
+  // Runs before beforeEnter, so the outgoing page is torn down before the
+  // incoming one builds anything of its own.
+  runPageCleanups();
+
   const height = Math.max(
     document.body.scrollHeight,
     document.documentElement.scrollHeight
