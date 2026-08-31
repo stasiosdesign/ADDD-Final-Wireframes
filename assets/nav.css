@@ -158,12 +158,19 @@
 }
 .mega-nav__back button { background: none; border: 0; cursor: pointer; }
 
+/* Sits at z-index 0 inside the nav, under the bar (3) and the dropdown (2),
+   so it dims and blurs the page while both stay sharp. The blur rides on the
+   element's own opacity — a backdrop-filter renders with its element — so the
+   existing autoAlpha tween fades the whole effect in and out with the
+   dropdown, and nothing is left behind on close. */
 .mega-nav__backdrop {
   z-index: 0;
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
-  background-color: rgba(0,0,0,.25);
+  background-color: rgba(0,0,0,.18);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
   position: fixed;
   inset: 0;
 }
@@ -249,6 +256,29 @@
 .mega-nav__panel-link:hover .mega-nav__panel-link-text { opacity: .6; }
 .mega-nav__panel-link-text { font-size: 1.125em; font-weight: 400; line-height: 1.35; }
 .mega-nav__panel-link-desc { color: #6b6b6b; font-size: .9375em; font-weight: 400; line-height: 1.4; }
+
+/* Lead item in a panel list — the same link, one step up in size, with the
+   brand red carrying the tag. */
+.mega-nav__panel-link-head {
+  grid-column-gap: .625em;
+  align-items: center;
+  display: flex;
+}
+
+.mega-nav__panel-link.is--lead .mega-nav__panel-link-text { font-size: 1.375em; }
+
+.mega-nav__badge {
+  color: var(--c-white);
+  background-color: var(--c-red);
+  border-radius: .25em;
+  padding: .25em .5em;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: .6875em;
+  letter-spacing: -.06em;
+  line-height: 1;
+  text-transform: uppercase;
+}
 
 /* Services panel — four full-height panels built into the dropdown rather
    than cards floating inside it. The grid is edge to edge with no gutters,

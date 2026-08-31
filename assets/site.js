@@ -161,14 +161,38 @@ function buildLogoRevealLoader(next) {
   return tl;
 }
 
-function runPageLeaveAnimation(current, next) {
+// The leave animation runs before the destination page has been fetched, so
+// there is no container to read data-page-name off yet. Derive the label from
+// the URL instead: title-casing the slug covers most of the site, and these
+// are the pages whose name is not simply their slug (mirrors build.sh).
+const PAGE_NAMES = {
+  "index": "Home",
+  "workshops-audits": "Workshops & Audits",
+  "software-licensing-audit": "Software & Licensing Audit",
+  "report-template": "BIM 2.0 Report",
+  "newsletter-template": "AI in Architecture",
+};
+
+function pageNameFromUrl(href) {
+  let slug = "index";
+
+  try {
+    const path = new URL(href, location.href).pathname;
+    slug = path.split("/").pop().replace(/\.html$/, "") || "index";
+  } catch (err) {
+    return "Hi there";
+  }
+
+  return PAGE_NAMES[slug] || slug.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function runPageLeaveAnimation(current, nextHref) {
   const transitionWrap = document.querySelector("[data-transition-wrap]");
   const transitionPanel = transitionWrap.querySelector("[data-transition-panel]");
   const transitionLabel = transitionWrap.querySelector("[data-transition-label]");
   const transitionLabelText = transitionWrap.querySelector("[data-transition-label-text]");
 
-  const nextPageName = next.getAttribute("data-page-name")
-  transitionLabelText.innerText = nextPageName || "Hi there";
+  transitionLabelText.innerText = pageNameFromUrl(nextHref);
 
   const tl = gsap.timeline({
     onComplete: () => { current.remove() }
@@ -181,10 +205,6 @@ function runPageLeaveAnimation(current, next) {
 
   tl.set(transitionPanel, {
     autoAlpha: 1
-  }, 0);
-
-  tl.set(next, {
-    autoAlpha: 0
   }, 0);
 
   tl.fromTo(transitionPanel, {
@@ -226,7 +246,10 @@ function runPageEnterAnimation(next) {
     return new Promise(resolve => tl.call(resolve, null, "pageReady"));
   }
 
-  tl.add("startEnter", 1.25);
+  // Barba no longer runs leave and enter together, so the wait before the
+  // panel leaves is measured from the moment the screen is covered, not from
+  // the start of the wipe. Same pause on screen as before.
+  tl.add("startEnter", 0.45);
 
   tl.set(next, {
     autoAlpha: 1,
@@ -272,12 +295,11 @@ function runPageEnterAnimation(next) {
 // BARBA HOOKS + INIT
 // -----------------------------------------
 
-// Hide the incoming container the instant Barba puts it in the DOM. The leave
-// timeline also sets autoAlpha: 0 on it, but a timeline's set() is a
-// zero-duration tween that does not render until the ticker's next frame — so
-// between insertion and that frame the browser gets to paint the new page,
-// fixed and full-bleed on top of the old one. That paint is the flash. A bare
-// gsap.set applies synchronously, before any paint can happen.
+// Hide the incoming container the instant Barba puts it in the DOM, so it is
+// invisible for the whole covered stretch until enter reveals it. A bare
+// gsap.set applies synchronously; a timeline's set() is a zero-duration tween
+// that would not render until the ticker's next frame, leaving the browser a
+// frame in which to paint the new page.
 barba.hooks.nextAdded(data => {
   gsap.set(data.next.container, { autoAlpha: 0 });
 });
@@ -299,11 +321,10 @@ barba.hooks.beforeEnter(data => {
   applyThemeFrom(data.next.container);
 });
 
-// Safety net for anything the page cleanups missed. It must not kill every
-// trigger on the page: this is a sync transition, so beforeEnter has already
-// built the incoming page's ScrollTriggers by the time afterLeave runs, and a
-// blanket kill would tear down the page that is arriving. Only triggers whose
-// element has left the document are stale.
+// Safety net for anything the page cleanups missed. Only triggers whose
+// element has left the document are stale — never a blanket kill, which would
+// take the incoming page's triggers with it the moment anything (a slow fetch,
+// a future sync transition) puts beforeEnter ahead of this hook.
 barba.hooks.afterLeave(() => {
   if (!hasScrollTrigger) return;
 
@@ -357,10 +378,14 @@ barba.init({
   debug: false,
   timeout: 7000,
   preventRunning: true,
+  // Not sync: leave runs to completion — the panel wipes up and covers the
+  // viewport — before Barba removes the current container, adds the next one
+  // and runs enter. The destination page is therefore never in the document
+  // while any of it is visible, which is what makes the flash impossible
+  // rather than merely hidden.
   transitions: [
     {
       name: "default",
-      sync: true,
 
       // First load
       async once(data) {
@@ -372,7 +397,7 @@ barba.init({
 
       // Current page leaves
       async leave(data) {
-        return runPageLeaveAnimation(data.current.container, data.next.container);
+        return runPageLeaveAnimation(data.current.container, data.next.url.href);
       },
 
       // New page enters
@@ -505,15 +530,19 @@ function initCarousel() {
    Lives outside the Barba container, so this runs once per session.
    ============================================================ */
 function initMegaNavDirectionalHover() {
+  // The panel opens as one considered move: the container heights out on the
+  // site's own osmo ease while the content settles in behind it. The stagger
+  // is deliberately near-nothing — enough to stop the items landing on a
+  // single hard frame, not enough to read as a cascade.
   const DUR = {
-    bgMorph: 0.4,
-    contentIn: 0.3,
+    bgMorph: 0.45,
+    contentIn: 0.35,
     contentOut: 0.2,
-    stagger: 0.25,
-    backdropIn: 0.3,
-    backdropOut: 0.2,
-    openScale: 0.35,
-    closeScale: 0.25,
+    stagger: 0.06,
+    backdropIn: 0.35,
+    backdropOut: 0.25,
+    openScale: 0.45,
+    closeScale: 0.3,
   };
 
   const HOVER_ENTER = 120;
@@ -655,13 +684,13 @@ function initMegaNavDirectionalHover() {
     const tl = gsap.timeline();
     state.tl = tl;
     tl.to(backdrop, { autoAlpha: 1, duration: DUR.backdropIn, ease: "power2.out" }, 0);
-    tl.to(dropContainer, { height, duration: DUR.openScale, ease: "power3.out" }, 0);
+    tl.to(dropContainer, { height, duration: DUR.openScale, ease: "osmo" }, 0);
     tl.set(el, { visibility: "visible", opacity: 1, pointerEvents: "auto" }, 0.05);
     if (fade.length) {
       tl.fromTo(fade,
-        { autoAlpha: 0, y: 8 },
-        { autoAlpha: 1, y: 0, duration: DUR.contentIn, stagger: stagger(fade.length), ease: "power3.out" },
-        0.1
+        { autoAlpha: 0, y: 6 },
+        { autoAlpha: 1, y: 0, duration: DUR.contentIn, stagger: stagger(fade.length), ease: "power2.out" },
+        0.12
       );
     }
   }
@@ -685,7 +714,7 @@ function initMegaNavDirectionalHover() {
     });
     state.tl = tl;
     if (fade.length) tl.to(fade, { autoAlpha: 0, y: -4, duration: DUR.contentOut * 0.7, ease: "power2.in" }, 0);
-    tl.to(dropContainer, { height: 0, duration: DUR.closeScale, ease: "power2.in" }, 0.05);
+    tl.to(dropContainer, { height: 0, duration: DUR.closeScale, ease: "osmo" }, 0.05);
     tl.to(backdrop, { autoAlpha: 0, duration: DUR.backdropOut, ease: "power2.out" }, 0);
     if (el) tl.set(el, { visibility: "hidden", opacity: 0, pointerEvents: "none" });
   }
@@ -723,7 +752,7 @@ function initMegaNavDirectionalHover() {
     if (fromFade.length) tl.to(fromFade, { autoAlpha: 0, x: xOut, duration: DUR.contentOut, ease: "power2.in" }, 0);
     tl.set(fromEl, { visibility: "hidden", opacity: 0, pointerEvents: "none", xPercent: 0 }, DUR.contentOut);
     if (fromFade.length) tl.set(fromFade, { x: 0 }, DUR.contentOut);
-    tl.to(dropContainer, { height: toHeight, duration: DUR.bgMorph, ease: "power3.out" }, 0.05);
+    tl.to(dropContainer, { height: toHeight, duration: DUR.bgMorph, ease: "osmo" }, 0.05);
     tl.set(toEl, { visibility: "visible", opacity: 1, pointerEvents: "auto", xPercent: 0 }, DUR.contentOut * 0.5);
     if (toFade.length) {
       tl.fromTo(toFade,
