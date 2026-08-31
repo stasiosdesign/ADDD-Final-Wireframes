@@ -85,16 +85,19 @@ function runPageOnceAnimation(next) {
     resetPage(next);
   }, null, 0);
 
-  const loader = buildLogoRevealLoader();
+  const loader = buildLogoRevealLoader(next);
   if (loader) tl.add(loader, 0);
 
   return tl;
 }
 
-// First-load logo reveal. The full-opacity logo is wiped in over a
-// low-opacity copy of itself with a clip-path while the bottom bar fills;
-// the content then fades and the background slides up out of view.
-function buildLogoRevealLoader() {
+// First-load logo reveal, run from Barba's once() so it never fires on an
+// internal navigation. The full-opacity logo is wiped in over a low-opacity
+// copy of itself with a clip-path while the bottom bar fills; the content
+// then fades, the background slides up out of view and the page rises into
+// place behind it with the same motion runPageEnterAnimation uses, so the
+// hand-off reads as the start of the site's normal transition.
+function buildLogoRevealLoader(next) {
   const wrap = document.querySelector("[data-load-wrap]");
   if (!wrap) return null;
 
@@ -107,15 +110,22 @@ function buildLogoRevealLoader() {
     return gsap.timeline().set(wrap, { display: "none" });
   }
 
-  return gsap
-    .timeline({ defaults: { ease: "loader", duration: 1.5 } })
+  const tl = gsap
+    .timeline({ defaults: { ease: "loader", duration: 0.9 } })
     .to(progressBar, { scaleX: 1 })
     .to(logo, { clipPath: "inset(0% 0% 0% 0%)" }, "<")
-    .to(container, { autoAlpha: 0, duration: 0.25 })
-    .to(progressBar, { scaleX: 0, transformOrigin: "right center", duration: 0.25 }, "<")
+    .to(container, { autoAlpha: 0, duration: 0.2 })
+    .to(progressBar, { scaleX: 0, transformOrigin: "right center", duration: 0.2 }, "<")
     .add("hideContent", "<")
-    .to(bg, { yPercent: -101, duration: 0.5 }, "hideContent")
+    .to(bg, { yPercent: -101, duration: 0.4 }, "hideContent")
     .set(wrap, { display: "none" });
+
+  // The same rise the destination page makes on an internal navigation.
+  if (next) {
+    tl.from(next, { y: "15vh", duration: 1, ease: "osmo" }, "hideContent");
+  }
+
+  return tl;
 }
 
 function runPageLeaveAnimation(current, next) {

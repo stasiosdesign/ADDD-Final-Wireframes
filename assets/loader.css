@@ -41,8 +41,8 @@
 }
 
 .loader__logo-wrap {
-  width: 120px;
-  height: 120px;
+  width: 104px;
+  height: 104px;
   position: relative;
 }
 
@@ -62,5 +62,5 @@
 }
 
 @media (max-width: 991px) {
-  .loader__logo-wrap { width: 88px; height: 88px; }
+  .loader__logo-wrap { width: 76px; height: 76px; }
 }
