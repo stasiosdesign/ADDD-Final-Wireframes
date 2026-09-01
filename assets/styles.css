@@ -515,11 +515,17 @@ button, input { font: inherit; color: inherit; }
    copy. The intro above them stays on the same white as the problem
    section before it, so the two read as one argument.
    ------------------------------------------------------------ */
-.approach__slides { position: relative; }
+/* The trailing space is what keeps the routes section from rising
+   behind the last card while it is still pinned and fading — with a
+   viewport of room after the slides, the pin plays out over empty
+   page and the next section only arrives once it has finished. */
+.approach__slides { position: relative; padding-bottom: 100vh; padding-bottom: 100svh; }
 
+/* A card stacks under the fixed bar rather than behind it, so it is
+   a viewport less the nav — the same --nav-h the hero clears. */
 .approach__slide {
-  height: 100vh;
-  height: 100svh;
+  height: calc(100vh - var(--nav-h));
+  height: calc(100svh - var(--nav-h));
 }
 /* The wrapper is what gets pinned; the perspective on it is what
    gives the card its depth as it rotates away. */
@@ -542,9 +548,7 @@ button, input { font: inherit; color: inherit; }
   flex-direction: column;
   justify-content: space-between;
   gap: 40px;
-  /* the fixed nav sits over the card while it is pinned, so the top
-     padding has to clear the bar as well as frame the type */
-  padding: calc(var(--nav-h) + 24px) 40px 40px;
+  padding: 40px;
   box-shadow: 0 -12px 40px rgba(13, 13, 13, 0.12);
 }
 /* Three tones, each well clear of the page white behind the stack
@@ -618,7 +622,7 @@ button, input { font: inherit; color: inherit; }
   .approach__card {
     justify-content: flex-start;
     gap: 24px;
-    padding: calc(var(--nav-h) + 16px) var(--page-pad) 32px;
+    padding: 32px var(--page-pad);
   }
   .approach__card-num { display: none; }
   .approach__card-bottom { flex-direction: column; align-items: stretch; gap: 24px; }

@@ -1272,6 +1272,12 @@ function initApproachSlides() {
   const slides = [...root.querySelectorAll(".approach__slide")];
   if (!slides.length) return;
 
+  // The bar is fixed over the page, so a card has to stack beneath it
+  // rather than at the very top of the viewport. Measured rather than
+  // hardcoded — the same height --nav-h gives the slides in CSS.
+  const navBar = document.querySelector(".mega-nav__bar");
+  const navOffset = () => (navBar ? Math.round(navBar.getBoundingClientRect().height) : 0);
+
   const tweens = [];
 
   slides.forEach((slide) => {
@@ -1293,7 +1299,7 @@ function initApproachSlides() {
         pinType: "transform",
         anticipatePin: 1,
         trigger: slide,
-        start: "top 0%",
+        start: () => "top " + navOffset() + "px",
         end: "+=" + window.innerHeight, // one viewport later
         scrub: true,
       },
