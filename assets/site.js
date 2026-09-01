@@ -1286,6 +1286,12 @@ function initApproachSlides() {
       ease: "power1.in",
       scrollTrigger: {
         pin: wrapper, // held while the card tips away
+        // The Barba container carries a transform and will-change,
+        // which makes it the containing block for anything fixed —
+        // the default pinType would drop the pinned card at the top
+        // of the container instead of holding it in the viewport.
+        pinType: "transform",
+        anticipatePin: 1,
         trigger: slide,
         start: "top 0%",
         end: "+=" + window.innerHeight, // one viewport later
