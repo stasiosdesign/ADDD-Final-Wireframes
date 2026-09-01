@@ -18,13 +18,18 @@
   /* type */
   --font-display: "elza", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-body: "elza", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-mono: "Martian Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* label face — the Typekit kit ships dm-mono at 400 only */
+  --font-mono: "dm-mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
   /* weight scale — the elza Typekit kit only ships 400/500, no true bold or light.
      Headings (h1/h2) use 500 (the heaviest available); everything else uses 400. */
   --fw-heading-bold: 500;
   --fw-heading-medium: 500;
   --fw-body: 400;
+  --fw-label: 400;
+
+  /* uppercase mono needs positive tracking to stay legible */
+  --label-tracking: 0.06em;
 
   --t-h1: 72px;
   --t-h2: 52px;
@@ -114,20 +119,38 @@ button, input { font: inherit; color: inherit; }
 .text-sm { font-size: var(--t-sm); line-height: 1.5; }
 .text-xs { font-size: var(--t-xs); line-height: 1.5; }
 
-.tagline {
+/* Label face — DM Mono, always uppercase. Every eyebrow, tag,
+   badge, step number and small utility label on the site routes
+   through .label (or one of the component selectors grouped onto
+   it below), so the label voice stays in one place. The tracking
+   is positive rather than the display face's negative: uppercase
+   mono needs air between the caps to stay readable. */
+.label,
+.tagline,
+.tagline--plain,
+.tag,
+.footer__col h3,
+.field > label,
+.tile__num,
+.cards-stack-card__number,
+.step-timeline__marker,
+.mega-nav__panel-label,
+.mega-nav__badge,
+.post-card__meta,
+.filters button {
   font-family: var(--font-mono);
-  font-weight: 500;
+  font-weight: var(--fw-label);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+}
+
+.tagline {
   font-size: 15px;
   line-height: 1.5;
-  letter-spacing: -0.12em;
 }
 .tagline--sm { font-size: 13px; }
-.tagline--plain {
-  font-family: var(--font-body);
-  font-weight: var(--fw-body);
-  font-size: var(--t-rg);
-  letter-spacing: 0;
-}
+/* Kept as a size step below .tagline rather than a different face. */
+.tagline--plain { font-size: var(--t-rg); }
 
 /* ============================================================
    layout primitives
@@ -492,10 +515,7 @@ button, input { font: inherit; color: inherit; }
   border-radius: 4px;
   background-color: var(--c-white);
   color: var(--c-text);
-  font-family: var(--font-mono);
   font-size: 13px;
-  font-weight: 500;
-  letter-spacing: -0.06em;
   line-height: 1;
   position: relative;
   transition: background-color .4s ease, color .4s ease, border-color .4s ease, box-shadow .4s ease;
@@ -590,10 +610,7 @@ button, input { font: inherit; color: inherit; }
 
 .cards-stack-card__start { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .cards-stack-card__number {
-  font-family: var(--font-mono);
-  font-weight: 500;
   font-size: 15px;
-  letter-spacing: -0.12em;
   line-height: 1;
   opacity: .6;
 }
@@ -804,7 +821,7 @@ button, input { font: inherit; color: inherit; }
 }
 .footer__links { flex: 1 0 0; min-width: 0; display: flex; gap: 40px; align-items: flex-start; }
 .footer__col { flex: 1 0 0; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
-.footer__col h3 { margin: 0; font-size: var(--t-rg); font-weight: var(--fw-body); font-family: var(--font-body); }
+.footer__col h3 { margin: 0; font-size: var(--t-sm); font-weight: var(--fw-body); }
 .footer__col li a { display: block; padding: 8px 0; font-size: var(--t-sm); }
 .footer__col li a:hover { opacity: .7; }
 .footer__logo { width: 40px; height: 40px; }
@@ -897,7 +914,7 @@ button, input { font: inherit; color: inherit; }
 
 @media (max-width: 640px) {
   :root { --t-h1: 38px; --t-h2: 32px; --t-h3: 28px; --t-h4: 24px; --page-pad: 20px; }
-  .tagline { font-size: 13px; letter-spacing: -0.08em; }
+  .tagline { font-size: 13px; }
   .card__body--lg { padding: 28px; }
   .compare__card { padding: 28px; }
   .cta__heading { flex-direction: column; gap: 0; }

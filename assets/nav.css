@@ -225,10 +225,7 @@
 
 .mega-nav__panel-label {
   color: var(--c-text);
-  font-family: var(--font-mono);
-  font-weight: 500;
   font-size: .8125em;
-  letter-spacing: -.06em;
   line-height: 1;
 }
 
@@ -304,12 +301,8 @@
   background-color: var(--c-red);
   border-radius: .25em;
   padding: .25em .5em;
-  font-family: var(--font-mono);
-  font-weight: 500;
   font-size: .6875em;
-  letter-spacing: -.06em;
   line-height: 1;
-  text-transform: uppercase;
 }
 
 /* Services panel — four full-height panels built into the dropdown rather
