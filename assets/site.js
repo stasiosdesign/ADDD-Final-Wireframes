@@ -1272,10 +1272,28 @@ function initApproachSlides() {
   if (!slides.length) return;
 
   // The bar is fixed over the page, so a card has to stack beneath it
-  // rather than at the very top of the viewport. Measured rather than
-  // hardcoded — the same height --nav-h gives the slides in CSS.
+  // rather than at the very top of the viewport.
+  //
+  // Two sources, whichever is larger, because either can read zero at
+  // the moment a refresh happens: the bar itself if it is mid-intro,
+  // and --nav-h if a stylesheet has not landed. The value is written
+  // back onto the section as data-nav-offset, so what the trigger is
+  // actually using can be read straight off the DOM.
   const navBar = document.querySelector(".mega-nav__bar");
-  const navOffset = () => (navBar ? Math.round(navBar.getBoundingClientRect().height) : 0);
+  const cssNavHeight = () => {
+    const probe = document.createElement("div");
+    probe.style.cssText = "position:absolute;top:0;left:0;visibility:hidden;pointer-events:none;height:var(--nav-h)";
+    document.body.appendChild(probe);
+    const height = probe.getBoundingClientRect().height;
+    probe.remove();
+    return height;
+  };
+  const navOffset = () => {
+    const measured = navBar ? navBar.getBoundingClientRect().height : 0;
+    const offset = Math.round(Math.max(measured, cssNavHeight()));
+    root.dataset.navOffset = offset;
+    return offset;
+  };
 
   const tweens = [];
 
@@ -1296,10 +1314,13 @@ function initApproachSlides() {
         // the default pinType would drop the pinned card at the top
         // of the container instead of holding it in the viewport.
         pinType: "transform",
-        anticipatePin: 1,
+        // start and end are re-measured on every refresh, and the
+        // trigger is invalidated with them, so a start computed while
+        // the page was still settling cannot stick around
+        invalidateOnRefresh: true,
         trigger: slide,
         start: () => "top " + navOffset() + "px",
-        end: "+=" + window.innerHeight, // one viewport later
+        end: () => "+=" + window.innerHeight, // one viewport later
         scrub: true,
       },
     }));
@@ -1315,6 +1336,16 @@ function initApproachSlides() {
       },
     }));
   });
+
+  // The page lifecycle refreshes once, while the transition panel is
+  // still over the viewport and the bar and the type may not be at
+  // their final size. One more refresh once the fonts have settled
+  // re-measures the starts against the page as it actually renders.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => {
+      if (root.isConnected) ScrollTrigger.refresh();
+    });
+  }
 
   registerPageCleanup(() => {
     tweens.forEach((tween) => {
