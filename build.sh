@@ -21,7 +21,7 @@ build () {
   slug="$1"; title="$2"; page_name="$3"
   esc_title=$(printf '%s' "$title" | sed 's/[&|\\]/\\&/g')
   {
-    sed "s|{{TITLE}}|$esc_title|" partials/head.html
+    sed -e "s|{{TITLE}}|$esc_title|" -e "s|{{BUILD}}|$STAMP|" partials/head.html
     cat partials/loader.html
     cat partials/transition.html
     cat partials/nav.html
