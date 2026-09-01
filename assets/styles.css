@@ -42,6 +42,8 @@
 
   /* layout */
   --page-pad: 64px;
+  /* the fixed nav bar: 4.6em tall plus its bottom rule */
+  --nav-h: calc(4.6em + 1px);
   --container: 1280px;
   --sec-lg: 112px;
   --sec-md: 80px;
@@ -221,14 +223,14 @@ button, input { font: inherit; color: inherit; }
 /* ============================================================
    1 — hero
    ============================================================ */
-/* Three stacked bands filling the viewport: a wide edge-to-edge
-   image across the top, the copy row beneath it — lede on the
-   left, headline on the right — and the buttons alone on the
-   bottom-left corner. The dots run behind the lot; the image is
-   the only thing that covers them.
+/* Two areas. The upper one is the image: an off-white band running
+   edge to edge, flush under the fixed nav, carrying the dotted
+   canvas and the picture on top of it. The lower one is plain page
+   white — lede and its label on the left, headline on the right
+   with the buttons and the arrow directly beneath it.
 
-   Top padding is the nav's clearance and nothing more, so the
-   image band starts as high as it can. */
+   Top padding is exactly the nav's height, so the band starts
+   where the bar stops with nothing between them. */
 .hero {
   position: relative;
   min-height: 100vh;
@@ -238,7 +240,7 @@ button, input { font: inherit; color: inherit; }
   /* Its own gutter, tighter than --page-pad, so the composition runs
      close to the page edges. Section-scoped: the rest of the page keeps
      the standard measure. */
-  padding: 96px 32px 48px;
+  padding: var(--nav-h) 32px 48px;
   overflow: hidden;
 }
 /* Full-bleed inside the hero — the 1280px cap would pull the bands
@@ -253,11 +255,19 @@ button, input { font: inherit; color: inherit; }
   flex: 1;
 }
 
-/* The image band runs past the hero's gutter to the viewport edges. */
+/* The image area — past the hero's gutter to the viewport edges. Its
+   padding-bottom is the ledge the dots finish on: below this element
+   there is no pattern at all. */
 .hero__media {
   position: relative;
   margin: 0 -32px;
-  height: clamp(240px, 44vh, 460px);
+  padding-bottom: 48px;
+  background: var(--c-light-fg);
+}
+.hero__media-frame {
+  position: relative;
+  z-index: 1;
+  height: clamp(240px, 46vh, 470px);
   overflow: hidden;
   background: var(--c-placeholder);
 }
@@ -278,10 +288,11 @@ button, input { font: inherit; color: inherit; }
   display: flex;
   gap: 64px;
   align-items: flex-start;
-  margin-top: 40px;
+  margin-top: 48px;
 }
 .hero__col { min-width: 0; }
 .hero__col--lede { flex: 0 0 clamp(280px, 24vw, 400px); }
+.hero__label { margin-top: 20px; }
 /* Pushed to the right edge, so the headline starts around two fifths
    across and the space between it and the lede is the composition. */
 .hero__col--heading { flex: 0 1 auto; margin-left: auto; }
@@ -297,19 +308,27 @@ button, input { font: inherit; color: inherit; }
   max-width: 12em;
 }
 
-/* Buttons alone in the bottom-left corner; margin-top:auto is what
-   pins the row to the floor of the viewport. */
-.hero__foot {
+/* Directly under the headline and sharing its left edge, with the
+   arrow thrown out to the far right — the headline column ends at the
+   hero's own edge, so that is as far right as the composition goes. */
+.hero__cta-row {
   display: flex;
-  align-items: flex-end;
-  margin-top: auto;
-  padding-top: 56px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  margin-top: 48px;
+}
+.hero__arrow {
+  flex: none;
+  display: flex;
+  color: var(--c-text);
 }
 
 /* Interactive dots background — canvas, drawn by initInteractiveDotsGrid
-   in assets/site.js. Sits under the hero content, which is lifted to
-   z-index 1, and takes no pointer events, so nothing here is in the way
-   of the headline, the copy or the buttons.
+   in assets/site.js. It lives inside .hero__media now rather than the
+   hero itself, so the pattern covers the image area and stops with it;
+   the lower half of the hero is plain page white. It sits under the
+   picture, which is lifted to z-index 1, and takes no pointer events.
 
    The light treatment: dark dots on the page's own white, keyed to the
    ink colour rather than the reference's flat black, via the
@@ -914,12 +933,11 @@ button, input { font: inherit; color: inherit; }
   .hero {
     min-height: 0;
     display: block;
-    padding-top: 140px;
   }
   .page-hero { padding-top: 140px; }
   .hero__grid { flex-direction: column; align-items: flex-start; gap: 24px; margin-top: 40px; }
   .hero__col--lede { flex: 0 0 auto; width: 100%; order: 2; }
-  .hero__foot { padding-top: 40px; }
+  .hero__cta-row { margin-top: 32px; }
 
   .compare__grid, .creds__grid { flex-direction: column; }
   .creds__media { flex: none; width: 100%; }
