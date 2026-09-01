@@ -206,13 +206,20 @@ button, input { font: inherit; color: inherit; }
    The top padding is still the nav's clearance; the bottom padding is
    what keeps the headline off the floor. */
 .hero {
+  position: relative;
   min-height: 100vh;
   min-height: 100svh;
   display: flex;
   align-items: flex-end;
-  padding: 205px var(--page-pad) var(--sec-lg);
+  /* Its own gutter, tighter than --page-pad, so the composition runs
+     close to the page edges. Section-scoped: the rest of the page keeps
+     the standard measure. */
+  padding: 205px 32px var(--sec-lg);
+  overflow: hidden;
 }
-.hero > .container { width: 100%; }
+/* Full-bleed inside the hero — the 1280px cap would pull the two halves
+   back towards the middle, which is what the gutter change is undoing. */
+.hero > .container { width: 100%; max-width: none; position: relative; z-index: 1; }
 .hero__grid {
   display: flex;
   gap: 80px;
@@ -221,24 +228,52 @@ button, input { font: inherit; color: inherit; }
 /* The headline takes whatever the right-hand block leaves. */
 .hero__col { flex: 1 1 auto; min-width: 0; }
 .hero__heading {
-  /* Deliberately outsized — larger than the --t-h1 step, and fluid so it
-     stays in proportion between a laptop and a wide display instead of
-     stranding the last word on its own line. */
-  font-size: clamp(44px, 6.6vw, 96px);
-  line-height: 1;
+  /* Still the largest type on the site, but a controlled step above
+     --t-h1 rather than the display size it was. Fluid, and capped
+     because the column stops growing on a wide display while a
+     vw-only size would not. */
+  font-size: clamp(36px, 4.4vw, 64px);
+  line-height: 1.05;
   letter-spacing: -0.03em;
+  /* Holds the wrap at three lines once the column is wider than the
+     headline needs — full bleed leaves it room to run onto one line. */
+  max-width: 15em;
 }
 /* Fixed measure, so the headline column absorbs the extra width as the
    viewport grows and the paragraph keeps a readable line length. */
 .hero__col--right {
-  flex: 0 0 360px;
+  /* Proportional now the hero is full bleed, so the right-hand block
+     keeps its share of a wide viewport instead of shrinking to a strip
+     against it — bounded either side to stay a readable measure. */
+  flex: 0 0 clamp(320px, 26vw, 440px);
   display: flex;
   flex-direction: column;
   gap: 32px;
   align-items: flex-start;
   padding-bottom: 10px;
 }
-.hero__media { aspect-ratio: 1440 / 810; background: var(--c-placeholder); }
+
+/* Interactive dots background — canvas, drawn by initInteractiveDotsGrid
+   in assets/site.js. Sits under the hero content, which is lifted to
+   z-index 1, and takes no pointer events, so nothing here is in the way
+   of the headline, the copy or the buttons.
+
+   The light treatment: dark dots on the page's own white, keyed to the
+   ink colour rather than the reference's flat black, via the
+   data-dots-color-* attributes the component already reads.
+
+   Related but separate from .dots-grid in assets/dots.css — that is the
+   static CSS grid the loader and the transition panel use. Same 1em gap
+   and 0.125em dot, so the two read as one motif. */
+.interactive-dots-grid {
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
 
 /* ============================================================
    2 — logo strip
