@@ -158,6 +158,7 @@ function initBeforeEnterFunctions(next) {
   if (has('[data-step-timeline-init]')) initStepTimeline();
   if (has('[data-sticky-steps-init]')) initStickySteps();
   if (has('[data-stacking-cards-init]')) initStackingCards();
+  if (has('[data-accordion-css-init]')) initAccordionCSS();
   if (has('[data-marquee-scroll-direction-target]')) {
     initMarqueeScrollDirection(nextPage);
     registerPageCleanup(destroyMarqueeScrollDirection);
@@ -1574,5 +1575,81 @@ function initStackingCards() {
   registerPageCleanup(() => {
     window.removeEventListener("resize", onResize);
     teardown();
+  });
+}
+
+/* ============================================================
+   Accordion — one delegated handler, every instance on the page
+   ============================================================
+   The reference's logic is unchanged: a click on a toggle flips its
+   item's data-accordion-status, and when the accordion carries
+   data-accordion-close-siblings="true" every other open item in the
+   same accordion is closed. The CSS does the expansion.
+
+   Two adaptations. It is scoped to the Barba container and called
+   from the page registry rather than DOMContentLoaded, so it binds
+   on every navigation; the listeners sit on elements inside the
+   container, so they are collected with it and need no cleanup.
+
+   And the toggles are reachable from the keyboard. Replacing
+   <details>/<summary> with a div would otherwise have dropped the
+   keyboard and screen-reader behaviour the native element gave us
+   for free, so the toggle carries role/tabindex/aria-expanded in the
+   markup, Enter and Space activate it here, and aria-expanded is
+   kept in step with the status attribute.
+   ============================================================ */
+function initAccordionCSS() {
+  nextPage.querySelectorAll("[data-accordion-css-init]").forEach((accordion) => {
+    const closeSiblings =
+      accordion.getAttribute("data-accordion-close-siblings") === "true";
+
+    function syncAria(item) {
+      const toggle = item.querySelector("[data-accordion-toggle]");
+      if (toggle) {
+        toggle.setAttribute(
+          "aria-expanded",
+          item.getAttribute("data-accordion-status") === "active" ? "true" : "false"
+        );
+      }
+    }
+
+    function toggleItem(toggle) {
+      const singleAccordion = toggle.closest("[data-accordion-status]");
+      if (!singleAccordion) return;
+
+      const isActive =
+        singleAccordion.getAttribute("data-accordion-status") === "active";
+      singleAccordion.setAttribute(
+        "data-accordion-status",
+        isActive ? "not-active" : "active"
+      );
+      syncAria(singleAccordion);
+
+      if (closeSiblings && !isActive) {
+        accordion
+          .querySelectorAll('[data-accordion-status="active"]')
+          .forEach((sibling) => {
+            if (sibling !== singleAccordion) {
+              sibling.setAttribute("data-accordion-status", "not-active");
+              syncAria(sibling);
+            }
+          });
+      }
+    }
+
+    accordion.addEventListener("click", (event) => {
+      const toggle = event.target.closest("[data-accordion-toggle]");
+      if (!toggle) return;
+      toggleItem(toggle);
+    });
+
+    accordion.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " " && event.key !== "Spacebar") return;
+      const toggle = event.target.closest("[data-accordion-toggle]");
+      if (!toggle) return;
+      // Space would otherwise scroll the page out from under the answer.
+      event.preventDefault();
+      toggleItem(toggle);
+    });
   });
 }

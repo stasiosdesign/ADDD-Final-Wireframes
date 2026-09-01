@@ -1,0 +1,203 @@
+/* ============================================================
+   Accordion CSS Animation — reference implementation (unmodified)
+   ============================================================ */
+.accordion-css {
+  max-width: 29em;
+  position: relative;
+}
+
+.accordion-css__list {
+  grid-column-gap: .5em;
+  grid-row-gap: .5em;
+  flex-flow: column;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 0;
+  display: flex;
+  position: static;
+}
+
+.accordion-css__item {
+  background-color: #efeeec;
+  border-radius: .5em;
+  list-style: none;
+}
+
+.accordion-css__item-top {
+  grid-column-gap: 1em;
+  grid-row-gap: 1em;
+  cursor: pointer;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em 1em 1em 1.5em;
+  display: flex;
+}
+
+.accordion-css__item-bottom {
+  transition: grid-template-rows 0.6s cubic-bezier(0.625, 0.05, 0, 1);
+  grid-template-rows: 0fr;
+  display: grid;
+  position: relative;
+  overflow: hidden;
+}
+
+[data-accordion-status="active"] .accordion-css__item-bottom {
+   grid-template-rows: 1fr;
+}
+
+.accordion-css__item-bottom-wrap {
+  flex-flow: column;
+  height: 100000%;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.accordion-css__item-bottom-content {
+  padding-bottom: 1.5em;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+}
+
+.accordion-css__item-h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 1.125em;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.accordion-css__item-icon {
+  transition: transform 0.6s cubic-bezier(0.625, 0.05, 0, 1);
+  background-color: #d4cee5;
+  border-radius: 50%;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  width: 2em;
+  height: 2em;
+  display: flex;
+  transform: rotate(180deg);
+}
+
+[data-accordion-status="active"] .accordion-css__item-icon {
+   transform: rotate(0.001deg);
+}
+
+.accordion-css__item-icon-svg {
+  width: 1em;
+}
+
+.accordion-css__item-p {
+  color: #2c2c2c;
+  margin-bottom: 0;
+  font-size: .875em;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   ADDD instance
+   ============================================================
+   The reference's grid-template-rows trick and its 0.6s easing are
+   left exactly as they are — that curve is already the site's own
+   "osmo" ease, 0.625/0.05/0/1, so the expansion matches the page
+   transitions without being retuned.
+
+   Everything visual is replaced. The rounded pill and the lilac
+   icon chip go; items become bordered tiles on the same 4px corner
+   the buttons and step markers use, and the chip is square. The one
+   piece of colour is the red on an open item's chip, which is the
+   same red the primary button takes on hover — the site's mark for
+   "this is the one you are touching".
+
+   The tile has to sit on three grounds: plain white, .section--light
+   and .section--dark. Each gets its own fill and border so the tile
+   always reads one step off whatever is behind it.
+   ============================================================ */
+.accordion-css {
+  /* the old .faq measure, kept so the answers do not run long */
+  max-width: 900px;
+  margin-top: 48px;
+}
+
+.accordion-css__list { gap: 8px; }
+
+.accordion-css__item {
+  background-color: var(--c-light-fg);
+  border: 1px solid var(--c-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.accordion-css__item-top {
+  gap: 24px;
+  padding: 20px 20px 20px 24px;
+}
+
+.accordion-css__item-h3 {
+  font-family: var(--font-body);
+  font-size: var(--t-md);
+  font-weight: var(--fw-body);
+  line-height: 1.4;
+}
+
+.accordion-css__item-bottom-content {
+  padding: 0 24px 24px;
+  max-width: 70ch;
+}
+
+.accordion-css__item-p {
+  color: #6b6b6b;
+  font-size: var(--t-rg);
+  line-height: 1.5;
+}
+
+/* Square chip rather than the reference's circle. It keeps the
+   reference's rotation — chevron down at rest, up when open. */
+.accordion-css__item-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  background-color: var(--c-white);
+  color: var(--c-text);
+  transition: transform 0.6s cubic-bezier(0.625, 0.05, 0, 1),
+              background-color .3s ease, color .3s ease;
+}
+.accordion-css__item-icon-svg { width: 16px; }
+
+/* Scoped through .accordion-css__item so the open chip outranks the
+   per-section chip fills below — as a bare attribute selector it ties
+   with them on specificity and loses on source order. */
+.accordion-css__item[data-accordion-status="active"] .accordion-css__item-icon {
+  background-color: var(--c-red);
+  color: var(--c-white);
+}
+
+.accordion-css__item-top:focus-visible {
+  outline: 2px solid var(--c-text);
+  outline-offset: -2px;
+}
+
+/* On a light section the tile lifts to white; the chip drops to the
+   section tint so the two never flatten into each other. */
+.section--light .accordion-css__item { background-color: var(--c-white); }
+.section--light .accordion-css__item-icon { background-color: var(--c-light-fg); }
+
+/* On the dark band the tile goes darker than the section, not lighter. */
+.section--dark .accordion-css__item {
+  background-color: var(--c-dark-fg);
+  border-color: var(--c-border-dark);
+}
+.section--dark .accordion-css__item-icon {
+  background-color: rgba(255, 255, 255, .1);
+  color: var(--c-white);
+}
+.section--dark .accordion-css__item-p { color: rgba(255, 255, 255, .7); }
+.section--dark .accordion-css__item-top:focus-visible { outline-color: var(--c-white); }
+
+@media screen and (max-width: 767px) {
+  .accordion-css { margin-top: 32px; }
+  .accordion-css__item-top { gap: 16px; padding: 16px; }
+  .accordion-css__item-bottom-content { padding: 0 16px 16px; }
+  .accordion-css__item-h3 { font-size: var(--t-rg); }
+}
