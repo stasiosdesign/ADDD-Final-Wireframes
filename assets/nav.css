@@ -413,6 +413,65 @@
 }
 .mega-nav__card-form .btn { width: 100%; font-size: .9375em; }
 
+/* The form and the secondary link read as one block, so they sit closer to
+   each other than the 1.25em the card content otherwise uses. */
+.mega-nav__card-actions {
+  grid-row-gap: .75em;
+  flex-flow: column;
+  align-items: flex-start;
+  gap: .75em;
+  width: 100%;
+  display: flex;
+}
+.mega-nav__card-sub {
+  color: #6b6b6b;
+  font-size: .875em;
+  line-height: 1.2;
+  text-decoration: none;
+}
+.mega-nav__card-sub:hover { color: var(--c-text); }
+
+/* Featured report — one focal point under the Reports link rather than a
+   second list. Built from the card parts already used in this dropdown, at
+   thumbnail scale so the research column stays the same height as its
+   neighbours. */
+.mega-nav__featured {
+  color: var(--c-text);
+  background-color: var(--c-white);
+  border: 1px solid var(--c-border);
+  border-radius: .5em;
+  grid-column-gap: .875em;
+  align-items: center;
+  gap: .875em;
+  width: 100%;
+  padding: .75em;
+  text-decoration: none;
+  display: flex;
+  overflow: hidden;
+}
+.mega-nav__featured:hover .mega-nav__panel-link-text { opacity: .6; }
+.mega-nav__card-visual.is--thumb {
+  border-radius: .375em;
+  flex: none;
+  width: 4.5em;
+  height: 4.5em;
+}
+.mega-nav__featured-text {
+  grid-row-gap: .25em;
+  flex-flow: column;
+  align-items: flex-start;
+  gap: .25em;
+  min-width: 0;
+  display: flex;
+}
+.mega-nav__featured .mega-nav__panel-link-text { font-size: 1em; }
+.mega-nav__featured-cta {
+  color: var(--c-red);
+  font-size: .875em;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
 /* Centre the link list against the bar itself rather than the space
    left over between the logo and the actions. Taking it out of flow
    means the logo and the Sign in / Contact block keep their positions.
