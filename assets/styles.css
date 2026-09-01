@@ -541,60 +541,89 @@ button, input { font: inherit; color: inherit; }
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 48px;
-  padding: 96px var(--page-pad);
-  border-top: 1px solid var(--c-border);
-  box-shadow: 0 -12px 40px rgba(13, 13, 13, 0.08);
+  gap: 40px;
+  /* the fixed nav sits over the card while it is pinned, so the top
+     padding has to clear the bar as well as frame the type */
+  padding: calc(var(--nav-h) + 24px) 40px 40px;
+  box-shadow: 0 -12px 40px rgba(13, 13, 13, 0.12);
 }
-.approach__card.is--light { background: var(--c-light-fg); color: var(--c-text); }
-.approach__card.is--dark {
-  background: var(--c-dark-fg);
-  color: var(--c-white);
-  border-top-color: var(--c-border-dark);
-}
-.approach__card.is--white { background: var(--c-white); color: var(--c-text); }
+/* Three tones, each well clear of the page white behind the stack
+   and stepping darker as the steps progress. */
+.approach__card.is--grey { background: #d8d8d8; color: var(--c-text); }
+.approach__card.is--dark { background: var(--c-dark-bg); color: var(--c-white); }
+.approach__card.is--ink { background: var(--c-dark-fg); color: var(--c-white); }
 
 .approach__card-top {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 32px;
+  gap: 40px;
 }
-/* A step above the section headings, since a card is the whole
-   viewport — the same face, weight and tracking as the rest. */
-.approach__card-h {
+/* Display-scale, as the reference sets it — a card is the whole
+   viewport, so the step name carries it. */
+.approach__card-h,
+.approach__card-num {
   margin: 0;
   font-family: var(--font-display);
   font-weight: var(--fw-heading-bold);
-  font-size: clamp(44px, 6vw, 84px);
-  line-height: 1;
-  letter-spacing: -0.04em;
+  font-size: clamp(48px, 9vw, 148px);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
 }
-.approach__card-num { opacity: .6; padding-top: 12px; }
+.approach__card-mark {
+  flex: none;
+  display: block;
+  width: clamp(40px, 4vw, 64px);
+}
+.approach__card-mark svg { width: 100%; height: auto; display: block; }
 
 .approach__card-bottom {
   display: flex;
-  justify-content: flex-start;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
 }
 .approach__card-p {
   /* the reference measure — roughly a third of the viewport */
-  max-width: min(40em, 34vw);
-  font-size: clamp(18px, 1.6vw, 26px);
-  line-height: 1.35;
-  letter-spacing: -0.01em;
+  width: 32vw;
+  max-width: 520px;
+  font-size: clamp(16px, 1.6vw, 24px);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
 }
-.approach__card.is--dark .approach__card-p { color: rgba(255, 255, 255, .85); }
+.approach__card.is--dark .approach__card-p,
+.approach__card.is--ink .approach__card-p { color: rgba(255, 255, 255, .8); }
+
+/* The number and the picture read as one block on the right. */
+.approach__card-aside {
+  display: flex;
+  align-items: flex-end;
+  gap: 32px;
+}
+.approach__card-image {
+  flex: none;
+  width: 25vw;
+  max-width: 420px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius);
+  background: var(--c-placeholder);
+}
+/* One asset, cropped differently per card so the three don't repeat. */
+.approach__card-image.is--crop-left { object-position: 20% 40%; }
+.approach__card-image.is--crop-centre { object-position: 50% 35%; }
+.approach__card-image.is--crop-right { object-position: 80% 45%; }
 
 @media screen and (max-width: 991px) {
   .approach__card {
     justify-content: flex-start;
-    gap: 32px;
-    padding: 64px var(--page-pad);
+    gap: 24px;
+    padding: calc(var(--nav-h) + 16px) var(--page-pad) 32px;
   }
-  .approach__card-top { flex-direction: column; gap: 12px; }
-  .approach__card-num { padding-top: 0; }
-  .approach__card-bottom { justify-content: flex-start; }
-  .approach__card-p { max-width: none; }
+  .approach__card-num { display: none; }
+  .approach__card-bottom { flex-direction: column; align-items: stretch; gap: 24px; }
+  .approach__card-p { width: 100%; max-width: none; order: 2; }
+  .approach__card-image { width: 100%; max-width: none; aspect-ratio: 16 / 10; }
 }
 
 /* ============================================================
