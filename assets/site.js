@@ -156,7 +156,7 @@ function initBeforeEnterFunctions(next) {
   // container these live in is replaced.
   if (has('[data-carousel]')) initCarousel();
   if (has('[data-step-timeline-init]')) initStepTimeline();
-  if (has('[data-sticky-steps-init]')) initStickySteps();
+  if (has('[data-problem-grid-init]')) initProblemGrid();
   if (has('[data-stacking-cards-init]')) initStackingCards();
   if (has('[data-accordion-css-init]')) initAccordionCSS();
   if (has('[data-dots-canvas-init]')) initInteractiveDotsGrid();
@@ -1385,77 +1385,29 @@ function initStepTimeline() {
 }
 
 /* ============================================================
-   Sticky steps — square media pinned beside the scrolling copy
+   Problem grid — three columns released as the row arrives
    ============================================================
-   The reference's status logic is unchanged: whichever anchor sits
-   closest to the middle of the viewport is "active", everything
-   above it "before", everything below "after"; the CSS does the
-   rest. Adapted for this codebase, it is scoped to the Barba
-   container, called from the page registry rather than
-   DOMContentLoaded, and its listeners are unbound on leave.
-
-   Lenis drives ScrollTrigger, so the update is hung off
-   ScrollTrigger rather than a raw scroll listener — otherwise the
-   two would be reading the page on different frames.
+   The columns are held down by CSS until the row is properly in
+   view; this only flips the status attribute that releases them,
+   once, and then stops observing. Scoped to the Barba container
+   and disconnected on leave.
    ============================================================ */
-function initStickySteps() {
-  const containers = nextPage.querySelectorAll("[data-sticky-steps-init]");
-  if (!containers.length) return;
+function initProblemGrid() {
+  const grids = nextPage.querySelectorAll("[data-problem-grid-init]");
+  if (!grids.length) return;
 
-  containers.forEach((container) => {
-    const items = [...container.querySelectorAll("[data-sticky-steps-item]")];
-    if (!items.length) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.setAttribute("data-problem-grid-status", "in");
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.2 });
 
-    function updateSteps() {
-      const viewportCenter = window.innerHeight / 2;
-
-      let closestIndex = 0;
-      let closestDistance = Infinity;
-
-      items.forEach((item, index) => {
-        const anchor = item.querySelector("[data-sticky-steps-anchor]");
-        if (!anchor) return;
-
-        const rect = anchor.getBoundingClientRect();
-        const anchorCenter = rect.top + rect.height / 2;
-        const distance = Math.abs(viewportCenter - anchorCenter);
-
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestIndex = index;
-        }
-      });
-
-      items.forEach((item, index) => {
-        let status = "active";
-
-        if (index < closestIndex) status = "before";
-        if (index > closestIndex) status = "after";
-
-        item.setAttribute("data-sticky-steps-item-status", status);
-      });
-    }
-
-    if (hasScrollTrigger) {
-      const trigger = ScrollTrigger.create({
-        trigger: container,
-        start: "top bottom",
-        end: "bottom top",
-        onUpdate: updateSteps,
-        onRefresh: updateSteps,
-      });
-      registerPageCleanup(() => trigger.kill());
-    } else {
-      window.addEventListener("scroll", updateSteps, { passive: true });
-      registerPageCleanup(() => window.removeEventListener("scroll", updateSteps));
-    }
-
-    window.addEventListener("resize", updateSteps);
-    registerPageCleanup(() => window.removeEventListener("resize", updateSteps));
-
-    requestAnimationFrame(updateSteps);
-  });
+  grids.forEach((grid) => observer.observe(grid));
+  registerPageCleanup(() => observer.disconnect());
 }
+
 
 /* ============================================================
    Stacking cards — sticky stack, no bounce

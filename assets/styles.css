@@ -319,57 +319,39 @@ button, input { font: inherit; color: inherit; }
   justify-content: flex-start;
 }
 .card__media { aspect-ratio: 864 / 486; background: var(--c-placeholder); }
-
 /* ------------------------------------------------------------
-   sticky steps (see assets/site.js — initStickySteps)
+   problem grid (see assets/site.js — initProblemGrid)
    ------------------------------------------------------------
-   The reference's sticky mechanics are kept: the media column is
-   taken out of flow and its inner wrapper sticks, so one square
-   crops in place while the copy column scrolls past it. Two
-   changes — the columns are swapped so the image leads on the
-   left, and the visual is 1:1 rather than 3:4.
-
-   Everything the reference styles by hand (eyebrow, h2, p) is
-   dropped in favour of the site's own .h3 / .text-md and the icon
-   chip the replaced cards already used.
+   Three equal columns divided by hairline rules, each led by a
+   tall image and closed by centred copy that bottom-aligns
+   across the row however long the headings run. Columns lift
+   into place one after another as the row enters the viewport.
    ------------------------------------------------------------ */
-.sticky-steps__collection { display: flex; position: relative; margin-top: 80px; }
-.sticky-steps__list {
-  display: flex;
-  flex-flow: column;
-  flex: 1;
-  gap: 30dvh;
-  padding-top: calc(50dvh - 7.5em);
-  padding-bottom: calc(50dvh - 7.5em);
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 80px;
+  border-top: 1px solid var(--c-border);
+  border-bottom: 1px solid var(--c-border);
 }
-.sticky-steps__item { position: relative; }
+.problem-grid__col {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 56px 40px 64px;
+  border-left: 1px solid var(--c-border);
+}
+.problem-grid__col:first-child { border-left: 0; }
 
-/* Image column — left, out of flow, its inner wrapper sticky. */
-.sticky-steps__media {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 50%;
-  height: 100%;
-  padding-right: 64px;
-}
-.sticky-steps__sticky {
-  position: sticky;
-  top: 0;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  min-height: 100dvh;
-}
-.sticky-steps__visual {
+.problem-grid__visual {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 4 / 5;
   border-radius: var(--radius);
   overflow: hidden;
   background: var(--c-placeholder);
 }
-.sticky-steps__cover-image {
+.problem-grid__image {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -378,53 +360,68 @@ button, input { font: inherit; color: inherit; }
   border-radius: inherit;
 }
 
-/* Copy column — right. margin-left:auto is what flips the pair. */
-.sticky-steps__text {
+/* margin-top:auto pins the copy to the bottom of the column, so
+   the three descriptions sit on one line even when a heading
+   wraps to two. */
+.problem-grid__text {
   display: flex;
-  flex-flow: column;
-  align-items: flex-start;
-  gap: 24px;
-  width: 50%;
-  margin-left: auto;
-  padding-left: 64px;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: auto;
+  text-align: center;
 }
-.sticky-steps__h { max-width: 480px; }
-.sticky-steps__p { max-width: 440px; color: #6b6b6b; }
+.problem-grid__icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.problem-grid__icon img { width: 100%; height: 100%; }
+.problem-grid__h { max-width: 320px; }
+.problem-grid__p { max-width: 340px; color: #6b6b6b; }
 
-/* The dimming only makes sense while the media column is pinned
-   beside the copy — below that the steps are a plain stack. */
+.problem-grid__actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 56px;
+}
+
+/* Entrance — the columns are held down and faded until the row
+   reaches the viewport, then released left to right. */
 @media screen and (min-width: 992px) {
-  [data-sticky-steps-item-status] .sticky-steps__visual {
+  [data-problem-grid-init] .problem-grid__col {
     opacity: 0;
-    visibility: hidden;
-    transition: opacity .5s ease-in-out, visibility .5s ease-in-out;
+    transform: translateY(32px);
+    transition: opacity .7s ease, transform .7s ease;
   }
-  [data-sticky-steps-item-status="before"] .sticky-steps__visual,
-  [data-sticky-steps-item-status="active"] .sticky-steps__visual {
+  [data-problem-grid-init][data-problem-grid-status="in"] .problem-grid__col {
     opacity: 1;
-    visibility: visible;
+    transform: none;
   }
-  [data-sticky-steps-item-status] .sticky-steps__text {
-    opacity: .25;
-    transition: opacity .5s ease-in-out;
+  [data-problem-grid-init] .problem-grid__col:nth-child(2) { transition-delay: .12s; }
+  [data-problem-grid-init] .problem-grid__col:nth-child(3) { transition-delay: .24s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-problem-grid-init] .problem-grid__col {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
-  [data-sticky-steps-item-status="active"] .sticky-steps__text { opacity: 1; }
 }
 
 @media screen and (max-width: 991px) {
-  .sticky-steps__collection { margin-top: 48px; }
-  .sticky-steps__list { gap: 64px; padding-top: 0; padding-bottom: 0; }
-  .sticky-steps__item { display: flex; flex-direction: column; gap: 24px; }
-  .sticky-steps__media {
-    position: relative;
-    top: auto;
-    left: auto;
-    width: 100%;
-    height: auto;
-    padding-right: 0;
+  .problem-grid { grid-template-columns: 1fr; margin-top: 48px; }
+  .problem-grid__col {
+    gap: 24px;
+    padding: 40px 0;
+    border-left: 0;
+    border-top: 1px solid var(--c-border);
   }
-  .sticky-steps__sticky { position: relative; top: auto; min-height: auto; }
-  .sticky-steps__text { width: 100%; margin-left: 0; padding-left: 0; }
+  .problem-grid__col:first-child { border-top: 0; }
+  .problem-grid__visual { aspect-ratio: 16 / 10; }
+  .problem-grid__actions { margin-top: 40px; }
 }
 
 /* ============================================================

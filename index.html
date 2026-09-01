@@ -316,7 +316,7 @@
   </section>
 
   <!-- ========== 3. INDUSTRY PROBLEMS ========== -->
-  <section class="section sticky-steps">
+  <section class="section problem-grid-section">
     <div class="container">
       <div class="section-title">
         <p class="tagline">Industry problems</p>
@@ -326,67 +326,54 @@
         </div>
       </div>
 
-      <div data-sticky-steps-init class="sticky-steps__collection">
-        <div class="sticky-steps__list">
+      <div data-problem-grid-init class="problem-grid">
 
-          <div data-sticky-steps-item data-sticky-steps-item-status="active" class="sticky-steps__item">
-            <div class="sticky-steps__media">
-              <div class="sticky-steps__sticky">
-                <div class="sticky-steps__visual">
-                  <img src="assets/images/allister-presenting.jpg" loading="lazy" alt="" class="sticky-steps__cover-image">
-                </div>
-              </div>
-            </div>
-            <div data-sticky-steps-anchor class="sticky-steps__text">
-              <div class="card__icon"><img src="assets/icons/pan_tool.svg" alt=""></div>
-              <h3 class="h3 sticky-steps__h">Tools accumulate without discipline</h3>
-              <p class="text-md sticky-steps__p">Each year brings new software, rarely any removal</p>
-            </div>
+        <article data-problem-grid-item class="problem-grid__col">
+          <div class="problem-grid__visual">
+            <img src="assets/images/allister-presenting.jpg" loading="lazy" alt="" class="problem-grid__image">
           </div>
-
-          <div data-sticky-steps-item data-sticky-steps-item-status="after" class="sticky-steps__item">
-            <div class="sticky-steps__media">
-              <div class="sticky-steps__sticky">
-                <div class="sticky-steps__visual">
-                  <img src="assets/images/allister-presenting.jpg" loading="lazy" alt="" class="sticky-steps__cover-image">
-                </div>
-              </div>
-            </div>
-            <div data-sticky-steps-anchor class="sticky-steps__text">
-              <div class="card__icon"><img src="assets/icons/work.svg" alt=""></div>
-              <h3 class="h3 sticky-steps__h">Processes vary between projects</h3>
-              <p class="text-md sticky-steps__p">Teams work differently depending on the job</p>
-            </div>
+          <div class="problem-grid__text">
+            <div class="problem-grid__icon"><img src="assets/icons/pan_tool.svg" alt=""></div>
+            <h3 class="h4 problem-grid__h">Tools accumulate without discipline</h3>
+            <p class="text-md problem-grid__p">Each year brings new software, rarely any removal</p>
           </div>
+        </article>
 
-          <div data-sticky-steps-item data-sticky-steps-item-status="after" class="sticky-steps__item">
-            <div class="sticky-steps__media">
-              <div class="sticky-steps__sticky">
-                <div class="sticky-steps__visual">
-                  <img src="assets/images/allister-presenting.jpg" loading="lazy" alt="" class="sticky-steps__cover-image">
-                </div>
-              </div>
-            </div>
-            <div data-sticky-steps-anchor class="sticky-steps__text">
-              <div class="card__icon"><img src="assets/icons/visibility.svg" alt=""></div>
-              <h3 class="h3 sticky-steps__h">Information lives in multiple places</h3>
-              <p class="text-md sticky-steps__p">Data gets re-entered, duplicated or lost between tools</p>
-              <div class="actions">
-                <a data-button-043="" href="contact.html" class="button-043">
-                  <span class="button-043__bg"><span class="button-043__bg-hover"></span></span>
-                  <span class="button-043__inner">
-                    <span class="button-043__mask"><span class="button-043__text">Contact</span></span>
-                    <span class="button-043__icon-wrap">
-                      <span class="button-043__icon-bg"></span>
-                      <span class="button-043__icon-mask"><span class="button-043__icon-list"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="button-043__icon"><path d="M10.685 3.42h3.776l7.862 8.583-7.862 8.583h-3.776l7.083-7.193h-16.1v-2.748H17.8L10.685 3.42Z" fill="currentColor"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="button-043__icon"><path d="M10.685 3.42h3.776l7.862 8.583-7.862 8.583h-3.776l7.083-7.193h-16.1v-2.748H17.8L10.685 3.42Z" fill="currentColor"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="button-043__icon"><path d="M10.685 3.42h3.776l7.862 8.583-7.862 8.583h-3.776l7.083-7.193h-16.1v-2.748H17.8L10.685 3.42Z" fill="currentColor"></path></svg></span></span>
-                    </span>
-                  </span>
-                </a>
-              </div>
-            </div>
+        <article data-problem-grid-item class="problem-grid__col">
+          <div class="problem-grid__visual">
+            <img src="assets/images/allister-presenting.jpg" loading="lazy" alt="" class="problem-grid__image">
           </div>
+          <div class="problem-grid__text">
+            <div class="problem-grid__icon"><img src="assets/icons/work.svg" alt=""></div>
+            <h3 class="h4 problem-grid__h">Processes vary between projects</h3>
+            <p class="text-md problem-grid__p">Teams work differently depending on the job</p>
+          </div>
+        </article>
 
-        </div>
+        <article data-problem-grid-item class="problem-grid__col">
+          <div class="problem-grid__visual">
+            <img src="assets/images/allister-presenting.jpg" loading="lazy" alt="" class="problem-grid__image">
+          </div>
+          <div class="problem-grid__text">
+            <div class="problem-grid__icon"><img src="assets/icons/visibility.svg" alt=""></div>
+            <h3 class="h4 problem-grid__h">Information lives in multiple places</h3>
+            <p class="text-md problem-grid__p">Data gets re-entered, duplicated or lost between tools</p>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="actions problem-grid__actions">
+        <a data-button-043="" href="contact.html" class="button-043">
+          <span class="button-043__bg"><span class="button-043__bg-hover"></span></span>
+          <span class="button-043__inner">
+            <span class="button-043__mask"><span class="button-043__text">Contact</span></span>
+            <span class="button-043__icon-wrap">
+              <span class="button-043__icon-bg"></span>
+              <span class="button-043__icon-mask"><span class="button-043__icon-list"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="button-043__icon"><path d="M10.685 3.42h3.776l7.862 8.583-7.862 8.583h-3.776l7.083-7.193h-16.1v-2.748H17.8L10.685 3.42Z" fill="currentColor"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="button-043__icon"><path d="M10.685 3.42h3.776l7.862 8.583-7.862 8.583h-3.776l7.083-7.193h-16.1v-2.748H17.8L10.685 3.42Z" fill="currentColor"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="button-043__icon"><path d="M10.685 3.42h3.776l7.862 8.583-7.862 8.583h-3.776l7.083-7.193h-16.1v-2.748H17.8L10.685 3.42Z" fill="currentColor"></path></svg></span></span>
+            </span>
+          </span>
+        </a>
       </div>
     </div>
   </section>
