@@ -29,7 +29,7 @@
   --fw-label: 400;
 
   /* uppercase mono needs positive tracking to stay legible */
-  --label-tracking: 0.06em;
+  --label-tracking: 0.03em;
 
   --t-h1: 72px;
   --t-h2: 52px;
