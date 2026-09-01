@@ -10,6 +10,74 @@ let lenis = null;
 let nextPage = document;
 let onceFunctionsInitialized = false;
 
+// -----------------------------------------
+// LOADER / TRANSITION LIFECYCLE BOUNDARY
+// -----------------------------------------
+//
+// Two animation systems, one rule: a document load gets the logo loader, a
+// Barba navigation gets the page wipe. Nothing below is allowed to blur that.
+//
+// The loader only ever runs from Barba's once(), which fires on a document
+// load and never on an internal navigation. Once it has played it is taken
+// out of the DOM for good — killing the loader is not enough on its own,
+// because the markup lives outside the Barba container and would survive a
+// clearProps, a style reset or a stray tween and reappear at z-index 300.
+let loaderRetired = false;
+
+// Barba's last resort for a failed internal navigation is window.location
+// .assign(): Core.page() catches any rejection out of its lifecycle and calls
+// force(). That is a real document load, so the next document runs once() and
+// replays the loader on what the user experienced as a link click. The causes
+// are fixed further down; this flag is what tells once() that a given arrival
+// was Barba giving up rather than a genuine visit.
+const FORCED_NAV_KEY = "addd:forced-nav";
+
+// Take the loader out of the document permanently. Tweens are killed first so
+// nothing still queued can write style back onto a detached node.
+function retireLoader(wrap) {
+  if (loaderRetired) return;
+  loaderRetired = true;
+
+  const el = wrap || document.querySelector("[data-load-wrap]");
+  if (!el) return;
+
+  gsap.killTweensOf(el);
+  el.querySelectorAll("*").forEach(node => gsap.killTweensOf(node));
+  el.remove();
+}
+
+// One-shot read: the flag is cleared the moment it is seen, so it can only
+// ever suppress the loader for the single navigation Barba forced.
+function consumedForcedNav() {
+  let forced = false;
+
+  try {
+    forced = sessionStorage.getItem(FORCED_NAV_KEY) === "1";
+    sessionStorage.removeItem(FORCED_NAV_KEY);
+  } catch (err) {
+    return false;
+  }
+
+  // A deliberate refresh always earns the loader, even directly after a
+  // forced navigation.
+  const entry = performance.getEntriesByType?.("navigation")?.[0];
+  return forced && entry?.type !== "reload";
+}
+
+// Barba treats any rejection inside its lifecycle as a dead transition and
+// falls back to a full page load. No page-level init is worth that, so every
+// hook body is contained here: a failure is logged and the navigation carries
+// on rather than turning into a reload.
+function safeHook(name, fn) {
+  return function (data) {
+    try {
+      return fn(data);
+    } catch (err) {
+      console.error(`barba hook "${name}" failed`, err);
+    }
+  };
+}
+
 const hasLenis = typeof window.Lenis !== "undefined";
 const hasScrollTrigger = typeof window.ScrollTrigger !== "undefined";
 
@@ -130,17 +198,34 @@ function buildLogoRevealLoader(next) {
   const wrap = document.querySelector("[data-load-wrap]");
   if (!wrap) return null;
 
+  // once() runs on every document load, including one Barba forced on itself
+  // after a failed internal navigation. That arrival gets the page rise on its
+  // own, with no loader, so it reads as the tail of the internal transition
+  // the user actually asked for.
+  if (loaderRetired || consumedForcedNav()) {
+    retireLoader(wrap);
+
+    const skipped = gsap.timeline();
+    if (next && !reducedMotion) {
+      skipped.from(next, { y: "15vh", duration: 1, ease: "osmo" });
+    }
+    return skipped;
+  }
+
   const container = wrap.querySelector("[data-load-container]");
   const bg = wrap.querySelector("[data-load-bg]");
   const progressBar = wrap.querySelector("[data-load-progress]");
   const logo = wrap.querySelector("[data-load-logo]");
 
   if (reducedMotion) {
-    return gsap.timeline().set(wrap, { display: "none" });
+    return gsap.timeline().call(() => retireLoader(wrap));
   }
 
   const tl = gsap
-    .timeline({ defaults: { ease: "loader", duration: 0.9 } })
+    .timeline({
+      defaults: { ease: "loader", duration: 0.9 },
+      onComplete: () => retireLoader(wrap)
+    })
     .to(progressBar, { scaleX: 1 })
     .to(logo, { clipPath: "inset(0% 0% 0% 0%)" }, "<")
     .to(container, { autoAlpha: 0, duration: 0.2 })
