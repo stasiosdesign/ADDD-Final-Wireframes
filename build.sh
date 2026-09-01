@@ -10,6 +10,11 @@
 #       main                 — the page body
 #       footer               — swapped with the page so it animates with it
 set -e
+
+# Cache-buster for the local stylesheet and script URLs. Browsers hold on to
+# assets/*.css and assets/*.js hard, so every build stamps them and a reload
+# always picks up the build it was served with.
+STAMP=$(date +%Y%m%d%H%M%S)
 cd "$(dirname "$0")"
 
 build () {
@@ -25,7 +30,7 @@ build () {
     cat partials/footer.html
     printf '</div>\n'
     cat partials/scripts.html
-  } > "$slug.html"
+  } | sed -E "s#(assets/[A-Za-z0-9_-]+\.(css|js))\"#\1?v=$STAMP\"#g" > "$slug.html"
   echo "built $slug.html"
 }
 
