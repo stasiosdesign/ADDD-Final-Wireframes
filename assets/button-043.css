@@ -1,0 +1,233 @@
+/* ============================================================
+   Button 043 — reference implementation (unmodified)
+   ============================================================ */
+:root {
+  --button-043-color: #fff;
+  --button-043-color-background: #e94658;
+  --button-043-hover-color-background: #411E34;
+  --button-043-icon-color: #e94658;
+  --button-043-icon-color-background: #fff;
+  --button-043-color-focus: #000;
+  --button-043-padding: 0.6875em 0.6875em 0.6875em 0.9375em;
+  --button-043-border-radius: 0.25em;
+  --button-043-icon-border-radius: 0.125em;
+  --button-043-text-duplicate-distance: 1.5em;
+  --button-043-focus-inset: -0.125em;
+  --button-043-ease-click: cubic-bezier(0.4, 0, 0.2, 1);
+  --button-043-ease-hover: cubic-bezier(0.625, 0.05, 0, 1);
+  --button-043-ease-focus: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.button-043 {
+  -webkit-user-select: none;
+  user-select: none;
+  color: var(--button-043-color);
+  background-color: #0000;
+  outline-style: none;
+  padding: 0;
+  line-height: 1;
+  text-decoration: none;
+  display: inline-grid;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.button-043::after {
+  content: '';
+  display: block;
+  position: absolute;
+  inset: var(--button-043-focus-inset);
+  border-radius: var(--button-043-border-radius);
+  transition: box-shadow 0.2s var(--button-043-ease-focus);
+  scale: var(--button-043-focus-scale);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.button-043:is(:focus-visible)::after {
+  box-shadow: 0 0 0 0.125em var(--button-043-color-focus);
+}
+
+.button-043__bg {
+  background-color: var(--button-043-color-background);
+  border-radius: var(--button-043-border-radius);
+  grid-area: 1 / 1;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: relative;
+  overflow: clip;
+}
+
+.button-043__bg-hover {
+  background-color: var(--button-043-hover-color-background);
+  width: 120%;
+  height: 100%;
+  padding: 0;
+  position: absolute;
+  bottom: 0%;
+  left: -10%;
+  transition: transform 0.525s var(--button-043-ease-hover);
+  transform: translate3d(0, 175%, 0) rotate(15deg);
+}
+
+.button-043__inner {
+  grid-column-gap: .5em;
+  grid-row-gap: .5em;
+  width: 100%;
+  height: 100%;
+  padding: var(--button-043-padding);
+  grid-area: 1 / 1;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.button-043__mask {
+  clip-path: inset(-10% 0);
+  flex: none;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.button-043__text {
+  transition: transform 0.525s var(--button-043-ease-hover);
+  text-shadow: 0px var(--button-043-text-duplicate-distance) currentColor;
+}
+
+.button-043__icon-wrap {
+  width: 1.125em;
+  height: 1.125em;
+  color: var(--button-043-icon-color);
+  border-radius: var(--button-043-icon-border-radius);
+  flex: none;
+  display: grid;
+  position: relative;
+}
+
+.button-043__icon-bg {
+  background-color: var(--button-043-icon-color-background);
+  border-radius: var(--button-043-icon-border-radius);
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  transition: transform 0.525s var(--button-043-ease-hover);
+}
+
+.button-043__icon-mask {
+  grid-area: 1 / 1;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: relative;
+  overflow: clip;
+}
+
+.button-043__icon-list {
+  flex-flow: row;
+  grid-area: 1 / 1;
+  display: flex;
+  position: absolute;
+}
+
+.button-043__icon {
+  width: 1.125em;
+  height: 1.125em;
+  padding: .2em;
+  transition: transform 0.525s var(--button-043-ease-hover);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .button-043:is(:hover, :focus-visible) .button-043__bg-hover,
+  [data-hover]:is(:hover, :focus-visible) .button-043 .button-043__bg-hover {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  .button-043:is(:hover, :focus-visible) .button-043__text,
+  [data-hover]:is(:hover, :focus-visible) .button-043 .button-043__text {
+    transform: translate(0px, calc(-1 * var(--button-043-text-duplicate-distance)));
+  }
+
+  .button-043:is(:hover, :focus-visible) .button-043__icon-bg,
+  [data-hover]:is(:hover, :focus-visible) .button-043 .button-043__icon-bg {
+    transform: rotate(90deg);
+  }
+
+  .button-043:is(:hover, :focus-visible) .button-043__icon,
+  [data-hover]:is(:hover, :focus-visible) .button-043 .button-043__icon {
+    transform: translate3d(200%, 0, 0);
+  }
+}
+
+/* ============================================================
+   ADDD instances — the site's two button variants
+   ============================================================
+
+   One component, two modifiers. Both carry the same squared shape,
+   the same measurements as the .btn utility they replace, and the
+   same text-roll on hover, so a primary and a secondary sitting in
+   one .actions row read as a pair.
+
+   The red only ever belongs to the primary, and only on hover: the
+   __bg-hover panel is the reference's own overlay, parked off the
+   bottom edge until it sweeps up. Nothing is red in the rest state.
+   ============================================================ */
+.button-043 {
+  --button-043-color: var(--c-white);
+  --button-043-color-background: var(--c-text);
+  --button-043-hover-color-background: var(--c-red);
+  --button-043-icon-color: var(--c-text);
+  --button-043-icon-color-background: var(--c-white);
+  --button-043-color-focus: var(--c-text);
+
+  /* squared off, matching the 4px the .btn utility uses site-wide */
+  --button-043-border-radius: 4px;
+  --button-043-icon-border-radius: 2px;
+
+  /* 13px block keeps the 44px box the .btn utility measures, so the
+     two sit level in a shared row; the left inset is .btn's 24px and
+     the right is tightened to sit against the arrow chip */
+  --button-043-padding: 13px 13px 13px 24px;
+
+  font-family: var(--font-body);
+  font-size: var(--t-rg);
+  font-weight: var(--fw-body);
+  vertical-align: middle;
+}
+
+/* The three arrows are a filmstrip that slides one icon width on hover, so
+   each has to keep its full size. The list is absolutely positioned inside
+   an 18px chip, and as a flex container with no width of its own it would
+   otherwise shrink all three to a third each and render slivers. */
+.button-043__icon { flex: none; }
+
+/* The arrow chip turns red with the sweep rather than sitting red in
+   the rest state, which is what the reference does by default. */
+.button-043__icon-wrap { transition: color 0.3s var(--button-043-ease-hover); }
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .button-043:is(:hover, :focus-visible),
+  [data-hover]:is(:hover, :focus-visible) .button-043 {
+    --button-043-icon-color: var(--c-red);
+  }
+}
+
+/* Secondary — the same shape and the same text-roll, one step quieter.
+   No arrow, and it never takes the red: the sweep is a light grey a
+   shade under the rest state. Solid rather than the translucent
+   .btn--soft-strong it replaces, so it holds up on the dark CTA band
+   as well as on white. */
+.button-043.is--secondary {
+  --button-043-color: var(--c-text);
+  --button-043-color-background: #dbdbdb;
+  --button-043-hover-color-background: #cacaca;
+  /* one extra pixel each side: with no 18px arrow chip setting the height,
+     the 16px text has to make up the difference to stay level with a
+     primary in the same row */
+  --button-043-padding: 14px 24px;
+}
