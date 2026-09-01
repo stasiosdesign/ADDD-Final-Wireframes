@@ -78,9 +78,11 @@ Never edit the root `.html` files directly — `build.sh` overwrites them.
   applied as a `background-image` in `assets/media.css`. One rule covers all of
   them, so giving a slot its own artwork means overriding `background-image` on
   that selector only. Proportions come from the Figma design and are unchanged.
-- **Logos** — client logos live in `assets/logos/` (ADAM, OBMI, Studio Seiler) and
-  appear in the homepage logo strip, the case-study tab row and the research
-  cards. The ADDD brand mark is a separate vector, `assets/logo.svg`.
+- **Logos** — client logos live in `assets/logos/`, with `Black/`, `White/` and
+  `SVGs/` variants of each practice mark. The black PNGs are used site-wide, since
+  every logo slot sits on a light background: the homepage logo strip, the
+  case-study tab row and the research cards. The ADDD brand mark is a separate
+  vector, `assets/logo.svg`.
 - **Page transitions** — [Barba](https://barba.js.org/) 2.10.3. A panel wipes up
   over the page, shows the incoming page's name, then continues up to reveal it.
   Honours `prefers-reduced-motion` with an immediate swap.

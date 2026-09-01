@@ -65,6 +65,11 @@
   object-fit: contain;
 }
 
+/* the practice marks range from near-square to very wide wordmarks, so cap
+   the height as well as the width — otherwise a square logo overflows the
+   tile and a wide one is only a few pixels tall */
+.logo-tile img { max-height: 64px; }
+
 /* small logo chip used on the research cards, so a dark logo stays
    readable on top of the photograph */
 .research-card__logo {
@@ -75,8 +80,18 @@
   border-radius: 4px;
   padding: 6px 10px;
   gap: 0;
+  max-width: 100%;
 }
-.research-card__logo img { height: 16px; width: auto; display: block; }
+/* 16px tall normally; the widest wordmarks scale down proportionally on
+   narrow cards rather than being squashed by the flex container */
+.research-card__logo img {
+  display: block;
+  height: auto;
+  width: auto;
+  max-height: 16px;
+  max-width: 100%;
+  min-width: 0;
+}
 
 /* the case-study tab row highlights the active practice */
 .case__tab img { max-height: 50px; }
