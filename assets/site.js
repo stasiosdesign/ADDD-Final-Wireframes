@@ -157,7 +157,6 @@ function initBeforeEnterFunctions(next) {
   if (has('[data-carousel]')) initCarousel();
   if (has('[data-approach-slides-init]')) initApproachSlides();
   if (has('[data-problem-grid-init]')) initProblemGrid();
-  if (has('[data-stacking-cards-init]')) initStackingCards();
   if (has('[data-accordion-css-init]')) initAccordionCSS();
   if (has('[data-dots-canvas-init]')) initInteractiveDotsGrid();
   if (has('[data-marquee-scroll-direction-target]')) {
@@ -1348,129 +1347,6 @@ function initProblemGrid() {
 
   grids.forEach((grid) => observer.observe(grid));
   registerPageCleanup(() => observer.disconnect());
-}
-
-
-/* ============================================================
-   Stacking cards — sticky stack, no bounce
-   ============================================================
-   The reference's structure, breakpoint tiers and per-tier offset
-   attributes are kept. What is removed is the bounce: the pulse
-   helper and the ScrollTrigger that fired it are gone entirely, so
-   nothing squashes, springs or overshoots. The remaining motion is
-   the scrubbed settle into the stack, and its ease drops from
-   power1.in to none so the cards track the scroll exactly instead
-   of accelerating into place.
-
-   Scoped to the Barba container and unbound on leave; ScrollTrigger
-   is already registered and refreshed by the page lifecycle.
-   ============================================================ */
-function getViewportTier() {
-  const width = window.innerWidth;
-  if (width <= 479) return "mobile-portrait";
-  if (width <= 767) return "mobile-landscape";
-  if (width <= 991) return "tablet";
-  return "desktop";
-}
-
-function initStackingCards() {
-  const sections = nextPage.querySelectorAll("[data-stacking-cards-init]");
-  if (!sections.length) return;
-
-  const triggers = [];
-  const targets = [];
-
-  function parseRotateValues(section, attr) {
-    const fallback = [0, 4, -4];
-    const values = (section.getAttribute(attr) || "")
-      .split(",")
-      .map((val) => parseFloat(val.trim()));
-    return values.length >= 1 && values.every((v) => !isNaN(v)) ? values : fallback;
-  }
-
-  function parseAxisValues(section, attr) {
-    const raw = section.getAttribute(attr);
-    if (!raw) return ["0em", "0em", "0em"];
-    const values = raw.split(",").map((val) => val.trim()).filter((val) => val !== "");
-    return values.length ? values : ["0em", "0em", "0em"];
-  }
-
-  function build() {
-    const tier = getViewportTier();
-    const suffix =
-      tier === "desktop" ? "desktop" : tier === "tablet" ? "tablet" : "mobile";
-
-    sections.forEach((section) => {
-      const isEnabled = section.dataset["stackingCards" + suffix[0].toUpperCase() + suffix.slice(1)] === "true";
-      if (!isEnabled) return;
-
-      const cards = Array.from(section.querySelectorAll("[data-stacking-card]"));
-      if (!cards.length) return;
-
-      const stickyTop = parseFloat(getComputedStyle(cards[0]).top) || 0;
-      const rotateValues = parseRotateValues(section, `data-stacking-cards-${suffix}-rotate`);
-      const xValues = parseAxisValues(section, `data-stacking-cards-${suffix}-x`);
-      const yValues = parseAxisValues(section, `data-stacking-cards-${suffix}-y`);
-
-      cards.forEach((card, index) => {
-        const targetEl = card.querySelector("[data-stacking-card-target]");
-        if (!targetEl) return;
-
-        targets.push(targetEl);
-
-        gsap.set(targetEl, {
-          rotate: 0,
-          x: 0,
-          y: 0,
-          scale: 1,
-          zIndex: cards.length - index,
-        });
-
-        const tween = gsap.to(targetEl, {
-          rotate: rotateValues[index % rotateValues.length],
-          x: xValues[index % xValues.length],
-          y: yValues[index % yValues.length],
-          ease: "none",
-          overwrite: "auto",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 75%",
-            end: `top-=${stickyTop} top`,
-            scrub: true,
-          },
-        });
-
-        if (tween.scrollTrigger) triggers.push(tween.scrollTrigger);
-      });
-    });
-  }
-
-  function teardown() {
-    triggers.splice(0).forEach((t) => t.kill());
-    targets.splice(0).forEach((el) => {
-      gsap.killTweensOf(el);
-      gsap.set(el, { clearProps: "all" });
-    });
-  }
-
-  build();
-
-  // Only a tier change matters — a plain resize leaves the offsets alone.
-  let lastTier = getViewportTier();
-  const onResize = () => {
-    const next = getViewportTier();
-    if (next === lastTier) return;
-    lastTier = next;
-    teardown();
-    build();
-    ScrollTrigger.refresh();
-  };
-
-  window.addEventListener("resize", onResize);
-  registerPageCleanup(() => {
-    window.removeEventListener("resize", onResize);
-    teardown();
-  });
 }
 
 /* ============================================================

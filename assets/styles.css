@@ -636,31 +636,18 @@ button, input { font: inherit; color: inherit; }
 .routes { padding-top: 78px; }
 
 /* ------------------------------------------------------------
-   stacking cards (see assets/site.js — initStackingCards)
+   routes cards
    ------------------------------------------------------------
-   Sticky stacking from the reference, with the bounce taken out:
-   no pulse, no elastic, no squash. What is left is the scrubbed
-   settle into place, on a linear ease so it tracks the scroll
-   exactly rather than easing into a flourish.
-
-   The three tones are the ones the Services dropdown already uses
-   for these same three routes — light, mid dark, darkest — so a
-   card is recognisable from either place.
+   A plain three-up row. The card itself is unchanged from when
+   these were a sticky stack — same tones, padding and internals,
+   the ones the Services dropdown uses for the same three routes,
+   so a card is recognisable from either place.
    ------------------------------------------------------------ */
-.cards-stack__collection { margin-top: 48px; }
-.cards-stack__list {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  gap: 80px;
-  width: 100%;
-}
-.cards-stack__item {
-  flex: none;
-  width: 100%;
-  max-width: 420px;
-  position: sticky;
-  top: 120px;
+.routes__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin-top: 48px;
 }
 .cards-stack-card {
   display: flex;
@@ -672,8 +659,6 @@ button, input { font: inherit; color: inherit; }
   padding: 32px;
   border-radius: var(--radius);
   background: var(--c-light-fg);
-  /* each card has to hide the one it lands on */
-  background-clip: padding-box;
 }
 .cards-stack-card.is--core { background: var(--c-dark-bg); color: var(--c-white); }
 .cards-stack-card.is--ongoing { background: var(--c-dark-fg); color: var(--c-white); }
@@ -687,19 +672,16 @@ button, input { font: inherit; color: inherit; }
 .cards-stack-card__end { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
 .cards-stack-card__head { display: flex; flex-direction: column; }
 
-/* The icon and chevron SVGs are exported with a fixed #0d0d0d fill,
-   so on the two dark cards they are inverted rather than recoloured. */
-.cards-stack-card.is--core .card__icon img,
-.cards-stack-card.is--ongoing .card__icon img,
+/* The card icons are inline SVG on currentColor, so they follow the
+   card's own text colour. The chevron is still an exported file with
+   a fixed fill, so on the two dark cards it is inverted instead. */
+.card__icon svg { width: 24px; height: 24px; display: block; }
 .cards-stack-card.is--core .btn--link .icon,
 .cards-stack-card.is--ongoing .btn--link .icon { filter: invert(1); }
 
-/* The stack itself is kept at every width — only the card box and the
-   offset it sticks at come down. */
 @media screen and (max-width: 991px) {
-  .cards-stack__list { gap: 40px; }
-  .cards-stack__item { max-width: 100%; top: 88px; }
-  .cards-stack-card { min-height: 420px; padding: 24px; }
+  .routes__grid { grid-template-columns: 1fr; gap: 24px; }
+  .cards-stack-card { min-height: 0; padding: 24px; }
 }
 
 /* ============================================================
