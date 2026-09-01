@@ -254,30 +254,33 @@ button, input { font: inherit; color: inherit; }
   flex: 1;
 }
 /* The dotted area — off-white, running past the hero's gutter to the
-   viewport edges, and the only place the pattern appears. Its own
-   padding puts the label back on the page gutter, so the label, the
-   buttons below it and the arrow all sit on the same two edges. */
+   viewport edges, and the only place the pattern appears. */
 .hero__media {
   position: relative;
   margin: 0 -32px;
   height: clamp(220px, 43vh, 430px);
-  display: flex;
-  align-items: flex-end;
-  padding: 0 32px 24px;
   background: var(--c-light-fg);
 }
-/* above the dots canvas, which sits at z-index 0 */
-.hero__label { position: relative; z-index: 1; }
 
 /* Copy row — the lede holds the left edge, the headline takes the
-   right half and is what the eye lands on. */
+   right half and is what the eye lands on. Both columns run the full
+   remaining height and space their two pieces apart, so the label and
+   the buttons land on one line along the foot of the hero, each under
+   the text it belongs to. */
 .hero__grid {
   display: flex;
   gap: 64px;
-  align-items: flex-start;
+  align-items: stretch;
+  flex: 1;
   margin-top: 48px;
 }
-.hero__col { min-width: 0; }
+.hero__col {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 40px;
+}
 .hero__col--lede { flex: 0 0 clamp(280px, 24vw, 400px); }
 /* Pushed to the right edge, so the headline starts around two fifths
    across and the space between it and the lede is the composition. */
@@ -293,14 +296,15 @@ button, input { font: inherit; color: inherit; }
   /* Holds the wrap at two lines across the right-hand column. */
   max-width: 12em;
 }
-/* The buttons hold the page gutter, the same edge the label above
-   them sits on, and the arrow is thrown out to the other one. */
+/* Sitting in the headline's own column, so the buttons start on the
+   headline's left edge and the arrow ends on its right — which is the
+   hero's right gutter. Bottom-aligned, so all three foot items share
+   one line above the hero's bottom padding. */
 .hero__cta-row {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 32px;
-  margin-top: 48px;
 }
 /* Rotated a quarter turn so it points down the page: it is the scroll
    cue, and it jumps to the section the page is asking you to read. */
