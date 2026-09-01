@@ -155,6 +155,7 @@ function initBeforeEnterFunctions(next) {
   // Page-level behaviour — rebound on every navigation because the
   // container these live in is replaced.
   if (has('[data-carousel]')) initCarousel();
+  if (has('[data-step-timeline-init]')) initStepTimeline();
   if (has('[data-marquee-scroll-direction-target]')) {
     initMarqueeScrollDirection(nextPage);
     registerPageCleanup(destroyMarqueeScrollDirection);
@@ -1241,4 +1242,140 @@ function initButton059() {
       removeResize?.();
     };
   });
+}
+
+/* ============================================================
+   Step timeline — vertical progress line scrubbed by ScrollTrigger
+   ============================================================
+   The reference implementation's measuring, indexing and matchMedia
+   logic is kept as shipped; three things are adapted so it lives in
+   this codebase rather than beside it:
+
+     - it is queried against the Barba container, not document, and
+       is called from the page registry instead of DOMContentLoaded,
+       so it rebinds on every navigation to the homepage;
+     - the matchMedia context is reverted through registerPageCleanup,
+       which kills its ScrollTriggers with it — otherwise the trigger
+       would outlive the DOM it measured;
+     - its own ScrollTrigger.refresh() and window load listener are
+       dropped. beforeEnter already refreshes once, after every page
+       init, while the transition panel still covers the viewport.
+   ============================================================ */
+function initStepTimeline() {
+  const root = nextPage.querySelector("[data-step-timeline-init]");
+  if (!root) return;
+
+  const line = root.querySelector("[data-step-timeline-line]");
+  const fill = root.querySelector("[data-step-timeline-fill]");
+  const items = Array.from(root.querySelectorAll("[data-step-timeline-item]"));
+  if (!line || !fill || !items.length) return;
+
+  const anchors = items.map(
+    (item) => item.querySelector("[data-step-timeline-marker]") || item
+  );
+
+  const activationInput = parseFloat(root.dataset.stepTimelineActivation);
+  const activation = Number.isNaN(activationInput)
+    ? 0.5
+    : Math.min(Math.max(activationInput, 0), 1);
+  const activationPercent = activation * 100;
+  const lastIndex = items.length - 1;
+
+  let anchorFractions = [0];
+
+  function measureLine() {
+    if (items.length < 2) {
+      line.style.height = "0px";
+      anchorFractions = [0];
+      return;
+    }
+    const base = line.parentElement.getBoundingClientRect().top;
+    const centers = anchors.map((anchor) => {
+      const box = anchor.getBoundingClientRect();
+      return box.top + box.height / 2 - base;
+    });
+    const firstCenter = centers[0];
+    const span = centers[lastIndex] - firstCenter;
+    line.style.top = firstCenter + "px";
+    line.style.height = span + "px";
+    anchorFractions = centers.map((center) =>
+      span > 0 ? (center - firstCenter) / span : 0
+    );
+  }
+
+  let currentIndex = -2;
+
+  function setCurrentIndex(index) {
+    if (index === currentIndex) return;
+    currentIndex = index;
+    items.forEach((item, i) => {
+      const status = index >= 0 && i <= index ? "active" : "inactive";
+      if (item.getAttribute("data-status") !== status) {
+        item.setAttribute("data-status", status);
+      }
+      item.toggleAttribute("data-current", i === index);
+      item.toggleAttribute("data-previous", i === index - 1);
+      item.toggleAttribute("data-next", i === index + 1);
+    });
+  }
+
+  function indexForProgress(reached, progress) {
+    if (!reached) return -1;
+    let index = 0;
+    for (let i = 0; i < anchorFractions.length; i++) {
+      if (progress + 0.0001 >= anchorFractions[i]) index = i;
+    }
+    return index;
+  }
+
+  function updateFromScroll(self) {
+    const reached = self.isActive || self.progress >= 1;
+    setCurrentIndex(indexForProgress(reached, self.progress));
+  }
+
+  setCurrentIndex(-1);
+  gsap.set(fill, { transformOrigin: "top", scaleY: 0 });
+
+  const mediaQueries = gsap.matchMedia();
+
+  mediaQueries.add("(prefers-reduced-motion: no-preference)", () => {
+    measureLine();
+    ScrollTrigger.addEventListener("refreshInit", measureLine);
+
+    if (items.length > 1) {
+      gsap.fromTo(
+        fill,
+        { scaleY: 0 },
+        {
+          scaleY: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: line,
+            start: "top " + activationPercent + "%",
+            end: "bottom " + activationPercent + "%",
+            scrub: true,
+            onUpdate: updateFromScroll,
+            onToggle: updateFromScroll,
+            onRefresh: updateFromScroll,
+          },
+        }
+      );
+    } else {
+      setCurrentIndex(0);
+    }
+
+    return () => {
+      ScrollTrigger.removeEventListener("refreshInit", measureLine);
+    };
+  });
+
+  // No scrubbing without motion: the line is drawn in full and every
+  // step reads as done, so the copy is never left at 25% opacity.
+  mediaQueries.add("(prefers-reduced-motion: reduce)", () => {
+    measureLine();
+    gsap.set(fill, { scaleY: 1 });
+    setCurrentIndex(lastIndex);
+  });
+
+  registerPageCleanup(() => mediaQueries.revert());
 }

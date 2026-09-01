@@ -277,20 +277,118 @@ button, input { font: inherit; color: inherit; }
 /* ============================================================
    4 — approach
    ============================================================ */
-.approach__top { display: flex; gap: 80px; align-items: flex-start; }
-.approach__col { flex: 1 0 0; min-width: 0; }
-.approach__col--right { padding-top: 160px; display: flex; flex-direction: column; gap: 32px; align-items: flex-start; }
+/* Shared with the credentials block further down the homepage. */
 .approach__title { display: flex; flex-direction: column; gap: 16px; }
 .approach__title .h2 { max-width: 392px; line-height: 0.92; }
-.approach__lede { max-width: 490px; line-height: 1.3; }
 
-.approach__row { display: flex; gap: 48px; align-items: flex-start; margin-top: 80px; }
-.approach__item { flex: 1 0 0; min-width: 0; display: flex; flex-direction: column; gap: 32px; }
-.approach__item:nth-child(2) { padding-top: 100px; }
-.approach__item:nth-child(3) { padding-top: 200px; }
-.approach__item .ph { aspect-ratio: 395 / 240; }
-.approach__item-text { display: flex; flex-direction: column; gap: 16px; }
-.approach__item-text p { max-width: 357px; }
+/* ------------------------------------------------------------
+   step timeline (see assets/site.js — initStepTimeline)
+   ------------------------------------------------------------
+   The reference component's structure and script are kept as they
+   were shipped; only the surface is ours. The line, the markers and
+   the type all come off the existing tokens, so the section reads as
+   part of the page rather than a widget dropped into it.
+
+   Three states, carried entirely by the marker and the copy opacity:
+   ahead (light tile, hairline border), done (solid dark), and current
+   (solid dark plus a soft ring). Red is left alone here — on this site
+   it belongs to hover, and every step is a resting state.
+   ------------------------------------------------------------ */
+.step-timeline { width: 100%; max-width: 720px; margin: 0 auto; }
+
+.step-timeline__header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 72px;
+}
+.step-timeline__h2 { max-width: 420px; }
+.step-timeline__lede { max-width: 520px; line-height: 1.3; }
+
+.step-timeline__wrapper { position: relative; }
+
+.step-timeline__list { display: flex; flex-direction: column; gap: 56px; }
+.step-timeline__item { display: flex; align-items: flex-start; gap: 32px; position: relative; }
+
+/* Track and fill. Top and height are written by the script so the line
+   spans first marker centre to last, never the whole column. */
+.step-timeline__line {
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: var(--c-border);
+  pointer-events: none;
+}
+.step-timeline__fill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--c-text);
+  transform-origin: 50% 0;
+}
+
+.step-timeline__marker {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 41px;
+  height: 41px;
+  border: 1px solid var(--c-border);
+  border-radius: 4px;
+  background-color: var(--c-white);
+  color: var(--c-text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  position: relative;
+  transition: background-color .4s ease, color .4s ease, border-color .4s ease, box-shadow .4s ease;
+}
+[data-step-timeline-item][data-status="active"] [data-step-timeline-marker] {
+  background-color: var(--c-text);
+  border-color: var(--c-text);
+  color: var(--c-white);
+}
+[data-step-timeline-item][data-current] [data-step-timeline-marker] {
+  box-shadow: 0 0 0 6px rgba(13, 13, 13, .10);
+}
+
+.step-timeline__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 440px;
+  padding-top: 4px;
+  opacity: .25;
+  transition: opacity .25s ease;
+}
+[data-step-timeline-item][data-status="active"] .step-timeline__content { opacity: .5; }
+[data-step-timeline-item][data-current] .step-timeline__content { opacity: 1; }
+
+.step-timeline__content-h { line-height: 1; }
+
+.step-timeline__cta { margin-top: 72px; padding-left: 73px; }
+
+@media screen and (max-width: 991px) {
+  .step-timeline { max-width: none; }
+  .step-timeline__header { margin-bottom: 48px; }
+  .step-timeline__list { gap: 40px; }
+  .step-timeline__item { gap: 20px; }
+  .step-timeline__line { left: 16px; }
+  .step-timeline__marker { width: 33px; height: 33px; font-size: 12px; }
+  .step-timeline__cta { margin-top: 48px; padding-left: 53px; }
+}
+
+@media screen and (max-width: 479px) {
+  .step-timeline__cta { padding-left: 0; }
+}
 
 /* ============================================================
    5 — routes
@@ -556,11 +654,7 @@ button, input { font: inherit; color: inherit; }
 
   .hero { padding-top: 140px; }
   .page-hero { padding-top: 140px; }
-  .hero__grid, .approach__top { flex-direction: column; gap: 40px; }
-  .approach__col--right { padding-top: 0; }
-  .approach__row { flex-direction: column; gap: 40px; }
-  .approach__item:nth-child(2),
-  .approach__item:nth-child(3) { padding-top: 0; }
+  .hero__grid { flex-direction: column; gap: 40px; }
 
   .problems__grid, .routes__row, .compare__grid, .creds__grid { flex-direction: column; }
   .card--feature { flex: none; }
