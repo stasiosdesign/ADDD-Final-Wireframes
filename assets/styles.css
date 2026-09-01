@@ -135,7 +135,6 @@ button, input { font: inherit; color: inherit; }
 .field > label,
 .tile__num,
 .cards-stack-card__number,
-.step-timeline__marker,
 .mega-nav__panel-label,
 .mega-nav__badge,
 .post-card__meta,
@@ -502,111 +501,100 @@ button, input { font: inherit; color: inherit; }
 /* Shared with the credentials block further down the homepage. */
 .approach__title { display: flex; flex-direction: column; gap: 16px; }
 .approach__title .h2 { max-width: 392px; line-height: 0.92; }
-
 /* ------------------------------------------------------------
-   step timeline (see assets/site.js — initStepTimeline)
+   approach slides (see assets/site.js — initApproachSlides)
    ------------------------------------------------------------
-   The reference component's structure and script are kept as they
-   were shipped; only the surface is ours. The line, the markers and
-   the type all come off the existing tokens, so the section reads as
-   part of the page rather than a widget dropped into it.
+   The reference effect's structure is kept exactly: each step is a
+   100vh slide whose wrapper is pinned while the card inside it tips
+   back in 3D and fades, so the next step scrolls in over the one
+   settling behind it.
 
-   Three states, carried entirely by the marker and the copy opacity:
-   ahead (light tile, hairline border), done (solid dark), and current
-   (solid dark plus a soft ring). Red is left alone here — on this site
-   it belongs to hover, and every step is a resting state.
+   What is ours is the surface. The cards are the site's own three
+   tones — light, ink, white — carrying the display face for the
+   step name, the mono label for its number and .text-md for the
+   copy. The intro above them stays on the same white as the problem
+   section before it, so the two read as one argument.
    ------------------------------------------------------------ */
-.step-timeline { width: 100%; max-width: 720px; margin: 0 auto; }
+.approach__slides { position: relative; }
 
-.step-timeline__header {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 72px;
+.approach__slide {
+  height: 100vh;
+  height: 100svh;
 }
-.step-timeline__h2 { max-width: 420px; }
-.step-timeline__lede { max-width: 520px; line-height: 1.3; }
-
-.step-timeline__wrapper { position: relative; }
-
-.step-timeline__list { display: flex; flex-direction: column; gap: 56px; }
-.step-timeline__item { display: flex; align-items: flex-start; gap: 32px; position: relative; }
-
-/* Track and fill. Top and height are written by the script so the line
-   spans first marker centre to last, never the whole column. */
-.step-timeline__line {
-  position: absolute;
-  left: 20px;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background-color: var(--c-border);
-  pointer-events: none;
-}
-.step-timeline__fill {
-  position: absolute;
-  inset: 0;
+/* The wrapper is what gets pinned; the perspective on it is what
+   gives the card its depth as it rotates away. */
+.approach__slide-wrapper {
+  /* positioned so the card resolves against it in every pin state —
+     ScrollTrigger restores this element to flow after the pin, and a
+     static wrapper would hand the card the whole slides block */
+  position: relative;
   width: 100%;
   height: 100%;
-  background-color: var(--c-text);
-  transform-origin: 50% 0;
+  perspective: 250vw;
 }
-
-.step-timeline__marker {
-  flex: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 41px;
-  height: 41px;
-  border: 1px solid var(--c-border);
-  border-radius: 4px;
-  background-color: var(--c-white);
-  color: var(--c-text);
-  font-size: 13px;
-  line-height: 1;
-  position: relative;
-  transition: background-color .4s ease, color .4s ease, border-color .4s ease, box-shadow .4s ease;
-}
-[data-step-timeline-item][data-status="active"] [data-step-timeline-marker] {
-  background-color: var(--c-text);
-  border-color: var(--c-text);
-  color: var(--c-white);
-}
-[data-step-timeline-item][data-current] [data-step-timeline-marker] {
-  box-shadow: 0 0 0 6px rgba(13, 13, 13, .10);
-}
-
-.step-timeline__content {
+.approach__card {
+  position: absolute;
+  inset: 0;
+  /* inherits the perspective from the wrapper */
+  transform-style: preserve-3d;
+  transform-origin: 50% 10%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-  max-width: 440px;
-  padding-top: 4px;
-  opacity: .25;
-  transition: opacity .25s ease;
+  justify-content: space-between;
+  gap: 48px;
+  padding: 96px var(--page-pad);
+  border-top: 1px solid var(--c-border);
+  box-shadow: 0 -12px 40px rgba(13, 13, 13, 0.08);
 }
-[data-step-timeline-item][data-status="active"] .step-timeline__content { opacity: .5; }
-[data-step-timeline-item][data-current] .step-timeline__content { opacity: 1; }
+.approach__card.is--light { background: var(--c-light-fg); color: var(--c-text); }
+.approach__card.is--dark {
+  background: var(--c-dark-fg);
+  color: var(--c-white);
+  border-top-color: var(--c-border-dark);
+}
+.approach__card.is--white { background: var(--c-white); color: var(--c-text); }
 
-.step-timeline__content-h { line-height: 1; }
+.approach__card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+}
+/* A step above the section headings, since a card is the whole
+   viewport — the same face, weight and tracking as the rest. */
+.approach__card-h {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--fw-heading-bold);
+  font-size: clamp(44px, 6vw, 84px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.approach__card-num { opacity: .6; padding-top: 12px; }
 
-.step-timeline__cta { margin-top: 72px; padding-left: 73px; }
+.approach__card-bottom {
+  display: flex;
+  justify-content: flex-start;
+}
+.approach__card-p {
+  /* the reference measure — roughly a third of the viewport */
+  max-width: min(40em, 34vw);
+  font-size: clamp(18px, 1.6vw, 26px);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+.approach__card.is--dark .approach__card-p { color: rgba(255, 255, 255, .85); }
 
 @media screen and (max-width: 991px) {
-  .step-timeline { max-width: none; }
-  .step-timeline__header { margin-bottom: 48px; }
-  .step-timeline__list { gap: 40px; }
-  .step-timeline__item { gap: 20px; }
-  .step-timeline__line { left: 16px; }
-  .step-timeline__marker { width: 33px; height: 33px; font-size: 12px; }
-  .step-timeline__cta { margin-top: 48px; padding-left: 53px; }
-}
-
-@media screen and (max-width: 479px) {
-  .step-timeline__cta { padding-left: 0; }
+  .approach__card {
+    justify-content: flex-start;
+    gap: 32px;
+    padding: 64px var(--page-pad);
+  }
+  .approach__card-top { flex-direction: column; gap: 12px; }
+  .approach__card-num { padding-top: 0; }
+  .approach__card-bottom { justify-content: flex-start; }
+  .approach__card-p { max-width: none; }
 }
 
 /* ============================================================
