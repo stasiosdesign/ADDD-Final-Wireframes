@@ -132,6 +132,7 @@ button, input { font: inherit; color: inherit; }
 .tagline--plain,
 .tag,
 .footer__col h3,
+.transition__label,
 .field > label,
 .tile__num,
 .cards-stack-card__number,

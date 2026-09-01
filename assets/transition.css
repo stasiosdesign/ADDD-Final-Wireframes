@@ -23,14 +23,12 @@
   left: 0;
 }
 
+/* The page name takes the site's label voice — DM Mono, uppercase,
+   from the shared rule in styles.css. Only size, colour and placement
+   live here. */
 .transition__label {
-  /* above .dots-grid, which sits at z-index 0 inside the panel */
-  z-index: 1;
   position: relative;
   color: var(--c-white);
-  font-family: var(--font-body);
-  font-weight: 400;
-  letter-spacing: 0;
   font-size: 1.75em;
   text-align: center;
   padding: 0 var(--page-pad);
