@@ -198,20 +198,46 @@ button, input { font: inherit; color: inherit; }
 /* ============================================================
    1 — hero
    ============================================================ */
+/* Near-full-screen, with everything sitting on the bottom edge rather
+   than centred: the headline runs along the lower left and the message
+   and its buttons sit off to the lower right, so the two halves read as
+   one line of content across the foot of the viewport.
+
+   The top padding is still the nav's clearance; the bottom padding is
+   what keeps the headline off the floor. */
 .hero {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
   padding: 205px var(--page-pad) var(--sec-lg);
 }
+.hero > .container { width: 100%; }
 .hero__grid {
   display: flex;
   gap: 80px;
-  align-items: flex-start;
+  align-items: flex-end;
 }
-.hero__col { flex: 1 0 0; min-width: 0; }
+/* The headline takes whatever the right-hand block leaves. */
+.hero__col { flex: 1 1 auto; min-width: 0; }
 .hero__heading {
-  max-width: 544px;
-  line-height: 1.02;
+  /* Deliberately outsized — larger than the --t-h1 step, and fluid so it
+     stays in proportion between a laptop and a wide display instead of
+     stranding the last word on its own line. */
+  font-size: clamp(44px, 6.6vw, 96px);
+  line-height: 1;
+  letter-spacing: -0.03em;
 }
-.hero__col--right { display: flex; flex-direction: column; gap: 32px; align-items: flex-start; }
+/* Fixed measure, so the headline column absorbs the extra width as the
+   viewport grows and the paragraph keeps a readable line length. */
+.hero__col--right {
+  flex: 0 0 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: flex-start;
+  padding-bottom: 10px;
+}
 .hero__media { aspect-ratio: 1440 / 810; background: var(--c-placeholder); }
 
 /* ============================================================
@@ -790,6 +816,12 @@ button, input { font: inherit; color: inherit; }
    ============================================================ */
 @media (max-width: 1200px) {
   :root { --t-h1: 60px; --t-h2: 46px; --t-h3: 38px; --t-h4: 32px; --page-pad: 40px; }
+
+  /* Narrower desktops: the right-hand block and the gutter give ground so
+     the headline keeps enough measure to stay oversized. */
+  .hero__grid { gap: 48px; }
+  .hero__col--right { flex-basis: 300px; }
+
   .creds__media { flex: 1 0 0; }
   .creds__text { padding-top: 200px; }
   .cta__heading { gap: 90px; }
@@ -798,9 +830,16 @@ button, input { font: inherit; color: inherit; }
 @media (max-width: 991px) {
   :root { --t-h1: 48px; --t-h2: 38px; --t-h3: 32px; --t-h4: 28px; --sec-lg: 80px; --sec-md: 64px; --page-pad: 32px; }
 
-  .hero { padding-top: 140px; }
+  /* The split is a desktop composition. Below this the hero goes back to
+     ordinary flow and the three parts stack in reading order. */
+  .hero {
+    min-height: 0;
+    display: block;
+    padding-top: 140px;
+  }
   .page-hero { padding-top: 140px; }
-  .hero__grid { flex-direction: column; gap: 40px; }
+  .hero__grid { flex-direction: column; align-items: flex-start; gap: 40px; }
+  .hero__col--right { flex: 0 0 auto; width: 100%; padding-bottom: 0; }
 
   .compare__grid, .creds__grid { flex-direction: column; }
   .creds__media { flex: none; width: 100%; }
