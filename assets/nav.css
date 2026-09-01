@@ -243,16 +243,48 @@
   display: flex;
 }
 
+/* Icon chip on the left, wording on the right. The chip is deliberately
+   small against the type — it marks the row rather than leading it. */
 .mega-nav__panel-link {
   color: var(--c-text);
-  flex-flow: column;
+  flex-flow: row;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: .125em;
+  gap: 1em;
   padding: 0;
   text-decoration: none;
   display: flex;
 }
+.mega-nav__panel-link-body {
+  grid-row-gap: .125em;
+  flex-flow: column;
+  align-items: flex-start;
+  gap: .125em;
+  min-width: 0;
+  display: flex;
+}
+
+/* The artwork is placeholder — swap the <svg> inside this span and nothing
+   else has to move. Size, tint and corner all live on the chip, and the
+   icons draw in currentColor, so a replacement only needs a 24x24 viewBox
+   and currentColor on its strokes or fills. */
+.mega-nav__panel-icon {
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.5em;
+  height: 2.5em;
+  /* nudges the chip onto the cap height of the title beside it */
+  margin-top: .125em;
+  border-radius: 4px;
+  background-color: var(--c-light-fg);
+  color: var(--c-text);
+  display: flex;
+  transition: background-color .2s ease;
+}
+.mega-nav__panel-icon svg { width: 1.25em; height: 1.25em; }
+.mega-nav__panel-link:hover .mega-nav__panel-icon { background-color: rgba(13, 13, 13, .1); }
+
 .mega-nav__panel-link:hover .mega-nav__panel-link-text { opacity: .6; }
 .mega-nav__panel-link-text { font-size: 1.125em; font-weight: 400; line-height: 1.35; }
 .mega-nav__panel-link-desc { color: #6b6b6b; font-size: .9375em; font-weight: 400; line-height: 1.4; }
@@ -285,8 +317,9 @@
    so the panel column drops its own padding and each panel carries it
    instead; they are separated by the same 1px --c-border rule the nav uses
    everywhere else. Equal columns keep every panel the same size, and the
-   grouping is carried entirely by tone: both Start here panels share the
-   light tint, Blueprint takes the mid dark, ADDDvisory the darkest. */
+   grouping is carried entirely by tone, and it tracks the labels: the two
+   entry engagements share the light tint, Blueprint takes the mid dark and
+   ADDDvisory the darkest, so the row darkens as the commitment deepens. */
 .mega-nav__panel-col.is--services {
   flex: 1;
   padding: 0;
@@ -327,7 +360,7 @@
   display: flex;
 }
 
-/* Start here shares one treatment across both of its panels. */
+/* The two entry engagements share one treatment. */
 .mega-nav__service-card.is--start { background-color: var(--c-light-fg); }
 
 .mega-nav__service-card.is--core {
