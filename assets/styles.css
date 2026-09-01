@@ -519,7 +519,15 @@ button, input { font: inherit; color: inherit; }
    behind the last card while it is still pinned and fading — with a
    viewport of room after the slides, the pin plays out over empty
    page and the next section only arrives once it has finished. */
-.approach__slides { position: relative; padding-bottom: 100vh; padding-bottom: 100svh; }
+.approach__slides {
+  position: relative;
+  /* A viewport plus the nav: the viewport is what scrolls behind the
+     last card while it is pinned, and the extra --nav-h is the amount
+     its fade runs past the pin — the pin ends a nav-height early
+     because a slide is that much shorter than the screen. */
+  padding-bottom: calc(100vh + var(--nav-h));
+  padding-bottom: calc(100svh + var(--nav-h));
+}
 
 /* A card stacks under the fixed bar rather than behind it, so it is
    a viewport less the nav — the same --nav-h the hero clears. */
