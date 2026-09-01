@@ -156,6 +156,8 @@ function initBeforeEnterFunctions(next) {
   // container these live in is replaced.
   if (has('[data-carousel]')) initCarousel();
   if (has('[data-step-timeline-init]')) initStepTimeline();
+  if (has('[data-sticky-steps-init]')) initStickySteps();
+  if (has('[data-stacking-cards-init]')) initStackingCards();
   if (has('[data-marquee-scroll-direction-target]')) {
     initMarqueeScrollDirection(nextPage);
     registerPageCleanup(destroyMarqueeScrollDirection);
@@ -1378,4 +1380,199 @@ function initStepTimeline() {
   });
 
   registerPageCleanup(() => mediaQueries.revert());
+}
+
+/* ============================================================
+   Sticky steps — square media pinned beside the scrolling copy
+   ============================================================
+   The reference's status logic is unchanged: whichever anchor sits
+   closest to the middle of the viewport is "active", everything
+   above it "before", everything below "after"; the CSS does the
+   rest. Adapted for this codebase, it is scoped to the Barba
+   container, called from the page registry rather than
+   DOMContentLoaded, and its listeners are unbound on leave.
+
+   Lenis drives ScrollTrigger, so the update is hung off
+   ScrollTrigger rather than a raw scroll listener — otherwise the
+   two would be reading the page on different frames.
+   ============================================================ */
+function initStickySteps() {
+  const containers = nextPage.querySelectorAll("[data-sticky-steps-init]");
+  if (!containers.length) return;
+
+  containers.forEach((container) => {
+    const items = [...container.querySelectorAll("[data-sticky-steps-item]")];
+    if (!items.length) return;
+
+    function updateSteps() {
+      const viewportCenter = window.innerHeight / 2;
+
+      let closestIndex = 0;
+      let closestDistance = Infinity;
+
+      items.forEach((item, index) => {
+        const anchor = item.querySelector("[data-sticky-steps-anchor]");
+        if (!anchor) return;
+
+        const rect = anchor.getBoundingClientRect();
+        const anchorCenter = rect.top + rect.height / 2;
+        const distance = Math.abs(viewportCenter - anchorCenter);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      items.forEach((item, index) => {
+        let status = "active";
+
+        if (index < closestIndex) status = "before";
+        if (index > closestIndex) status = "after";
+
+        item.setAttribute("data-sticky-steps-item-status", status);
+      });
+    }
+
+    if (hasScrollTrigger) {
+      const trigger = ScrollTrigger.create({
+        trigger: container,
+        start: "top bottom",
+        end: "bottom top",
+        onUpdate: updateSteps,
+        onRefresh: updateSteps,
+      });
+      registerPageCleanup(() => trigger.kill());
+    } else {
+      window.addEventListener("scroll", updateSteps, { passive: true });
+      registerPageCleanup(() => window.removeEventListener("scroll", updateSteps));
+    }
+
+    window.addEventListener("resize", updateSteps);
+    registerPageCleanup(() => window.removeEventListener("resize", updateSteps));
+
+    requestAnimationFrame(updateSteps);
+  });
+}
+
+/* ============================================================
+   Stacking cards — sticky stack, no bounce
+   ============================================================
+   The reference's structure, breakpoint tiers and per-tier offset
+   attributes are kept. What is removed is the bounce: the pulse
+   helper and the ScrollTrigger that fired it are gone entirely, so
+   nothing squashes, springs or overshoots. The remaining motion is
+   the scrubbed settle into the stack, and its ease drops from
+   power1.in to none so the cards track the scroll exactly instead
+   of accelerating into place.
+
+   Scoped to the Barba container and unbound on leave; ScrollTrigger
+   is already registered and refreshed by the page lifecycle.
+   ============================================================ */
+function getViewportTier() {
+  const width = window.innerWidth;
+  if (width <= 479) return "mobile-portrait";
+  if (width <= 767) return "mobile-landscape";
+  if (width <= 991) return "tablet";
+  return "desktop";
+}
+
+function initStackingCards() {
+  const sections = nextPage.querySelectorAll("[data-stacking-cards-init]");
+  if (!sections.length) return;
+
+  const triggers = [];
+  const targets = [];
+
+  function parseRotateValues(section, attr) {
+    const fallback = [0, 4, -4];
+    const values = (section.getAttribute(attr) || "")
+      .split(",")
+      .map((val) => parseFloat(val.trim()));
+    return values.length >= 1 && values.every((v) => !isNaN(v)) ? values : fallback;
+  }
+
+  function parseAxisValues(section, attr) {
+    const raw = section.getAttribute(attr);
+    if (!raw) return ["0em", "0em", "0em"];
+    const values = raw.split(",").map((val) => val.trim()).filter((val) => val !== "");
+    return values.length ? values : ["0em", "0em", "0em"];
+  }
+
+  function build() {
+    const tier = getViewportTier();
+    const suffix =
+      tier === "desktop" ? "desktop" : tier === "tablet" ? "tablet" : "mobile";
+
+    sections.forEach((section) => {
+      const isEnabled = section.dataset["stackingCards" + suffix[0].toUpperCase() + suffix.slice(1)] === "true";
+      if (!isEnabled) return;
+
+      const cards = Array.from(section.querySelectorAll("[data-stacking-card]"));
+      if (!cards.length) return;
+
+      const stickyTop = parseFloat(getComputedStyle(cards[0]).top) || 0;
+      const rotateValues = parseRotateValues(section, `data-stacking-cards-${suffix}-rotate`);
+      const xValues = parseAxisValues(section, `data-stacking-cards-${suffix}-x`);
+      const yValues = parseAxisValues(section, `data-stacking-cards-${suffix}-y`);
+
+      cards.forEach((card, index) => {
+        const targetEl = card.querySelector("[data-stacking-card-target]");
+        if (!targetEl) return;
+
+        targets.push(targetEl);
+
+        gsap.set(targetEl, {
+          rotate: 0,
+          x: 0,
+          y: 0,
+          scale: 1,
+          zIndex: cards.length - index,
+        });
+
+        const tween = gsap.to(targetEl, {
+          rotate: rotateValues[index % rotateValues.length],
+          x: xValues[index % xValues.length],
+          y: yValues[index % yValues.length],
+          ease: "none",
+          overwrite: "auto",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 75%",
+            end: `top-=${stickyTop} top`,
+            scrub: true,
+          },
+        });
+
+        if (tween.scrollTrigger) triggers.push(tween.scrollTrigger);
+      });
+    });
+  }
+
+  function teardown() {
+    triggers.splice(0).forEach((t) => t.kill());
+    targets.splice(0).forEach((el) => {
+      gsap.killTweensOf(el);
+      gsap.set(el, { clearProps: "all" });
+    });
+  }
+
+  build();
+
+  // Only a tier change matters — a plain resize leaves the offsets alone.
+  let lastTier = getViewportTier();
+  const onResize = () => {
+    const next = getViewportTier();
+    if (next === lastTier) return;
+    lastTier = next;
+    teardown();
+    build();
+    ScrollTrigger.refresh();
+  };
+
+  window.addEventListener("resize", onResize);
+  registerPageCleanup(() => {
+    window.removeEventListener("resize", onResize);
+    teardown();
+  });
 }

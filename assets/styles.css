@@ -242,26 +242,11 @@ button, input { font: inherit; color: inherit; }
 /* ============================================================
    3 — problems
    ============================================================ */
-.problems__grid {
-  display: flex;
-  gap: 32px;
-  align-items: stretch;
-  margin-top: 80px;
-}
-.problems__col {
-  flex: 1 0 0;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
 .card {
   background: var(--c-light-fg);
   border-radius: var(--radius);
   overflow: hidden;
 }
-.problems__col .card { flex: 1 0 0; min-height: 0; }
-.card--feature { flex: 2.25 0 0; min-width: 0; display: flex; flex-direction: column; }
 .card__body { padding: 32px; display: flex; flex-direction: column; gap: 24px; flex: 1; justify-content: center; }
 .card__body--lg { padding: 48px; gap: 32px; justify-content: flex-start; }
 .card__text { display: flex; flex-direction: column; gap: 16px; }
@@ -273,6 +258,113 @@ button, input { font: inherit; color: inherit; }
   justify-content: flex-start;
 }
 .card__media { aspect-ratio: 864 / 486; background: var(--c-placeholder); }
+
+/* ------------------------------------------------------------
+   sticky steps (see assets/site.js — initStickySteps)
+   ------------------------------------------------------------
+   The reference's sticky mechanics are kept: the media column is
+   taken out of flow and its inner wrapper sticks, so one square
+   crops in place while the copy column scrolls past it. Two
+   changes — the columns are swapped so the image leads on the
+   left, and the visual is 1:1 rather than 3:4.
+
+   Everything the reference styles by hand (eyebrow, h2, p) is
+   dropped in favour of the site's own .h3 / .text-md and the icon
+   chip the replaced cards already used.
+   ------------------------------------------------------------ */
+.sticky-steps__collection { display: flex; position: relative; margin-top: 80px; }
+.sticky-steps__list {
+  display: flex;
+  flex-flow: column;
+  flex: 1;
+  gap: 30dvh;
+  padding-top: calc(50dvh - 7.5em);
+  padding-bottom: calc(50dvh - 7.5em);
+}
+.sticky-steps__item { position: relative; }
+
+/* Image column — left, out of flow, its inner wrapper sticky. */
+.sticky-steps__media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  padding-right: 64px;
+}
+.sticky-steps__sticky {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 100dvh;
+}
+.sticky-steps__visual {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--c-placeholder);
+}
+.sticky-steps__cover-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+/* Copy column — right. margin-left:auto is what flips the pair. */
+.sticky-steps__text {
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  gap: 24px;
+  width: 50%;
+  margin-left: auto;
+  padding-left: 64px;
+}
+.sticky-steps__h { max-width: 480px; }
+.sticky-steps__p { max-width: 440px; color: #6b6b6b; }
+
+/* The dimming only makes sense while the media column is pinned
+   beside the copy — below that the steps are a plain stack. */
+@media screen and (min-width: 992px) {
+  [data-sticky-steps-item-status] .sticky-steps__visual {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .5s ease-in-out, visibility .5s ease-in-out;
+  }
+  [data-sticky-steps-item-status="before"] .sticky-steps__visual,
+  [data-sticky-steps-item-status="active"] .sticky-steps__visual {
+    opacity: 1;
+    visibility: visible;
+  }
+  [data-sticky-steps-item-status] .sticky-steps__text {
+    opacity: .25;
+    transition: opacity .5s ease-in-out;
+  }
+  [data-sticky-steps-item-status="active"] .sticky-steps__text { opacity: 1; }
+}
+
+@media screen and (max-width: 991px) {
+  .sticky-steps__collection { margin-top: 48px; }
+  .sticky-steps__list { gap: 64px; padding-top: 0; padding-bottom: 0; }
+  .sticky-steps__item { display: flex; flex-direction: column; gap: 24px; }
+  .sticky-steps__media {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    height: auto;
+    padding-right: 0;
+  }
+  .sticky-steps__sticky { position: relative; top: auto; min-height: auto; }
+  .sticky-steps__text { width: 100%; margin-left: 0; padding-left: 0; }
+}
 
 /* ============================================================
    4 — approach
@@ -394,22 +486,76 @@ button, input { font: inherit; color: inherit; }
    5 — routes
    ============================================================ */
 .routes { padding-top: 78px; }
-.routes__row { display: flex; gap: 32px; align-items: stretch; margin-top: 48px; }
-.route-card {
-  flex: 1 0 0;
-  min-width: 0;
-  min-height: 427px;
-  background: var(--c-light-fg);
-  border-radius: var(--radius);
-  padding: 32px;
+
+/* ------------------------------------------------------------
+   stacking cards (see assets/site.js — initStackingCards)
+   ------------------------------------------------------------
+   Sticky stacking from the reference, with the bounce taken out:
+   no pulse, no elastic, no squash. What is left is the scrubbed
+   settle into place, on a linear ease so it tracks the scroll
+   exactly rather than easing into a flourish.
+
+   The three tones are the ones the Services dropdown already uses
+   for these same three routes — light, mid dark, darkest — so a
+   card is recognisable from either place.
+   ------------------------------------------------------------ */
+.cards-stack__collection { margin-top: 48px; }
+.cards-stack__list {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: 80px;
+  width: 100%;
+}
+.cards-stack__item {
+  flex: none;
+  width: 100%;
+  max-width: 420px;
+  position: sticky;
+  top: 120px;
+}
+.cards-stack-card {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 24px;
+  justify-content: space-between;
+  gap: 32px;
+  width: 100%;
+  min-height: 480px;
+  padding: 32px;
+  border-radius: var(--radius);
+  background: var(--c-light-fg);
+  /* each card has to hide the one it lands on */
+  background-clip: padding-box;
 }
-.route-card__top { display: flex; flex-direction: column; gap: 24px; }
-.route-card__head { display: flex; flex-direction: column; }
-.route-card__copy { display: flex; flex-direction: column; gap: 16px; }
+.cards-stack-card.is--core { background: var(--c-dark-bg); color: var(--c-white); }
+.cards-stack-card.is--ongoing { background: var(--c-dark-fg); color: var(--c-white); }
+
+.cards-stack-card__start { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.cards-stack-card__number {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: -0.12em;
+  line-height: 1;
+  opacity: .6;
+}
+.cards-stack-card__end { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+.cards-stack-card__head { display: flex; flex-direction: column; }
+
+/* The icon and chevron SVGs are exported with a fixed #0d0d0d fill,
+   so on the two dark cards they are inverted rather than recoloured. */
+.cards-stack-card.is--core .card__icon img,
+.cards-stack-card.is--ongoing .card__icon img,
+.cards-stack-card.is--core .btn--link .icon,
+.cards-stack-card.is--ongoing .btn--link .icon { filter: invert(1); }
+
+/* The stack itself is kept at every width — only the card box and the
+   offset it sticks at come down. */
+@media screen and (max-width: 991px) {
+  .cards-stack__list { gap: 40px; }
+  .cards-stack__item { max-width: 100%; top: 88px; }
+  .cards-stack-card { min-height: 420px; padding: 24px; }
+}
 
 /* ============================================================
    6 — case study / testimonial
@@ -656,8 +802,7 @@ button, input { font: inherit; color: inherit; }
   .page-hero { padding-top: 140px; }
   .hero__grid { flex-direction: column; gap: 40px; }
 
-  .problems__grid, .routes__row, .compare__grid, .creds__grid { flex-direction: column; }
-  .card--feature { flex: none; }
+  .compare__grid, .creds__grid { flex-direction: column; }
   .creds__media { flex: none; width: 100%; }
   .creds__text { padding-top: 0; }
   .creds__media .ph:first-child { margin-top: 0; height: 320px; }
