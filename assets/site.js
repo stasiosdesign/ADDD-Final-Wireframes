@@ -562,14 +562,35 @@ function resetScroll() {
   window.scrollTo(0, 0);
 }
 
+/* The enter animation tweens the container's y, and GSAP leaves the
+   transform on the element when it finishes.
+   Two things follow from that, and both are why the pinned sections
+   were unreliable:
+
+     - a transformed ancestor is the containing block for anything
+       fixed inside it. The transform clears here, but transition.css
+       also declares will-change: transform on the container, which
+       does the same thing on its own — so pins stay transform pins;
+     - every measurement taken while the container is still mid-tween
+       is out by however far it has left to travel — up to 15vh. The
+       lifecycle's refresh runs in beforeEnter, before the animation,
+       so trigger positions were being recorded against a page 100+px
+       below where it settles. Whether that mattered came down to how
+       far the tween had got, which is why it worked some loads and
+       not others.
+
+   Clearing the transform here and refreshing afterwards makes the
+   measurement deterministic: it happens once, on the settled page. */
 function resetPage(container) {
   resetScroll();
-  gsap.set(container, { clearProps: "position,top,left,right" });
+  gsap.set(container, { clearProps: "position,top,left,right,transform" });
 
   if (hasLenis) {
     lenis.resize();
     lenis.start();
   }
+
+  if (hasScrollTrigger) ScrollTrigger.refresh();
 }
 
 function debounceOnWidthChange(fn, ms) {
@@ -1337,14 +1358,16 @@ function initApproachSlides() {
     }));
   });
 
-  // The page lifecycle refreshes once, while the transition panel is
-  // still over the viewport and the bar and the type may not be at
-  // their final size. One more refresh once the fonts have settled
-  // re-measures the starts against the page as it actually renders.
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(() => {
-      if (root.isConnected) ScrollTrigger.refresh();
-    });
+  // resetPage refreshes once the page has settled, which is the
+  // measurement that matters. These two cover the reflows that can
+  // still land after it: a late font swap and the images finishing.
+  const refreshIfLive = () => {
+    if (root.isConnected) ScrollTrigger.refresh();
+  };
+  document.fonts?.ready.then(refreshIfLive);
+  if (document.readyState !== "complete") {
+    window.addEventListener("load", refreshIfLive, { once: true });
+    registerPageCleanup(() => window.removeEventListener("load", refreshIfLive));
   }
 
   registerPageCleanup(() => {
