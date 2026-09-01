@@ -253,33 +253,21 @@ button, input { font: inherit; color: inherit; }
   flex-direction: column;
   flex: 1;
 }
-
-/* The image area — past the hero's gutter to the viewport edges. Its
-   padding-bottom is the ledge the dots finish on: below this element
-   there is no pattern at all. */
+/* The dotted area — off-white, running past the hero's gutter to the
+   viewport edges, and the only place the pattern appears. Its own
+   padding puts the label back on the page gutter, so the label, the
+   buttons below it and the arrow all sit on the same two edges. */
 .hero__media {
   position: relative;
   margin: 0 -32px;
-  padding-bottom: 48px;
+  height: clamp(220px, 43vh, 430px);
+  display: flex;
+  align-items: flex-end;
+  padding: 0 32px 24px;
   background: var(--c-light-fg);
 }
-.hero__media-frame {
-  position: relative;
-  z-index: 1;
-  height: clamp(240px, 46vh, 470px);
-  overflow: hidden;
-  background: var(--c-placeholder);
-}
-.hero__image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* the band is far wider than the frame is tall, so bias the crop
-     towards the top of the subject rather than the middle */
-  object-position: 50% 35%;
-}
+/* above the dots canvas, which sits at z-index 0 */
+.hero__label { position: relative; z-index: 1; }
 
 /* Copy row — the lede holds the left edge, the headline takes the
    right half and is what the eye lands on. */
@@ -291,7 +279,6 @@ button, input { font: inherit; color: inherit; }
 }
 .hero__col { min-width: 0; }
 .hero__col--lede { flex: 0 0 clamp(280px, 24vw, 400px); }
-.hero__label { margin-top: 20px; }
 /* Pushed to the right edge, so the headline starts around two fifths
    across and the space between it and the lede is the composition. */
 .hero__col--heading { flex: 0 1 auto; margin-left: auto; }
@@ -306,10 +293,8 @@ button, input { font: inherit; color: inherit; }
   /* Holds the wrap at two lines across the right-hand column. */
   max-width: 12em;
 }
-
-/* Directly under the headline and sharing its left edge, with the
-   arrow thrown out to the far right — the headline column ends at the
-   hero's own edge, so that is as far right as the composition goes. */
+/* The buttons hold the page gutter, the same edge the label above
+   them sits on, and the arrow is thrown out to the other one. */
 .hero__cta-row {
   display: flex;
   align-items: center;
@@ -317,15 +302,22 @@ button, input { font: inherit; color: inherit; }
   gap: 32px;
   margin-top: 48px;
 }
+/* Rotated a quarter turn so it points down the page: it is the scroll
+   cue, and it jumps to the section the page is asking you to read. */
 .hero__arrow {
   flex: none;
   display: flex;
+  width: 24px;
+  height: 24px;
   color: var(--c-text);
+  transform: rotate(90deg);
+  transition: opacity .2s ease;
 }
+.hero__arrow:hover { opacity: .6; }
 
 /* Interactive dots background — canvas, drawn by initInteractiveDotsGrid
    in assets/site.js. It lives inside .hero__media now rather than the
-   hero itself, so the pattern covers the image area and stops with it;
+   hero itself, so the pattern covers the upper area and stops with it;
    the lower half of the hero is plain page white. It sits under the
    picture, which is lifted to z-index 1, and takes no pointer events.
 
@@ -965,7 +957,7 @@ button, input { font: inherit; color: inherit; }
   }
   .page-hero { padding-top: 140px; }
   .hero__grid { flex-direction: column; align-items: flex-start; gap: 24px; margin-top: 40px; }
-  .hero__col--lede { flex: 0 0 auto; width: 100%; order: 2; }
+  .hero__col--lede { flex: 0 0 auto; width: 100%; }
   .hero__cta-row { margin-top: 32px; }
 
   .compare__grid, .creds__grid { flex-direction: column; }
