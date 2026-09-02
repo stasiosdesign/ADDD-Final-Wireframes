@@ -53,6 +53,9 @@
   /* corner radius — one value for cards, buttons, media and inputs;
      enough to soften a corner, not enough to read as a rounded UI */
   --radius: 2px;
+  /* The site's motion curve — the same one GSAP is given as "osmo",
+     so a CSS transition and a tween ease the same way. */
+  --ease-osmo: cubic-bezier(0.625, 0.05, 0, 1);
 }
 
 /* ============================================================

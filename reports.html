@@ -4,21 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reports &mdash; ADDD</title>
-<meta name="build" content="20260902130814">
+<meta name="build" content="20260902133009">
 <link rel="icon" href="assets/logo.svg">
 <link rel="preconnect" href="https://use.typekit.net" crossorigin>
 <link rel="stylesheet" href="https://use.typekit.net/lzu8hkz.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.2.3/dist/lenis.css">
-<link rel="stylesheet" href="assets/styles.css?v=20260902130814">
-<link rel="stylesheet" href="assets/pages.css?v=20260902130814">
-<link rel="stylesheet" href="assets/nav.css?v=20260902130814">
-<link rel="stylesheet" href="assets/media.css?v=20260902130814">
-<link rel="stylesheet" href="assets/button-059.css?v=20260902130814">
-<link rel="stylesheet" href="assets/button-043.css?v=20260902130814">
-<link rel="stylesheet" href="assets/accordion-css.css?v=20260902130814">
-<link rel="stylesheet" href="assets/dots.css?v=20260902130814">
-<link rel="stylesheet" href="assets/transition.css?v=20260902130814">
-<link rel="stylesheet" href="assets/loader.css?v=20260902130814">
+<link rel="stylesheet" href="assets/styles.css?v=20260902133009">
+<link rel="stylesheet" href="assets/pages.css?v=20260902133009">
+<link rel="stylesheet" href="assets/nav.css?v=20260902133009">
+<link rel="stylesheet" href="assets/media.css?v=20260902133009">
+<link rel="stylesheet" href="assets/button-059.css?v=20260902133009">
+<link rel="stylesheet" href="assets/button-043.css?v=20260902133009">
+<link rel="stylesheet" href="assets/accordion-css.css?v=20260902133009">
+<link rel="stylesheet" href="assets/dots.css?v=20260902133009">
+<link rel="stylesheet" href="assets/transition.css?v=20260902133009">
+<link rel="stylesheet" href="assets/loader.css?v=20260902133009">
 </head>
 <body data-barba="wrapper">
 <div data-load-wrap class="loader">
@@ -289,87 +289,94 @@
         </div>
       </div>
 
-      <div class="filters">
-        <button type="button" class="is-active">View all</button>
-        <button type="button">Technology</button>
-        <button type="button">AI</button>
-        <button type="button">BIM</button>
-        <button type="button">Workflows</button>
-      </div>
+      <!-- The filters and the grid share one group: the buttons and the
+           cards they act on have to sit inside the same [data-filter-group].
+           Several categories can be held at once, and a card shows if it
+           matches any of them. -->
+      <div class="insight-archive" data-filter-group data-filter-target-match="multi" data-filter-name-match="multi">
+        <div class="filters">
+          <button type="button" data-filter-target="all">View all</button>
+          <button type="button" data-filter-target="technology">Technology</button>
+          <button type="button" data-filter-target="ai">AI</button>
+          <button type="button" data-filter-target="bim">BIM</button>
+          <button type="button" data-filter-target="workflows">Workflows</button>
+          <button type="button" class="filters__reset" data-filter-target="reset">Clear filters</button>
+        </div>
 
-      <div class="insight-grid">
-        <a class="insight-card" href="report-template.html">
-          <span class="insight-card__media">
-            <img class="insight-card__img" src="assets/images/allister-podium-full.jpg" alt="" loading="lazy">
-            <span class="tagline tagline--sm insight-card__label">Technology</span>
-            <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
-          </span>
-          <span class="insight-card__body">
-            <h3 class="insight-card__h">The state of AI in architecture</h3>
-            <p class="insight-card__p">How generative tools are reshaping design practice and what firms need to know</p>
-            <span class="insight-card__meta"><span>Allister Burt</span><span>12 min read</span></span>
-          </span>
-        </a>
-        <a class="insight-card" href="report-template.html">
-          <span class="insight-card__media">
-            <img class="insight-card__img" src="assets/images/allister-headshot-bw.png" alt="" loading="lazy">
-            <span class="tagline tagline--sm insight-card__label">BIM</span>
-            <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
-          </span>
-          <span class="insight-card__body">
-            <h3 class="insight-card__h">BIM maturity and implementation strategy</h3>
-            <p class="insight-card__p">A framework for assessing where your practice stands and what comes next</p>
-            <span class="insight-card__meta"><span>Allister Burt</span><span>9 min read</span></span>
-          </span>
-        </a>
-        <a class="insight-card" href="report-template.html">
-          <span class="insight-card__media">
-            <img class="insight-card__img" src="assets/images/allister-podium-portrait.jpg" alt="" loading="lazy">
-            <span class="tagline tagline--sm insight-card__label">Workflows</span>
-            <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
-          </span>
-          <span class="insight-card__body">
-            <h3 class="insight-card__h">Software selection for architecture teams</h3>
-            <p class="insight-card__p">Practical guidance on evaluating tools and building your technology stack</p>
-            <span class="insight-card__meta"><span>14 Nov 2024</span><span>8 min read</span></span>
-          </span>
-        </a>
-        <a class="insight-card" href="report-template.html">
-          <span class="insight-card__media">
-            <img class="insight-card__img" src="assets/images/allister-presenting.jpg" alt="" loading="lazy">
-            <span class="tagline tagline--sm insight-card__label">Technology</span>
-            <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
-          </span>
-          <span class="insight-card__body">
-            <h3 class="insight-card__h">Digital transformation in practice</h3>
-            <p class="insight-card__p">Lessons from firms that have successfully modernised their operations</p>
-            <span class="insight-card__meta"><span>7 Oct 2024</span><span>9 min read</span></span>
-          </span>
-        </a>
-        <a class="insight-card" href="report-template.html">
-          <span class="insight-card__media">
-            <img class="insight-card__img" src="assets/images/conference-keynote.jpg" alt="" loading="lazy">
-            <span class="tagline tagline--sm insight-card__label">AI</span>
-            <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
-          </span>
-          <span class="insight-card__body">
-            <h3 class="insight-card__h">Governance and risk in AI adoption</h3>
-            <p class="insight-card__p">What architecture practices need to consider before implementing AI tools</p>
-            <span class="insight-card__meta"><span>22 Sep 2024</span><span>7 min read</span></span>
-          </span>
-        </a>
-        <a class="insight-card" href="report-template.html">
-          <span class="insight-card__media">
-            <img class="insight-card__img" src="assets/images/allister-gesture-close.jpg" alt="" loading="lazy">
-            <span class="tagline tagline--sm insight-card__label">Workflows</span>
-            <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
-          </span>
-          <span class="insight-card__body">
-            <h3 class="insight-card__h">Collaboration tools and team productivity</h3>
-            <p class="insight-card__p">How to choose platforms that actually improve how your team works together</p>
-            <span class="insight-card__meta"><span>5 Aug 2024</span><span>11 min read</span></span>
-          </span>
-        </a>
+        <div class="insight-grid">
+          <a class="insight-card filter-item" data-filter-name href="report-template.html">
+            <span class="insight-card__media">
+              <img class="insight-card__img" src="assets/images/allister-podium-full.jpg" alt="" loading="lazy">
+              <span class="tagline tagline--sm insight-card__label" data-filter-name-collect="technology">Technology</span>
+              <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
+            </span>
+            <span class="insight-card__body">
+              <h3 class="insight-card__h">The state of AI in architecture</h3>
+              <p class="insight-card__p">How generative tools are reshaping design practice and what firms need to know</p>
+              <span class="insight-card__meta"><span>Allister Burt</span><span>12 min read</span></span>
+            </span>
+          </a>
+          <a class="insight-card filter-item" data-filter-name href="report-template.html">
+            <span class="insight-card__media">
+              <img class="insight-card__img" src="assets/images/allister-headshot-bw.png" alt="" loading="lazy">
+              <span class="tagline tagline--sm insight-card__label" data-filter-name-collect="bim">BIM</span>
+              <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
+            </span>
+            <span class="insight-card__body">
+              <h3 class="insight-card__h">BIM maturity and implementation strategy</h3>
+              <p class="insight-card__p">A framework for assessing where your practice stands and what comes next</p>
+              <span class="insight-card__meta"><span>Allister Burt</span><span>9 min read</span></span>
+            </span>
+          </a>
+          <a class="insight-card filter-item" data-filter-name href="report-template.html">
+            <span class="insight-card__media">
+              <img class="insight-card__img" src="assets/images/allister-podium-portrait.jpg" alt="" loading="lazy">
+              <span class="tagline tagline--sm insight-card__label" data-filter-name-collect="workflows">Workflows</span>
+              <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
+            </span>
+            <span class="insight-card__body">
+              <h3 class="insight-card__h">Software selection for architecture teams</h3>
+              <p class="insight-card__p">Practical guidance on evaluating tools and building your technology stack</p>
+              <span class="insight-card__meta"><span>14 Nov 2024</span><span>8 min read</span></span>
+            </span>
+          </a>
+          <a class="insight-card filter-item" data-filter-name href="report-template.html">
+            <span class="insight-card__media">
+              <img class="insight-card__img" src="assets/images/allister-presenting.jpg" alt="" loading="lazy">
+              <span class="tagline tagline--sm insight-card__label" data-filter-name-collect="technology">Technology</span>
+              <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
+            </span>
+            <span class="insight-card__body">
+              <h3 class="insight-card__h">Digital transformation in practice</h3>
+              <p class="insight-card__p">Lessons from firms that have successfully modernised their operations</p>
+              <span class="insight-card__meta"><span>7 Oct 2024</span><span>9 min read</span></span>
+            </span>
+          </a>
+          <a class="insight-card filter-item" data-filter-name href="report-template.html">
+            <span class="insight-card__media">
+              <img class="insight-card__img" src="assets/images/conference-keynote.jpg" alt="" loading="lazy">
+              <span class="tagline tagline--sm insight-card__label" data-filter-name-collect="ai">AI</span>
+              <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
+            </span>
+            <span class="insight-card__body">
+              <h3 class="insight-card__h">Governance and risk in AI adoption</h3>
+              <p class="insight-card__p">What architecture practices need to consider before implementing AI tools</p>
+              <span class="insight-card__meta"><span>22 Sep 2024</span><span>7 min read</span></span>
+            </span>
+          </a>
+          <a class="insight-card filter-item" data-filter-name href="report-template.html">
+            <span class="insight-card__media">
+              <img class="insight-card__img" src="assets/images/allister-gesture-close.jpg" alt="" loading="lazy">
+              <span class="tagline tagline--sm insight-card__label" data-filter-name-collect="workflows">Workflows</span>
+              <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
+            </span>
+            <span class="insight-card__body">
+              <h3 class="insight-card__h">Collaboration tools and team productivity</h3>
+              <p class="insight-card__p">How to choose platforms that actually improve how your team works together</p>
+              <span class="insight-card__meta"><span>5 Aug 2024</span><span>11 min read</span></span>
+            </span>
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -500,7 +507,7 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/Draggable.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/InertiaPlugin.min.js"></script>
-<script src="assets/marquee.js?v=20260902130814"></script>
-<script src="assets/site.js?v=20260902130814"></script>
+<script src="assets/marquee.js?v=20260902133009"></script>
+<script src="assets/site.js?v=20260902133009"></script>
 </body>
 </html>

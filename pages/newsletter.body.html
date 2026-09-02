@@ -10,87 +10,93 @@
         </div>
       </div>
 
-      <div class="filters">
-        <button type="button" class="is-active">All articles</button>
-        <button type="button">Strategy</button>
-        <button type="button">Workflow</button>
-        <button type="button">Technology</button>
-        <button type="button">Practice</button>
-      </div>
+      <!-- The filters and the grid share one group: the buttons and the
+           cards they act on have to sit inside the same [data-filter-group].
+           Several categories can be held at once, and a card shows if it
+           matches any of them. -->
+      <div class="insight-archive" data-filter-group data-filter-target-match="multi" data-filter-name-match="multi">
+        <div class="filters">
+          <button type="button" data-filter-target="all">All articles</button>
+          <button type="button" data-filter-target="strategy">Strategy</button>
+          <button type="button" data-filter-target="workflow">Workflow</button>
+          <button type="button" data-filter-target="technology">Technology</button>
+          <button type="button" class="filters__reset" data-filter-target="reset">Clear filters</button>
+        </div>
 
-      <div class="insight-grid">
-        <a class="insight-card" href="newsletter-template.html">
-          <span class="insight-card__media">
-            <img class="insight-card__img" src="assets/images/allister-keynote-stage.jpg" alt="" loading="lazy">
-            <span class="tagline tagline--sm insight-card__label">Strategy</span>
-            <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
-          </span>
-          <span class="insight-card__body">
-            <h3 class="insight-card__h">Implementing AI without losing your practice&rsquo;s identity</h3>
-            <p class="insight-card__p">How architecture firms can adopt emerging tools while maintaining their unique approach and values</p>
-            <span class="insight-card__meta"><span>8 min read</span></span>
-          </span>
-        </a>
-        <a class="insight-card" href="newsletter-template.html">
-          <span class="insight-card__media">
-            <img class="insight-card__img" src="assets/images/allister-gesture-warm.jpg" alt="" loading="lazy">
-            <span class="tagline tagline--sm insight-card__label">Workflow</span>
-            <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
-          </span>
-          <span class="insight-card__body">
-            <h3 class="insight-card__h">The cost of poor software integration in architecture</h3>
-            <p class="insight-card__p">Why disconnected tools drain resources and how to fix it before it becomes a problem</p>
-            <span class="insight-card__meta"><span>6 min read</span></span>
-          </span>
-        </a>
-        <a class="insight-card" href="newsletter-template.html">
-          <span class="insight-card__media">
-            <img class="insight-card__img" src="assets/images/conference-keynote.jpg" alt="" loading="lazy">
-            <span class="tagline tagline--sm insight-card__label">Technology</span>
-            <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
-          </span>
-          <span class="insight-card__body">
-            <h3 class="insight-card__h">BIM governance frameworks that actually work</h3>
-            <p class="insight-card__p">Setting up clear standards and processes that your team will follow without resistance</p>
-            <span class="insight-card__meta"><span>7 min read</span></span>
-          </span>
-        </a>
-        <a class="insight-card" href="newsletter-template.html">
-          <span class="insight-card__media">
-            <img class="insight-card__img" src="assets/images/allister-gesture-close.jpg" alt="" loading="lazy">
-            <span class="tagline tagline--sm insight-card__label">Strategy</span>
-            <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
-          </span>
-          <span class="insight-card__body">
-            <h3 class="insight-card__h">When technology becomes a distraction from design</h3>
-            <p class="insight-card__p">Finding the balance between innovation and the work that matters most</p>
-            <span class="insight-card__meta"><span>9 min read</span></span>
-          </span>
-        </a>
-        <a class="insight-card" href="newsletter-template.html">
-          <span class="insight-card__media">
-            <img class="insight-card__img" src="assets/images/allister-podium-portrait.jpg" alt="" loading="lazy">
-            <span class="tagline tagline--sm insight-card__label">Workflow</span>
-            <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
-          </span>
-          <span class="insight-card__body">
-            <h3 class="insight-card__h">Building teams that understand your software stack</h3>
-            <p class="insight-card__p">How to hire and develop people who can navigate complex digital environments</p>
-            <span class="insight-card__meta"><span>7 min read</span></span>
-          </span>
-        </a>
-        <a class="insight-card" href="newsletter-template.html">
-          <span class="insight-card__media">
-            <img class="insight-card__img" src="assets/images/allister-headshot-bw.png" alt="" loading="lazy">
-            <span class="tagline tagline--sm insight-card__label">Technology</span>
-            <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
-          </span>
-          <span class="insight-card__body">
-            <h3 class="insight-card__h">The hidden cost of staying with legacy systems</h3>
-            <p class="insight-card__p">Why familiar tools sometimes cost more than the alternatives</p>
-            <span class="insight-card__meta"><span>6 min read</span></span>
-          </span>
-        </a>
+        <div class="insight-grid">
+          <a class="insight-card filter-item" data-filter-name href="newsletter-template.html">
+            <span class="insight-card__media">
+              <img class="insight-card__img" src="assets/images/allister-keynote-stage.jpg" alt="" loading="lazy">
+              <span class="tagline tagline--sm insight-card__label" data-filter-name-collect="strategy">Strategy</span>
+              <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
+            </span>
+            <span class="insight-card__body">
+              <h3 class="insight-card__h">Implementing AI without losing your practice&rsquo;s identity</h3>
+              <p class="insight-card__p">How architecture firms can adopt emerging tools while maintaining their unique approach and values</p>
+              <span class="insight-card__meta"><span>8 min read</span></span>
+            </span>
+          </a>
+          <a class="insight-card filter-item" data-filter-name href="newsletter-template.html">
+            <span class="insight-card__media">
+              <img class="insight-card__img" src="assets/images/allister-gesture-warm.jpg" alt="" loading="lazy">
+              <span class="tagline tagline--sm insight-card__label" data-filter-name-collect="workflow">Workflow</span>
+              <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
+            </span>
+            <span class="insight-card__body">
+              <h3 class="insight-card__h">The cost of poor software integration in architecture</h3>
+              <p class="insight-card__p">Why disconnected tools drain resources and how to fix it before it becomes a problem</p>
+              <span class="insight-card__meta"><span>6 min read</span></span>
+            </span>
+          </a>
+          <a class="insight-card filter-item" data-filter-name href="newsletter-template.html">
+            <span class="insight-card__media">
+              <img class="insight-card__img" src="assets/images/conference-keynote.jpg" alt="" loading="lazy">
+              <span class="tagline tagline--sm insight-card__label" data-filter-name-collect="technology">Technology</span>
+              <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
+            </span>
+            <span class="insight-card__body">
+              <h3 class="insight-card__h">BIM governance frameworks that actually work</h3>
+              <p class="insight-card__p">Setting up clear standards and processes that your team will follow without resistance</p>
+              <span class="insight-card__meta"><span>7 min read</span></span>
+            </span>
+          </a>
+          <a class="insight-card filter-item" data-filter-name href="newsletter-template.html">
+            <span class="insight-card__media">
+              <img class="insight-card__img" src="assets/images/allister-gesture-close.jpg" alt="" loading="lazy">
+              <span class="tagline tagline--sm insight-card__label" data-filter-name-collect="strategy">Strategy</span>
+              <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
+            </span>
+            <span class="insight-card__body">
+              <h3 class="insight-card__h">When technology becomes a distraction from design</h3>
+              <p class="insight-card__p">Finding the balance between innovation and the work that matters most</p>
+              <span class="insight-card__meta"><span>9 min read</span></span>
+            </span>
+          </a>
+          <a class="insight-card filter-item" data-filter-name href="newsletter-template.html">
+            <span class="insight-card__media">
+              <img class="insight-card__img" src="assets/images/allister-podium-portrait.jpg" alt="" loading="lazy">
+              <span class="tagline tagline--sm insight-card__label" data-filter-name-collect="workflow">Workflow</span>
+              <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
+            </span>
+            <span class="insight-card__body">
+              <h3 class="insight-card__h">Building teams that understand your software stack</h3>
+              <p class="insight-card__p">How to hire and develop people who can navigate complex digital environments</p>
+              <span class="insight-card__meta"><span>7 min read</span></span>
+            </span>
+          </a>
+          <a class="insight-card filter-item" data-filter-name href="newsletter-template.html">
+            <span class="insight-card__media">
+              <img class="insight-card__img" src="assets/images/allister-headshot-bw.png" alt="" loading="lazy">
+              <span class="tagline tagline--sm insight-card__label" data-filter-name-collect="technology">Technology</span>
+              <span class="insight-card__arrow" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L21 12L14 5" stroke="currentColor" stroke-miterlimit="10"></path><path d="M21 12H2" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
+            </span>
+            <span class="insight-card__body">
+              <h3 class="insight-card__h">The hidden cost of staying with legacy systems</h3>
+              <p class="insight-card__p">Why familiar tools sometimes cost more than the alternatives</p>
+              <span class="insight-card__meta"><span>6 min read</span></span>
+            </span>
+          </a>
+        </div>
       </div>
     </div>
   </section>
