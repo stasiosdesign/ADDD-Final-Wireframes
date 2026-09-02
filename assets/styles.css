@@ -137,7 +137,6 @@ button, input { font: inherit; color: inherit; }
 .transition__label,
 .field > label,
 .tile__num,
-.cards-stack-card__number,
 .mega-nav__panel-label,
 .mega-nav__badge,
 .post-card__meta,
@@ -693,10 +692,10 @@ button, input { font: inherit; color: inherit; }
 /* ------------------------------------------------------------
    routes cards
    ------------------------------------------------------------
-   Four white cards in one row on a very dark grey section — the
-   dark comes from .section--dark, so the eyebrow, heading and lede
-   above them turn white with it. The card internals are unchanged
-   from when these were a sticky stack.
+   Four white cards in one row on the ink section. Each is a single
+   link: a tall panel carrying the step's label top-left, an arrow
+   chip top-right and the icon in the middle of it, with the name
+   and a one-line description beneath.
    ------------------------------------------------------------ */
 .routes__grid {
   display: grid;
@@ -704,39 +703,86 @@ button, input { font: inherit; color: inherit; }
   gap: 24px;
   margin-top: 48px;
 }
-.cards-stack-card {
+.route-card {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 32px;
   width: 100%;
-  min-height: 460px;
-  padding: 28px;
   border-radius: var(--radius);
+  overflow: hidden;
   background: var(--c-white);
   color: var(--c-text);
+  text-decoration: none;
+  transition: transform .3s ease;
 }
+.route-card:hover { transform: translateY(-4px); }
 
-.cards-stack-card__start { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.cards-stack-card__number {
-  font-size: 15px;
-  line-height: 1;
-  opacity: .6;
+.route-card__media {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 5;
+  background: var(--c-light-fg);
 }
-.cards-stack-card__end { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
-.cards-stack-card__head { display: flex; flex-direction: column; }
+/* The step's label, sitting on the panel as a chip. */
+.route-card__label {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: 5px 8px;
+  border-radius: var(--radius);
+  background: var(--c-white);
+}
+/* The card's only affordance — the site's arrow, turned to point
+   out of the card, and taking the brand red on hover the way every
+   other hover on the site does. */
+.route-card__arrow {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius);
+  background: var(--c-text);
+  color: var(--c-white);
+  transition: background-color .25s ease;
+}
+.route-card__arrow svg { width: 18px; height: 18px; transform: rotate(-45deg); }
+.route-card:hover .route-card__arrow { background: var(--c-red); }
 
-/* The card icons are inline SVG on currentColor, so they follow the
-   card's own text colour; the chevron is an exported file whose fixed
-   ink already suits a white card. */
-.card__icon svg { width: 24px; height: 24px; display: block; }
+.route-card__icon { display: block; color: var(--c-text); }
+.route-card__icon svg { width: 56px; height: 56px; display: block; }
+
+.route-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px;
+}
+.route-card__h {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--fw-body);
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.route-card__p {
+  margin: 0;
+  font-size: var(--t-sm);
+  line-height: 1.45;
+  color: #6b6b6b;
+}
 
 @media screen and (max-width: 1200px) {
   .routes__grid { grid-template-columns: repeat(2, 1fr); }
 }
-@media screen and (max-width: 991px) {
-  .routes__grid { grid-template-columns: 1fr; gap: 24px; }
-  .cards-stack-card { min-height: 0; padding: 24px; }
+@media screen and (max-width: 767px) {
+  .routes__grid { grid-template-columns: 1fr; }
+  .route-card__media { aspect-ratio: 16 / 9; }
 }
 
 /* ============================================================
