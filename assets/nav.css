@@ -305,88 +305,116 @@
   line-height: 1;
 }
 
-/* Services panel — four full-height panels built into the dropdown rather
-   than cards floating inside it. The grid is edge to edge with no gutters,
-   so the panel column drops its own padding and each panel carries it
-   instead; they are separated by the same 1px --c-border rule the nav uses
-   everywhere else. Equal columns keep every panel the same size, and the
-   grouping is carried entirely by tone, and it tracks the labels: the two
-   entry engagements share the light tint, Blueprint takes the mid dark and
-   ADDDvisory the darkest, so the row darkens as the commitment deepens. */
+/* Services panel — the four pathways as cards, built on the same
+   language as the routes cards on the home page: a white panel with a
+   hairline rule, a light-tinted media area carrying the engagement
+   label as a chip top-left, the arrow chip top-right and the service's
+   own icon in the middle, then the name and one line of description
+   under it. The same icon stands for the same service in both places.
+
+   The one deliberate difference is height. A dropdown has to be read
+   at a glance, so the media area is a short band rather than the
+   routes card's square, and the body is tighter — a little over a
+   third of the home page card. The row is centred in the panel, which
+   keeps the dropdown at the height it already had. */
+/* Four short cards need less room than the resources panel's three
+   columns, and the dropdown should be no taller than its content. */
+[data-nav-content="services"] .mega-nav__dropdown-inner { min-height: 0; }
 .mega-nav__panel-col.is--services {
   flex: 1;
-  padding: 0;
+  padding: 2.5em 3em;
+  justify-content: center;
   align-items: stretch;
 }
 
 .mega-nav__service-grid {
   grid-template-columns: repeat(4, 1fr);
-  grid-column-gap: 0;
-  grid-row-gap: 0;
+  gap: 1.25em;
   align-items: stretch;
-  flex: 1;
   width: 100%;
   display: grid;
 }
 
 .mega-nav__service-card {
-  border-right: 1px solid var(--c-border);
-  grid-row-gap: 2.25em;
   flex-flow: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 3.25em 2.5em;
-  color: inherit;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background-color: var(--c-white);
+  color: var(--c-text);
   text-decoration: none;
   display: flex;
-  transition: background-color .2s ease;
 }
-.mega-nav__service-card:last-child { border-right: none; }
+/* No lift on hover, unlike the routes cards: the panel animates these
+   very elements in on x, so GSAP owns their transform and a CSS one
+   would never apply. The nav's own hover language carries it instead —
+   the title fades and the arrow chip takes the accent. */
+
+.mega-nav__service-card-media {
+  position: relative;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  height: 7em;
+  /* the icon centres in the space the chips leave, not in the whole
+     band — on a band this short, centring on the box puts it against
+     them */
+  padding-top: 1.5em;
+  background-color: var(--c-light-fg);
+  display: flex;
+}
+/* The engagement label, sitting on the band as a chip. */
+.mega-nav__service-card-label {
+  position: absolute;
+  top: .75em;
+  left: .75em;
+  padding: .375em .5em;
+  border-radius: var(--radius);
+  background-color: var(--c-white);
+}
+/* The card's only affordance, and the site's one red: the arrow chip
+   takes the accent on hover exactly as it does on the routes cards. */
+.mega-nav__service-card-arrow {
+  position: absolute;
+  top: .75em;
+  right: .75em;
+  align-items: center;
+  justify-content: center;
+  width: 1.875em;
+  height: 1.875em;
+  border-radius: var(--radius);
+  background-color: var(--c-text);
+  color: var(--c-white);
+  display: flex;
+  transition: background-color .25s ease;
+}
+.mega-nav__service-card-arrow svg { width: .9375em; height: .9375em; transform: rotate(-45deg); }
+.mega-nav__service-card:hover .mega-nav__service-card-arrow { background-color: var(--c-red); }
+
+.mega-nav__service-card-icon { color: var(--c-text); display: block; }
+.mega-nav__service-card-icon svg { width: 2em; height: 2em; display: block; }
+
+.mega-nav__service-card-text {
+  grid-row-gap: .25em;
+  flex-flow: column;
+  flex: 1;
+  align-items: flex-start;
+  gap: .25em;
+  padding: 1em 1.125em 1.125em;
+  display: flex;
+}
 
 /* Same fade the panel links use, so hover reads the same across the nav. */
 .mega-nav__service-card:hover .mega-nav__panel-link-text { opacity: .6; }
 
-.mega-nav__service-card-text {
-  grid-row-gap: .125em;
-  flex-flow: column;
-  align-items: flex-start;
-  display: flex;
-}
-
-/* The two entry engagements share one treatment. */
-.mega-nav__service-card.is--start { background-color: var(--c-light-fg); }
-
-.mega-nav__service-card.is--core {
-  color: var(--c-white);
-  background-color: var(--c-dark-bg);
-  border-right-color: var(--c-border-dark);
-}
-
-.mega-nav__service-card.is--ongoing {
-  color: var(--c-white);
-  background-color: var(--c-dark-fg);
-}
-
-.mega-nav__service-card.is--core .mega-nav__panel-label,
-.mega-nav__service-card.is--ongoing .mega-nav__panel-label { color: var(--c-white); }
-
-.mega-nav__service-card.is--core .mega-nav__panel-link-desc,
-.mega-nav__service-card.is--ongoing .mega-nav__panel-link-desc { color: rgba(255,255,255,.7); }
-
-/* Stacked, each panel keeping its own label and separated by the same rule,
-   turned to the bottom edge. */
+/* Stacked, each card keeping its shape — only the band shortens, so a
+   column of four still fits the slide-over panel. */
 @media screen and (max-width: 991px) {
-  .mega-nav__service-grid { grid-template-columns: 1fr; }
-
-  .mega-nav__service-card {
-    border-right: none;
-    border-bottom: 1px solid var(--c-border);
-    grid-row-gap: 1em;
-    padding: 1.75em 1.25em;
-  }
-  .mega-nav__service-card:last-child { border-bottom: none; }
-  .mega-nav__service-card.is--core { border-bottom-color: var(--c-border-dark); }
+  .mega-nav__panel-col.is--services { padding: 1.25em; }
+  .mega-nav__service-grid { grid-template-columns: 1fr; gap: 1em; }
+  .mega-nav__service-card-media { height: 5.5em; }
 }
+
 .mega-nav__card {
   background-color: var(--c-white);
   border: 1px solid var(--c-border);

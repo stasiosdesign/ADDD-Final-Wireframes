@@ -10,7 +10,10 @@
   --c-light-fg: #f2f2f2;
   --c-border: rgba(20, 20, 20, 0.15);
   --c-border-dark: rgba(255, 255, 255, 0.2);
-  --c-red: #ff0000;
+  /* the accent: a dark matte blood red, used for hover, active and
+     highlight states site-wide. One token — nothing declares a red of
+     its own. */
+  --c-red: #920000;
   --c-btn-soft: rgba(20, 20, 20, 0.05);
   --c-btn-soft-strong: rgba(0, 0, 0, 0.14);
   --c-placeholder: #141414;
