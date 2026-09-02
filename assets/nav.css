@@ -113,7 +113,7 @@
   font-weight: 400;
   white-space: nowrap;
 }
-.mega-nav__bar-cta:hover { background-color: #000; }
+.mega-nav__bar-cta:hover { background-color: #141414; }
 .mega-nav__bar-cta .mega-nav__bar-link-label { font-size: 1.0625em; font-weight: 400; }
 
 .mega-nav__bar-cta.is--secondary {
@@ -280,7 +280,7 @@
   transition: background-color .2s ease;
 }
 .mega-nav__panel-icon svg { width: 1.25em; height: 1.25em; }
-.mega-nav__panel-link:hover .mega-nav__panel-icon { background-color: rgba(13, 13, 13, .1); }
+.mega-nav__panel-link:hover .mega-nav__panel-icon { background-color: rgba(20, 20, 20, .1); }
 
 .mega-nav__panel-link:hover .mega-nav__panel-link-text { opacity: .6; }
 .mega-nav__panel-link-text { font-size: 1.125em; font-weight: 400; line-height: 1.35; }

@@ -3,17 +3,17 @@
    ============================================================ */
 :root {
   /* colour */
-  --c-text: #0d0d0d;
+  --c-text: #141414;
   --c-white: #ffffff;
   --c-dark-bg: #252525;
-  --c-dark-fg: #0d0d0d;
+  --c-dark-fg: #141414;
   --c-light-fg: #f2f2f2;
-  --c-border: rgba(13, 13, 13, 0.15);
+  --c-border: rgba(20, 20, 20, 0.15);
   --c-border-dark: rgba(255, 255, 255, 0.2);
   --c-red: #ff0000;
-  --c-btn-soft: rgba(13, 13, 13, 0.05);
+  --c-btn-soft: rgba(20, 20, 20, 0.05);
   --c-btn-soft-strong: rgba(0, 0, 0, 0.14);
-  --c-placeholder: #0d0d0d;
+  --c-placeholder: #141414;
 
   /* type */
   --font-display: "elza", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -213,7 +213,7 @@ button, input { font: inherit; color: inherit; }
 .btn--soft { background: var(--c-btn-soft); color: var(--c-text); }
 .btn--soft-strong { background: var(--c-btn-soft-strong); color: var(--c-text); }
 .btn--white { background: var(--c-white); color: var(--c-text); border-color: var(--c-white); }
-.btn--near-dark { background: #161616; color: var(--c-white); }
+.btn--near-dark { background: #141414; color: var(--c-white); }
 .btn--ghost-dark { background: rgba(255,255,255,.1); color: var(--c-white); }
 .btn--link { padding: 0; background: none; border: none; }
 
@@ -547,7 +547,7 @@ button, input { font: inherit; color: inherit; }
   justify-content: space-between;
   gap: 40px;
   padding: 40px;
-  box-shadow: 0 -12px 40px rgba(13, 13, 13, 0.12);
+  box-shadow: 0 -12px 40px rgba(20, 20, 20, 0.12);
 }
 /* Three tones, stepping lighter as the steps progress: the first
    card is the darkest thing on the page and the last is a grey close
@@ -726,7 +726,7 @@ button, input { font: inherit; color: inherit; }
   justify-content: center;
   cursor: pointer;
 }
-.case__tab--active { background: rgba(13,13,13,.06); }
+.case__tab--active { background: rgba(20,20,20,.06); }
 .case__tab span { background: var(--c-placeholder); display: block; }
 
 /* ============================================================
@@ -816,7 +816,7 @@ button, input { font: inherit; color: inherit; }
   margin-top: 32px;
 }
 .dots { display: flex; gap: 8px; }
-.dots span { width: 8px; height: 8px; border-radius: 50%; background: rgba(13,13,13,.2); }
+.dots span { width: 8px; height: 8px; border-radius: 50%; background: rgba(20,20,20,.2); }
 .dots span.is-active { background: var(--c-text); }
 .arrows { display: flex; gap: 16px; }
 .arrows button {
