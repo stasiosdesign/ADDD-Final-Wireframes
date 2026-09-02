@@ -139,7 +139,7 @@ button, input { font: inherit; color: inherit; }
 .tile__num,
 .mega-nav__panel-label,
 .mega-nav__badge,
-.post-card__meta,
+.insight-card__meta,
 .filters button {
   font-family: var(--font-mono);
   font-weight: var(--fw-label);
@@ -712,7 +712,8 @@ button, input { font: inherit; color: inherit; }
   margin-top: 48px;
   padding: 0 var(--routes-gutter);
 }
-.route-card {
+.route-card,
+.insight-card {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -723,9 +724,11 @@ button, input { font: inherit; color: inherit; }
   text-decoration: none;
   transition: transform .3s ease;
 }
-.route-card:hover { transform: translateY(-4px); }
+.route-card:hover,
+.insight-card:hover { transform: translateY(-4px); }
 
-.route-card__media {
+.route-card__media,
+.insight-card__media {
   position: relative;
   display: flex;
   align-items: center;
@@ -736,7 +739,8 @@ button, input { font: inherit; color: inherit; }
   background: var(--c-light-fg);
 }
 /* The step's label, sitting on the panel as a chip. */
-.route-card__label {
+.route-card__label,
+.insight-card__label {
   position: absolute;
   top: 16px;
   left: 16px;
@@ -747,7 +751,8 @@ button, input { font: inherit; color: inherit; }
 /* The card's only affordance — the site's arrow, turned to point
    out of the card, and taking the brand red on hover the way every
    other hover on the site does. */
-.route-card__arrow {
+.route-card__arrow,
+.insight-card__arrow {
   position: absolute;
   top: 16px;
   right: 16px;
@@ -761,19 +766,23 @@ button, input { font: inherit; color: inherit; }
   color: var(--c-white);
   transition: background-color .25s ease;
 }
-.route-card__arrow svg { width: 18px; height: 18px; transform: rotate(-45deg); }
-.route-card:hover .route-card__arrow { background: var(--c-red); }
+.route-card__arrow svg,
+.insight-card__arrow svg { width: 18px; height: 18px; transform: rotate(-45deg); }
+.route-card:hover .route-card__arrow,
+.insight-card:hover .insight-card__arrow { background: var(--c-red); }
 
 .route-card__icon { display: block; color: var(--c-text); }
 .route-card__icon svg { width: 56px; height: 56px; display: block; }
 
-.route-card__body {
+.route-card__body,
+.insight-card__body {
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 24px;
 }
-.route-card__h {
+.route-card__h,
+.insight-card__h {
   margin: 0;
   font-family: var(--font-display);
   font-weight: var(--fw-body);
@@ -781,7 +790,8 @@ button, input { font: inherit; color: inherit; }
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
-.route-card__p {
+.route-card__p,
+.insight-card__p {
   margin: 0;
   font-size: var(--t-sm);
   line-height: 1.45;
@@ -1028,46 +1038,134 @@ button, input { font: inherit; color: inherit; }
 .compare__list li p { flex: 1 0 0; min-width: 0; }
 
 /* ============================================================
-   9 — research carousel
+   9 — insight cards + the insight slider
    ============================================================ */
-.research__head { display: flex; flex-direction: column; gap: 24px; max-width: 768px; }
-.research__track {
-  margin-top: 80px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  padding-bottom: 4px;
+/* The report / newsletter card is the routes card with a featured
+   image where the routes card carries its icon: same white panel,
+   same square media area, same label chip top-left and arrow chip
+   top-right, same body proportions. Everything structural is shared
+   with .route-card above; only what the image and the metadata line
+   need is declared here. */
+/* The archive pages centre their hero, and that cascades — the card
+   always sets its own alignment. */
+.insight-card { height: 100%; text-align: left; }
+.insight-card__media { overflow: hidden; }
+/* The image fills the media area rather than sitting inside it as a
+   framed picture — the card reads as one object, with the two chips
+   riding on the image the way they ride on the routes panel. */
+.insight-card__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
-.research__track::-webkit-scrollbar { display: none; }
-.research__row { display: flex; gap: 32px; }
-.research-card {
-  flex: none;
-  width: 405px;
-  height: 560px;
-  background: var(--c-placeholder);
-  border-radius: var(--radius);
-  color: var(--c-white);
-  padding: 32px;
+.insight-card__label,
+.insight-card__arrow { z-index: 1; }
+/* The body takes the slack so a row of cards ends on one line, and
+   the metadata is pinned to the bottom of it. */
+.insight-card__body { flex: 1 0 auto; }
+.insight-card__meta {
+  margin-top: auto;
+  padding-top: 12px;
+  font-size: var(--t-xs);
+  line-height: 1.5;
+  color: #6b6b6b;
+}
+.insight-card__meta span + span::before {
+  content: "";
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  margin: 0 8px 3px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ------------------------------------------------------------
+   insight slider
+   ------------------------------------------------------------
+   A dragged deck: the list translates under the pointer and every
+   card that reaches the left edge stops there, scaling and tipping
+   back a few degrees so the ones behind read as a stack rather than
+   a queue. Driven by initInsightSlider() in site.js — Draggable with
+   snapping and no overshoot, so it settles rather than springs.
+
+   The viewport is clipped horizontally only: a tipped card needs a
+   little room above and below, and inset() with negative vertical
+   values gives it that without letting the deck run past the
+   container on the right.
+   ------------------------------------------------------------ */
+.insight-slider { --insight-gutter: 20px; width: 100%; }
+.research__head + .insight-slider { margin-top: 56px; }
+.research__controls + .insight-slider { margin-top: 48px; }
+.insight-slider__viewport {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 16px;
-  scroll-snap-align: start;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  /* clip on x only: the deck must not run past the container, but a
+     tipped card needs its few pixels of vertical bleed */
+  overflow-x: clip;
+  overflow-y: visible;
 }
-.research-card__logo { display: flex; align-items: center; gap: 10px; font-weight: var(--fw-body); }
-.research-card__logo span { width: 20px; height: 20px; background: rgba(255,255,255,.55); border-radius: var(--radius); }
-.research-card__author { line-height: 1.5; }
-.research-card__author strong { display: block; font-weight: var(--fw-body); font-size: var(--t-sm); }
-.research-card__author em { font-style: normal; font-size: var(--t-sm); opacity: .8; }
+.insight-slider__list {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: stretch;
+  cursor: grab;
+}
+.insight-slider__list:active { cursor: grabbing; }
+.insight-slider__item {
+  flex: none;
+  width: 340px;
+  max-width: 78vw;
+  margin-right: var(--insight-gutter);
+  /* the deck relies on paint order: a card still to arrive covers the
+     ones already parked, so the front of the deck is always the DOM
+     element furthest down the list */
+  will-change: transform;
+}
+/* Dragging a deck and following a link are the same gesture until the
+   pointer moves, so suppress the drag's click and keep the images from
+   being picked up as native drags. */
+.insight-slider__item img { -webkit-user-drag: none; user-select: none; }
+.insight-slider.is--dragging .insight-card { pointer-events: none; }
+
+/* Controls — the same dots and arrow buttons the page already uses,
+   so every slider on the site is driven by the same pair. */
+.insight-slider__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 32px;
+}
+.dots button {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(20, 20, 20, 0.2);
+  cursor: pointer;
+}
+.dots button.is-active { background: var(--c-text); }
+.arrows button[disabled] { opacity: .35; cursor: default; }
+.arrows button[disabled]:hover { background: var(--c-light-fg); }
+
+.research__head { display: flex; flex-direction: column; gap: 24px; max-width: 768px; }
 .research__controls {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 24px;
   margin-top: 32px;
 }
 .dots { display: flex; gap: 8px; }
-.dots span { width: 8px; height: 8px; border-radius: 50%; background: rgba(20,20,20,.2); }
-.dots span.is-active { background: var(--c-text); }
 .arrows { display: flex; gap: 16px; }
 .arrows button {
   width: 48px; height: 48px;
@@ -1076,6 +1174,7 @@ button, input { font: inherit; color: inherit; }
   background: var(--c-light-fg);
   display: flex; align-items: center; justify-content: center;
   cursor: pointer;
+  transition: background-color .2s ease;
 }
 .arrows button:hover { background: #e6e6e6; }
 
@@ -1326,7 +1425,6 @@ button, input { font: inherit; color: inherit; }
   .cta__heading { gap: 70px; }
   .cta__portrait { width: 140px; height: 176px; top: -46px; }
 
-  .research-card { width: 320px; height: 480px; }
   .case__quote-wrap { padding: 56px 32px 40px; min-height: 0; }
   .quote { font-size: 24px; }
 }
@@ -1340,5 +1438,4 @@ button, input { font: inherit; color: inherit; }
   .cta__portrait { position: relative; top: 0; left: 0; transform: rotate(-5.94deg); margin: 8px 0; }
   .site-footer__nav { grid-template-columns: 1fr; }
   .site-footer__form { flex-direction: column; align-items: stretch; }
-  .research-card { width: 280px; }
 }

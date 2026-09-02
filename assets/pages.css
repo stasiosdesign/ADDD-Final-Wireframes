@@ -105,21 +105,16 @@
 }
 .filters button.is-active { background: var(--c-text); color: var(--c-white); border-color: var(--c-text); }
 
-/* article / report cards */
-.post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 48px; }
-.post-card {
-  background: var(--c-light-fg);
-  border-radius: var(--radius);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+/* article / report listings — the archive grid of insight cards.
+   Same gutter as the routes row, so a page that shows both reads as
+   one rhythm. */
+.insight-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+  align-items: stretch;
 }
-.post-card__media { aspect-ratio: 16 / 10; background: var(--c-placeholder); }
-.post-card__body { padding: 24px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
-.post-card__meta { display: flex; gap: 12px; align-items: center; font-size: var(--t-sm); opacity: .7; }
-.post-card__title { font-family: var(--font-display); font-weight: 400; font-size: 22px; line-height: 1.25; letter-spacing: -0.02em; }
-.post-card__foot { margin-top: auto; padding-top: 8px; display: flex; align-items: center; gap: 12px; font-size: var(--t-sm); }
-.post-card__avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--c-placeholder); flex: none; }
 .tag {
   display: inline-flex;
   align-items: center;
@@ -166,17 +161,12 @@
 /* report cover */
 .cover { aspect-ratio: 3 / 4; background: var(--c-placeholder); border-radius: var(--radius); }
 
-/* horizontal scroller for related content */
-.scroller { overflow-x: auto; scrollbar-width: none; margin-top: 48px; }
-.scroller::-webkit-scrollbar { display: none; }
-.scroller__row { display: flex; gap: 32px; }
-.scroller .post-card { flex: none; width: 300px; }
 
 @media (max-width: 991px) {
   .pg-hero { padding-top: 140px; }
   .pg-hero__grid { flex-direction: column; gap: 40px; }
   .pg-hero__col .h1, .pg-hero__col .h2 { max-width: none; }
-  .grid--3, .grid--4, .post-grid { grid-template-columns: repeat(2, 1fr); }
+  .grid--3, .grid--4, .insight-grid { grid-template-columns: repeat(2, 1fr); }
   .steps__item { flex-direction: column; gap: 16px; }
   .steps__label { flex: none; }
   .form__row, .radio-grid { grid-template-columns: 1fr; }
@@ -184,7 +174,7 @@
 }
 
 @media (max-width: 640px) {
-  .grid--2, .grid--3, .grid--4, .post-grid { grid-template-columns: 1fr; }
+  .grid--2, .grid--3, .grid--4, .insight-grid { grid-template-columns: 1fr; }
   .tile, .price-card { padding: 24px; }
   .table td + td, .table th + th { width: auto; }
 }

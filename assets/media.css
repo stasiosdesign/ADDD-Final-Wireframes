@@ -14,43 +14,29 @@
 .ph,
 .band,
 .card__media,
-.post-card__media,
 .cover,
 .cta__portrait,
 .avatar__img,
-.mega-nav__card-visual,
-.research-card {
+.mega-nav__card-visual {
   background-image: var(--img-photo);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-/* the research cards carry white text over the photo — add a scrim
-   so the quote and attribution stay legible */
-.research-card {
-  position: relative;
-  isolation: isolate;
-}
-.research-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.6) 45%, rgba(0,0,0,.15) 100%);
-  z-index: -1;
-}
-
 /* the CTA portrait sits on the dark band — keep the rounded crop */
 .cta__portrait { background-position: center 20%; }
 
 /* avatars crop to the face rather than the centre of the frame */
-.avatar__img,
-.post-card__avatar {
+.avatar__img {
   background-image: var(--img-photo);
   background-size: cover;
   background-position: 50% 25%;
 }
+
+/* the insight card carries its featured image as a real <img> rather
+   than a background, so a per-report picture is a src swap */
+.insight-card__img { background: var(--c-light-fg); }
 
 /* ============================================================
    client logos
@@ -68,29 +54,6 @@
    the height as well as the width — otherwise a square logo overflows the
    tile and a wide one is only a few pixels tall */
 .logo-tile img { max-height: 64px; }
-
-/* small logo chip used on the research cards, so a dark logo stays
-   readable on top of the photograph */
-.research-card__logo {
-  display: inline-flex;
-  align-items: center;
-  align-self: flex-start;
-  background: var(--c-white);
-  border-radius: var(--radius);
-  padding: 6px 10px;
-  gap: 0;
-  max-width: 100%;
-}
-/* 16px tall normally; the widest wordmarks scale down proportionally on
-   narrow cards rather than being squashed by the flex container */
-.research-card__logo img {
-  display: block;
-  height: auto;
-  width: auto;
-  max-height: 16px;
-  max-width: 100%;
-  min-width: 0;
-}
 
 /* the case-study tab row highlights the active practice */
 .case__tab img { max-height: 50px; }
