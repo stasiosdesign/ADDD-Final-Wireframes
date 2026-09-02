@@ -184,21 +184,26 @@
             </ul>
           </div>
 
-          <!-- ADDDitive — the newsletter's own subscription panel. -->
+          <!-- ADDDitive — the newsletter, set as a resource item on the same
+               row as the others (icon chip, name, one line of description)
+               so the column reads as part of the same list rather than a
+               panel of its own, with the signup compact underneath it. -->
           <div data-menu-fade="" class="mega-nav__panel-col is--colored"><span class="mega-nav__panel-label">Newsletter</span>
-            <div class="mega-nav__newsletter">
-              <div class="mega-nav__newsletter-text">
-                <span class="mega-nav__newsletter-title">ADDDitive</span>
-                <span class="mega-nav__panel-link-desc">Regular thinking on technology, AI and digital practice.</span>
-              </div>
-              <div class="mega-nav__newsletter-actions">
-                <form class="newsletter-form" onsubmit="return false">
-                  <input type="email" placeholder="Your email" aria-label="Your email" required>
-                  <button class="btn btn--red" type="submit">Subscribe</button>
-                </form>
-                <a href="newsletter.html" class="mega-nav__newsletter-link">Read the newsletter &rarr;</a>
-              </div>
-            </div>
+            <ul class="mega-nav__panel-list">
+              <li>
+                <a href="newsletter.html" class="mega-nav__panel-link is--lead">
+                  <span class="mega-nav__panel-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.5 5.5H21.5V18.5H2.5V5.5Z" stroke="currentColor" stroke-miterlimit="10"></path><path d="M2.5 5.5L12 12.5L21.5 5.5" stroke="currentColor" stroke-miterlimit="10"></path></svg></span>
+                  <span class="mega-nav__panel-link-body">
+                    <span class="mega-nav__panel-link-text">ADDDitive Newsletter</span>
+                    <span class="mega-nav__panel-link-desc">Regular thinking on technology, AI and digital practice.</span>
+                  </span>
+                </a>
+              </li>
+            </ul>
+            <form class="newsletter-form mega-nav__signup" onsubmit="return false">
+              <input type="email" placeholder="Your email" aria-label="Your email" required>
+              <button class="btn btn--red" type="submit">Subscribe</button>
+            </form>
           </div>
 
         </div>
