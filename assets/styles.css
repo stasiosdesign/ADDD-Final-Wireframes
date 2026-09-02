@@ -174,11 +174,13 @@ button, input { font: inherit; color: inherit; }
 /* The standard section intro — the same composition the hero, the
    problem head and the routes head are set on, so every intro on the
    site reads as one pattern: supporting copy holding the left edge in
-   a narrow column, and the heading pushed out to the right with its
-   eyebrow directly above it.
+   a narrow column, and the heading pushed out to the right.
 
-   The eyebrow belongs to the heading and sits in its column, never
-   beside the copy. Both columns start on one line. */
+   The alignment row is the heading and the copy, and only those two:
+   their first visible lines meet. The eyebrow belongs to the heading
+   and hangs above it, taken out of flow so that neither its presence
+   nor its height moves the heading off the copy's line — a section
+   with an eyebrow and one without open on exactly the same line. */
 .section-title {
   max-width: var(--container);
   margin: 0;
@@ -192,27 +194,30 @@ button, input { font: inherit; color: inherit; }
 .section-title > p:not([class]) {
   flex: 0 0 clamp(280px, 24vw, 400px);
   /* Optical, not box, alignment: the paragraph's 1.5 line-height opens
-     more space above its caps than the display face's 1.2 does, so the
-     three pieces are each pulled back by their own half-leading and
-     line up on the letters rather than on the boxes. */
+     more space above its caps than the display face's 1.2 does, so each
+     side is pulled back by its own half-leading and the two line up on
+     the letters rather than on the boxes. */
   margin-top: 0.26em;
 }
 .section-title__body {
+  position: relative;
   flex: 0 1 auto;
   margin-left: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 20px;
 }
+/* Out of flow, sitting on the heading's left edge and clearing its cap
+   line — so the heading is always the first thing in the column as far
+   as the layout is concerned. The sections this pattern appears in all
+   open on --sec-lg or more, which is room enough for it to hang. */
 .section-title__body > .tagline,
-.section-title__body > .tagline--plain { margin-top: 0.33em; }
+.section-title__body > .tagline--plain {
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  margin-bottom: 14px;
+  white-space: nowrap;
+}
 .section-title .h1,
-.section-title .h2 { width: 100%; }
-/* Only when the heading opens its column — with an eyebrow above it
-   the interval is already set by the stack's gap. */
-.section-title__body > .h1:first-child,
-.section-title__body > .h2:first-child { margin-top: -0.03em; }
+.section-title .h2 { width: 100%; margin-top: -0.03em; }
 
 /* black placeholders standing in for photography / video */
 .ph {
@@ -1771,11 +1776,17 @@ button, input { font: inherit; color: inherit; }
      eyebrow lead and the supporting copy follows it — order reverses
      the two, since the markup puts the left column first. */
   .section-title { display: flex; flex-direction: column; gap: 0; }
-  .section-title__body { display: block; order: 1; }
+  .section-title__body { order: 1; }
+  /* Back in flow: stacked, there is no alignment row for it to stay
+     out of, and nothing above it to hang into. */
   .section-title__body > .tagline,
-  .section-title__body > .tagline--plain { margin: 0 0 12px; }
-  .section-title__body > .h1:first-child,
-  .section-title__body > .h2:first-child { margin-top: 0; }
+  .section-title__body > .tagline--plain {
+    position: static;
+    margin: 0 0 12px;
+    white-space: normal;
+  }
+  .section-title .h1,
+  .section-title .h2 { margin-top: 0; }
   .section-title > .text-md,
   .section-title > p:not([class]) { order: 2; flex: none; margin-top: 20px; max-width: 640px; }
 
