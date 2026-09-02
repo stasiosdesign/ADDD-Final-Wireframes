@@ -518,12 +518,14 @@ button, input { font: inherit; color: inherit; }
    page and the next section only arrives once it has finished. */
 .approach__slides {
   position: relative;
-  /* A viewport plus the nav: the viewport is what scrolls behind the
-     last card while it is pinned, and the extra --nav-h is the amount
-     its fade runs past the pin — the pin ends a nav-height early
-     because a slide is that much shorter than the screen. */
-  padding-bottom: calc(100vh + var(--nav-h));
-  padding-bottom: calc(100svh + var(--nav-h));
+  /* A viewport plus the nav, plus a beat. The viewport is what scrolls
+     behind the last card while it is pinned; the --nav-h is the amount
+     its fade runs past the pin, since a slide is that much shorter
+     than the screen; and the 30svh is the pause after it has gone, so
+     the routes section arrives on empty page rather than treading on
+     the end of the animation. */
+  padding-bottom: calc(100vh + var(--nav-h) + 30vh);
+  padding-bottom: calc(100svh + var(--nav-h) + 30svh);
 }
 
 /* A card stacks under the fixed bar rather than behind it, so it is
@@ -643,15 +645,15 @@ button, input { font: inherit; color: inherit; }
 /* ------------------------------------------------------------
    routes cards
    ------------------------------------------------------------
-   A plain three-up row. The card itself is unchanged from when
-   these were a sticky stack — same tones, padding and internals,
-   the ones the Services dropdown uses for the same three routes,
-   so a card is recognisable from either place.
+   Four white cards in one row on a very dark grey section — the
+   dark comes from .section--dark, so the eyebrow, heading and lede
+   above them turn white with it. The card internals are unchanged
+   from when these were a sticky stack.
    ------------------------------------------------------------ */
 .routes__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
   margin-top: 48px;
 }
 .cards-stack-card {
@@ -660,13 +662,12 @@ button, input { font: inherit; color: inherit; }
   justify-content: space-between;
   gap: 32px;
   width: 100%;
-  min-height: 480px;
-  padding: 32px;
+  min-height: 460px;
+  padding: 28px;
   border-radius: var(--radius);
-  background: var(--c-light-fg);
+  background: var(--c-white);
+  color: var(--c-text);
 }
-.cards-stack-card.is--core { background: var(--c-dark-bg); color: var(--c-white); }
-.cards-stack-card.is--ongoing { background: var(--c-dark-fg); color: var(--c-white); }
 
 .cards-stack-card__start { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .cards-stack-card__number {
@@ -678,12 +679,13 @@ button, input { font: inherit; color: inherit; }
 .cards-stack-card__head { display: flex; flex-direction: column; }
 
 /* The card icons are inline SVG on currentColor, so they follow the
-   card's own text colour. The chevron is still an exported file with
-   a fixed fill, so on the two dark cards it is inverted instead. */
+   card's own text colour; the chevron is an exported file whose fixed
+   ink already suits a white card. */
 .card__icon svg { width: 24px; height: 24px; display: block; }
-.cards-stack-card.is--core .btn--link .icon,
-.cards-stack-card.is--ongoing .btn--link .icon { filter: invert(1); }
 
+@media screen and (max-width: 1200px) {
+  .routes__grid { grid-template-columns: repeat(2, 1fr); }
+}
 @media screen and (max-width: 991px) {
   .routes__grid { grid-template-columns: 1fr; gap: 24px; }
   .cards-stack-card { min-height: 0; padding: 24px; }
