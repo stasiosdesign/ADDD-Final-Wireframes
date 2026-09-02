@@ -524,6 +524,15 @@ button, input { font: inherit; color: inherit; }
 .approach__slide[data-shutter-scroll-section] {
   position: relative;
   overflow: hidden;
+  /* Taller than the card by design: the wrapper below keeps the card at
+     a viewport, and the extra is clear white under it before the
+     shutter closes over both. */
+  height: calc(100vh - var(--nav-h) + 22vh);
+  height: calc(100svh - var(--nav-h) + 22svh);
+}
+.approach__slide[data-shutter-scroll-section] .approach__slide-wrapper {
+  height: calc(100vh - var(--nav-h));
+  height: calc(100svh - var(--nav-h));
 }
 
 /* ------------------------------------------------------------
