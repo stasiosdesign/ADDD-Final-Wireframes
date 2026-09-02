@@ -392,108 +392,167 @@ button, input { font: inherit; color: inherit; }
 }
 .card__media { aspect-ratio: 864 / 486; background: var(--c-placeholder); }
 /* ------------------------------------------------------------
-   problem grid (see assets/site.js — initProblemGrid)
+   industry problems (see assets/site.js — initProblemGrid)
    ------------------------------------------------------------
-   Three equal columns divided by hairline rules, each led by a
-   tall image and closed by centred copy that bottom-aligns
-   across the row however long the headings run. Columns lift
-   into place one after another as the row enters the viewport.
+   The section opens on the hero's composition: the supporting
+   copy holds the left edge with its label under it, and the
+   heading sits out to the right at close to the hero's size,
+   the gap between the two doing the work. Unlike the hero this
+   stays inside the page container, so the split lines up with
+   every other section rather than running to the page edges.
+
+   The three cards below are the site's card — white panel, a
+   hairline rule, a media area over a body — stepped down the
+   row rather than sitting level, so the group reads as composed
+   rather than as a table of three. The step is regular: each
+   card is exactly one notch below the one before it.
    ------------------------------------------------------------ */
+.problem-head {
+  display: flex;
+  gap: 64px;
+  align-items: flex-start;
+}
+/* The hero's proportion, one step narrower — this column carries
+   four short sentences rather than the hero's single one. */
+.problem-head__lede {
+  flex: 0 0 clamp(260px, 22vw, 360px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+/* Pushed to the right edge the way the hero headline is, and held
+   to a measure that wraps it onto two lines. */
+.problem-head__h {
+  flex: 0 1 auto;
+  margin: 0 0 0 auto;
+  font-family: var(--font-display);
+  font-weight: var(--fw-heading-bold);
+  font-size: clamp(32px, 4.2vw, 60px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  /* Held just under the width of "What actually costs", so the
+     heading breaks after it and the long first line runs out to the
+     container edge — the hero's two-line shape. Balancing instead
+     would even the lines up but pull the whole block off that edge. */
+  max-width: 9.5em;
+}
+
 .problem-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  margin-top: 80px;
-  border-top: 1px solid var(--c-border);
-  border-bottom: 1px solid var(--c-border);
+  /* the routes row's gutter, so the cards space like every other
+     card row on the page */
+  gap: 20px;
+  align-items: start;
+  margin-top: 96px;
 }
-.problem-grid__col {
+/* The stagger. Held to two steps of the same size so the row
+   descends evenly — offset, not scattered. */
+.problem-card:nth-child(2) { margin-top: 64px; }
+.problem-card:nth-child(3) { margin-top: 128px; }
+
+.problem-card {
   display: flex;
   flex-direction: column;
-  gap: 40px;
-  padding: 56px 40px 64px;
-  border-left: 1px solid var(--c-border);
-}
-.problem-grid__col:first-child { border-left: 0; }
-
-.problem-grid__visual {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 5;
+  border: 1px solid var(--c-border);
   border-radius: var(--radius);
   overflow: hidden;
-  background: var(--c-placeholder);
+  background: var(--c-white);
 }
-.problem-grid__image {
+.problem-card__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--c-light-fg);
+}
+.problem-card__image {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: inherit;
 }
+/* The icon rides on the image as a chip, in the same corner the
+   routes and services cards put their label, so all three sit in
+   exactly one place and at one size. */
+.problem-card__icon {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius);
+  /* a hairline, the card's own, so the chip still reads where the
+     photograph behind it is pale */
+  border: 1px solid var(--c-border);
+  background: var(--c-white);
+  color: var(--c-text);
+}
+.problem-card__icon svg { width: 22px; height: 22px; display: block; }
 
-/* margin-top:auto pins the copy to the bottom of the column, so
-   the three descriptions sit on one line even when a heading
-   wraps to two. */
-.problem-grid__text {
+.problem-card__body {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  margin-top: auto;
-  text-align: center;
+  gap: 8px;
+  padding: 24px;
 }
-.problem-grid__icon {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.problem-card__h {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--fw-body);
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
-.problem-grid__icon img { width: 100%; height: 100%; }
-.problem-grid__h { max-width: 320px; }
-.problem-grid__p { max-width: 340px; color: #6b6b6b; }
-
-.problem-grid__actions {
-  display: flex;
-  justify-content: center;
-  margin-top: 56px;
+.problem-card__p {
+  margin: 0;
+  font-size: var(--t-sm);
+  line-height: 1.45;
+  color: #6b6b6b;
 }
 
-/* Entrance — the columns are held down and faded until the row
+/* Entrance — the cards are held down and faded until the row
    reaches the viewport, then released left to right. */
 @media screen and (min-width: 992px) {
-  [data-problem-grid-init] .problem-grid__col {
+  [data-problem-grid-init] .problem-card {
     opacity: 0;
     transform: translateY(32px);
     transition: opacity .7s ease, transform .7s ease;
   }
-  [data-problem-grid-init][data-problem-grid-status="in"] .problem-grid__col {
+  [data-problem-grid-init][data-problem-grid-status="in"] .problem-card {
     opacity: 1;
     transform: none;
   }
-  [data-problem-grid-init] .problem-grid__col:nth-child(2) { transition-delay: .12s; }
-  [data-problem-grid-init] .problem-grid__col:nth-child(3) { transition-delay: .24s; }
+  [data-problem-grid-init] .problem-card:nth-child(2) { transition-delay: .12s; }
+  [data-problem-grid-init] .problem-card:nth-child(3) { transition-delay: .24s; }
 }
 @media (prefers-reduced-motion: reduce) {
-  [data-problem-grid-init] .problem-grid__col {
+  [data-problem-grid-init] .problem-card {
     opacity: 1;
     transform: none;
     transition: none;
   }
 }
 
+@media screen and (max-width: 1200px) {
+  .problem-head { gap: 40px; }
+  .problem-card:nth-child(2) { margin-top: 48px; }
+  .problem-card:nth-child(3) { margin-top: 96px; }
+}
+/* Stacked, and the stagger goes with the row — a step means nothing
+   in a single column. */
 @media screen and (max-width: 991px) {
-  .problem-grid { grid-template-columns: 1fr; margin-top: 48px; }
-  .problem-grid__col {
-    gap: 24px;
-    padding: 40px 0;
-    border-left: 0;
-    border-top: 1px solid var(--c-border);
-  }
-  .problem-grid__col:first-child { border-top: 0; }
-  .problem-grid__visual { aspect-ratio: 16 / 10; }
-  .problem-grid__actions { margin-top: 40px; }
+  .problem-head { flex-direction: column; gap: 32px; }
+  .problem-head__lede { flex: none; width: 100%; }
+  .problem-head__h { margin-left: 0; max-width: none; }
+  .problem-grid { grid-template-columns: 1fr; gap: 24px; margin-top: 48px; }
+  .problem-card:nth-child(2),
+  .problem-card:nth-child(3) { margin-top: 0; }
+  .problem-card__media { aspect-ratio: 16 / 10; }
 }
 
 /* ============================================================
