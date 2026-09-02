@@ -447,10 +447,37 @@ button, input { font: inherit; color: inherit; }
   opacity: 0;
   animation: hero-label-in .6s ease 1.4s forwards;
 }
+/* The pulse — a short dash of the same red, a touch wider and soft,
+   riding each run once every few seconds. pathLength="1" makes the
+   dash a fraction of the run, so the offset sweep is one full traverse
+   whatever the real length. Held invisible until the draw-in has
+   finished; the delays are staggered so no two pulses set off together. */
+.hero__pulse {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5px;
+  stroke-linecap: round;
+  stroke-dasharray: 0.04 0.96;
+  stroke-dashoffset: 1.04;
+  opacity: 0;
+  animation: hero-pulse 9s linear 2.4s infinite;
+}
+.hero__pulse:nth-of-type(8) { animation-delay: 5.1s; animation-duration: 10s; }
+.hero__pulse:nth-of-type(9) { animation-delay: 3.7s; animation-duration: 7s; }
+.hero__pulse:nth-of-type(10) { animation-delay: 7.6s; animation-duration: 12s; stroke-width: 1.75px; }
+.hero__pulse:nth-of-type(11) { animation-delay: 9.2s; animation-duration: 11s; stroke-width: 1.75px; }
+@keyframes hero-pulse {
+  0%   { stroke-dashoffset: 1.04; opacity: 0; }
+  4%   { opacity: .55; }
+  56%  { opacity: .55; }
+  62%  { stroke-dashoffset: 0; opacity: 0; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
 @keyframes hero-line-draw { to { stroke-dashoffset: 0; } }
 @keyframes hero-label-in  { to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
   .hero__line, .hero__line-label { animation: none; stroke-dashoffset: 0; opacity: 1; }
+  .hero__pulse { animation: none; }
   .hero__line--thin { opacity: .45; }
 }
 

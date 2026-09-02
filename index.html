@@ -4,21 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ADDD &mdash; Technology strategy for architecture practices</title>
-<meta name="build" content="20260902120057">
+<meta name="build" content="20260902120834">
 <link rel="icon" href="assets/logo.svg">
 <link rel="preconnect" href="https://use.typekit.net" crossorigin>
 <link rel="stylesheet" href="https://use.typekit.net/lzu8hkz.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.2.3/dist/lenis.css">
-<link rel="stylesheet" href="assets/styles.css?v=20260902120057">
-<link rel="stylesheet" href="assets/pages.css?v=20260902120057">
-<link rel="stylesheet" href="assets/nav.css?v=20260902120057">
-<link rel="stylesheet" href="assets/media.css?v=20260902120057">
-<link rel="stylesheet" href="assets/button-059.css?v=20260902120057">
-<link rel="stylesheet" href="assets/button-043.css?v=20260902120057">
-<link rel="stylesheet" href="assets/accordion-css.css?v=20260902120057">
-<link rel="stylesheet" href="assets/dots.css?v=20260902120057">
-<link rel="stylesheet" href="assets/transition.css?v=20260902120057">
-<link rel="stylesheet" href="assets/loader.css?v=20260902120057">
+<link rel="stylesheet" href="assets/styles.css?v=20260902120834">
+<link rel="stylesheet" href="assets/pages.css?v=20260902120834">
+<link rel="stylesheet" href="assets/nav.css?v=20260902120834">
+<link rel="stylesheet" href="assets/media.css?v=20260902120834">
+<link rel="stylesheet" href="assets/button-059.css?v=20260902120834">
+<link rel="stylesheet" href="assets/button-043.css?v=20260902120834">
+<link rel="stylesheet" href="assets/accordion-css.css?v=20260902120834">
+<link rel="stylesheet" href="assets/dots.css?v=20260902120834">
+<link rel="stylesheet" href="assets/transition.css?v=20260902120834">
+<link rel="stylesheet" href="assets/loader.css?v=20260902120834">
 </head>
 <body data-barba="wrapper">
 <div data-load-wrap class="loader">
@@ -291,16 +291,28 @@
            one pitch. Absolute pixel coordinates, no viewBox scaling: the
            grid never stretches, so neither do the lines. -->
       <svg class="hero__lines" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1980" height="450">
-        <!-- 1 · the main run — heaviest, with its one-pitch echo -->
-        <path class="hero__line hero__line--heavy" pathLength="1" d="M0 162H342a18 18 0 0 1 18 18V360a18 18 0 0 0 18 18H684a18 18 0 0 0 18-18V234a18 18 0 0 1 18-18H1170a18 18 0 0 1 18 18V342a18 18 0 0 0 18 18H1458"/>
-        <path class="hero__line hero__line--thin" pathLength="1" transform="translate(18 18)" d="M0 162H342a18 18 0 0 1 18 18V360a18 18 0 0 0 18 18H684a18 18 0 0 0 18-18V234a18 18 0 0 1 18-18H1170a18 18 0 0 1 18 18V342a18 18 0 0 0 18 18H1458"/>
-        <!-- 2 · the upper run, in from the top edge -->
-        <path class="hero__line hero__line--medium" pathLength="1" d="M450 0V54a18 18 0 0 0 18 18H954a18 18 0 0 1 18 18V126a18 18 0 0 0 18 18H1530a18 18 0 0 1 18 18V306"/>
-        <path class="hero__line hero__line--thin" pathLength="1" transform="translate(18 18)" d="M450 0V54a18 18 0 0 0 18 18H954a18 18 0 0 1 18 18V126a18 18 0 0 0 18 18H1530a18 18 0 0 1 18 18V306"/>
-        <!-- 3 · a short spur, lower left, thin -->
-        <path class="hero__line hero__line--medium" pathLength="1" d="M0 306H180a18 18 0 0 1 18 18V396"/>
-        <!-- 4 · a short spur, far right, off the top edge -->
-        <path class="hero__line hero__line--thin" pathLength="1" d="M1782 0V90a18 18 0 0 0 18 18H1980"/>
+        <!-- Every run enters from one edge of the band and leaves by
+             another — long runs are drawn well past any viewport width
+             and any band height and clipped by the band, so nothing
+             ever stops mid-field. Echoes are the same path shifted one
+             pitch, so their leading -18 keeps them starting on the edge. -->
+        <!-- 1 · the main run — heaviest, with its one-pitch echo. In from
+             the left, out through the bottom. -->
+        <path class="hero__line hero__line--heavy" pathLength="1" d="M0 162H342a18 18 0 0 1 18 18V360a18 18 0 0 0 18 18H684a18 18 0 0 0 18-18V234a18 18 0 0 1 18-18H1170a18 18 0 0 1 18 18V342a18 18 0 0 0 18 18H1476a18 18 0 0 1 18 18V520"/>
+        <path class="hero__line hero__line--thin" pathLength="1" transform="translate(18 18)" d="M-18 162H342a18 18 0 0 1 18 18V360a18 18 0 0 0 18 18H684a18 18 0 0 0 18-18V234a18 18 0 0 1 18-18H1170a18 18 0 0 1 18 18V342a18 18 0 0 0 18 18H1476a18 18 0 0 1 18 18V520"/>
+        <!-- 2 · the upper run — in from the top, out through the right -->
+        <path class="hero__line hero__line--medium" pathLength="1" d="M450 0V54a18 18 0 0 0 18 18H954a18 18 0 0 1 18 18V126a18 18 0 0 0 18 18H1530a18 18 0 0 1 18 18V306a18 18 0 0 0 18 18H4000"/>
+        <path class="hero__line hero__line--thin" pathLength="1" transform="translate(18 18)" d="M450 -18V54a18 18 0 0 0 18 18H954a18 18 0 0 1 18 18V126a18 18 0 0 0 18 18H1530a18 18 0 0 1 18 18V306a18 18 0 0 0 18 18H4000"/>
+        <!-- 3 · a short spur, lower left — in from the left, out through the bottom -->
+        <path class="hero__line hero__line--medium" pathLength="1" d="M0 306H180a18 18 0 0 1 18 18V520"/>
+        <!-- 4 · a short spur, far right — in from the top, out through the right -->
+        <path class="hero__line hero__line--thin" pathLength="1" d="M1782 0V90a18 18 0 0 0 18 18H4000"/>
+        <!-- the pulses: one short dash per run, riding the same geometry -->
+        <path class="hero__pulse" pathLength="1" d="M0 162H342a18 18 0 0 1 18 18V360a18 18 0 0 0 18 18H684a18 18 0 0 0 18-18V234a18 18 0 0 1 18-18H1170a18 18 0 0 1 18 18V342a18 18 0 0 0 18 18H1476a18 18 0 0 1 18 18V520"/>
+        <path class="hero__pulse" pathLength="1" d="M450 0V54a18 18 0 0 0 18 18H954a18 18 0 0 1 18 18V126a18 18 0 0 0 18 18H1530a18 18 0 0 1 18 18V306a18 18 0 0 0 18 18H4000"/>
+        <path class="hero__pulse" pathLength="1" d="M0 306H180a18 18 0 0 1 18 18V520"/>
+        <path class="hero__pulse" pathLength="1" transform="translate(18 18)" d="M-18 162H342a18 18 0 0 1 18 18V360a18 18 0 0 0 18 18H684a18 18 0 0 0 18-18V234a18 18 0 0 1 18-18H1170a18 18 0 0 1 18 18V342a18 18 0 0 0 18 18H1476a18 18 0 0 1 18 18V520"/>
+        <path class="hero__pulse" pathLength="1" transform="translate(18 18)" d="M450 -18V54a18 18 0 0 0 18 18H954a18 18 0 0 1 18 18V126a18 18 0 0 0 18 18H1530a18 18 0 0 1 18 18V306a18 18 0 0 0 18 18H4000"/>
         <!-- labels, sitting one pitch above the run they belong to -->
         <text class="hero__line-label" x="36" y="145">BIM</text>
         <text class="hero__line-label" x="738" y="199">Software</text>
@@ -942,7 +954,7 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/Draggable.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/InertiaPlugin.min.js"></script>
-<script src="assets/marquee.js?v=20260902120057"></script>
-<script src="assets/site.js?v=20260902120057"></script>
+<script src="assets/marquee.js?v=20260902120834"></script>
+<script src="assets/site.js?v=20260902120834"></script>
 </body>
 </html>
