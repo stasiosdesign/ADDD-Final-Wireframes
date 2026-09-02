@@ -781,7 +781,7 @@ button, input { font: inherit; color: inherit; }
   border-radius: var(--radius);
   background: var(--c-placeholder);
 }
-/* One asset, cropped differently per card so the three don't repeat. */
+/* Three different photos now; each still gets its own focal offset. */
 .approach__card-image.is--crop-left { object-position: 20% 40%; }
 .approach__card-image.is--crop-centre { object-position: 50% 35%; }
 .approach__card-image.is--crop-right { object-position: 80% 45%; }
@@ -814,6 +814,32 @@ button, input { font: inherit; color: inherit; }
   background: var(--c-dark-fg);
 }
 .routes > .container { padding: 0 var(--page-pad); }
+
+/* Same lede-left/heading-right composition as .problem-head: a
+   narrow column of supporting copy and its eyebrow, set against a
+   large heading pushed to the right edge — rather than the centred
+   .section-title stack used elsewhere. */
+.routes__head {
+  display: flex;
+  gap: 64px;
+  align-items: flex-start;
+}
+.routes__lede {
+  flex: 0 0 clamp(260px, 22vw, 360px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.routes__h {
+  flex: 0 1 auto;
+  margin: 0 0 0 auto;
+  font-family: var(--font-display);
+  font-weight: var(--fw-heading-bold);
+  font-size: clamp(32px, 4.2vw, 60px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  max-width: 12em;
+}
 
 /* ------------------------------------------------------------
    routes cards
@@ -921,6 +947,11 @@ button, input { font: inherit; color: inherit; }
 
 @media screen and (max-width: 1200px) {
   .routes__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media screen and (max-width: 991px) {
+  .routes__head { flex-direction: column; gap: 32px; }
+  .routes__lede { flex: none; width: 100%; }
+  .routes__h { margin-left: 0; max-width: none; }
 }
 @media screen and (max-width: 767px) {
   .routes__grid { grid-template-columns: 1fr; }
