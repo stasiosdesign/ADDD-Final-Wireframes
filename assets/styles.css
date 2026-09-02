@@ -824,11 +824,13 @@ button, input { font: inherit; color: inherit; }
   gap: 64px;
   align-items: flex-start;
 }
+/* The hero's own interval between the lede and the label beneath it,
+   so the left column reads as two placed pieces rather than a block. */
 .routes__lede {
   flex: 0 0 clamp(260px, 22vw, 360px);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 40px;
 }
 .routes__h {
   flex: 0 1 auto;
@@ -838,7 +840,12 @@ button, input { font: inherit; color: inherit; }
   font-size: clamp(32px, 4.2vw, 60px);
   line-height: 1.05;
   letter-spacing: -0.03em;
-  max-width: 12em;
+  /* Held well inside the column it is pushed to the right of. The
+     heading breaks after "needs" anywhere from 9em to 12em, so the
+     narrower measure keeps the two lines and spends the difference on
+     the space between the heading and the lede — the hero's interval
+     between its own two columns. */
+  max-width: 9.5em;
 }
 
 /* ------------------------------------------------------------
@@ -856,7 +863,8 @@ button, input { font: inherit; color: inherit; }
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--routes-gutter);
-  margin-top: 48px;
+  /* Clear of the intro rather than tucked under it. */
+  margin-top: 72px;
   padding: 0 var(--routes-gutter);
 }
 .route-card,
@@ -949,8 +957,10 @@ button, input { font: inherit; color: inherit; }
   .routes__grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media screen and (max-width: 991px) {
-  .routes__head { flex-direction: column; gap: 32px; }
-  .routes__lede { flex: none; width: 100%; }
+  /* Stacked, so the interval the two columns held side by side becomes
+     the gap between the lede and the heading under it. */
+  .routes__head { flex-direction: column; gap: 56px; }
+  .routes__lede { flex: none; width: 100%; gap: 32px; }
   .routes__h { margin-left: 0; max-width: none; }
 }
 @media screen and (max-width: 767px) {
