@@ -4,21 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ADDD &mdash; Technology strategy for architecture practices</title>
-<meta name="build" content="20260902115426">
+<meta name="build" content="20260902120057">
 <link rel="icon" href="assets/logo.svg">
 <link rel="preconnect" href="https://use.typekit.net" crossorigin>
 <link rel="stylesheet" href="https://use.typekit.net/lzu8hkz.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.2.3/dist/lenis.css">
-<link rel="stylesheet" href="assets/styles.css?v=20260902115426">
-<link rel="stylesheet" href="assets/pages.css?v=20260902115426">
-<link rel="stylesheet" href="assets/nav.css?v=20260902115426">
-<link rel="stylesheet" href="assets/media.css?v=20260902115426">
-<link rel="stylesheet" href="assets/button-059.css?v=20260902115426">
-<link rel="stylesheet" href="assets/button-043.css?v=20260902115426">
-<link rel="stylesheet" href="assets/accordion-css.css?v=20260902115426">
-<link rel="stylesheet" href="assets/dots.css?v=20260902115426">
-<link rel="stylesheet" href="assets/transition.css?v=20260902115426">
-<link rel="stylesheet" href="assets/loader.css?v=20260902115426">
+<link rel="stylesheet" href="assets/styles.css?v=20260902120057">
+<link rel="stylesheet" href="assets/pages.css?v=20260902120057">
+<link rel="stylesheet" href="assets/nav.css?v=20260902120057">
+<link rel="stylesheet" href="assets/media.css?v=20260902120057">
+<link rel="stylesheet" href="assets/button-059.css?v=20260902120057">
+<link rel="stylesheet" href="assets/button-043.css?v=20260902120057">
+<link rel="stylesheet" href="assets/accordion-css.css?v=20260902120057">
+<link rel="stylesheet" href="assets/dots.css?v=20260902120057">
+<link rel="stylesheet" href="assets/transition.css?v=20260902120057">
+<link rel="stylesheet" href="assets/loader.css?v=20260902120057">
 </head>
 <body data-barba="wrapper">
 <div data-load-wrap class="loader">
@@ -284,6 +284,29 @@
         aria-hidden="true"
         class="interactive-dots-grid"
       ></div>
+      <!-- Schematic lines — drawn on the same 18px pitch as the dots
+           (the 0.125em dot plus 1em gap at the pinned 16px), anchored to
+           the band's top-left like the canvas is, so every straight run
+           passes through a column or row of dots and the corners turn on
+           one pitch. Absolute pixel coordinates, no viewBox scaling: the
+           grid never stretches, so neither do the lines. -->
+      <svg class="hero__lines" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1980" height="450">
+        <!-- 1 · the main run — heaviest, with its one-pitch echo -->
+        <path class="hero__line hero__line--heavy" pathLength="1" d="M0 162H342a18 18 0 0 1 18 18V360a18 18 0 0 0 18 18H684a18 18 0 0 0 18-18V234a18 18 0 0 1 18-18H1170a18 18 0 0 1 18 18V342a18 18 0 0 0 18 18H1458"/>
+        <path class="hero__line hero__line--thin" pathLength="1" transform="translate(18 18)" d="M0 162H342a18 18 0 0 1 18 18V360a18 18 0 0 0 18 18H684a18 18 0 0 0 18-18V234a18 18 0 0 1 18-18H1170a18 18 0 0 1 18 18V342a18 18 0 0 0 18 18H1458"/>
+        <!-- 2 · the upper run, in from the top edge -->
+        <path class="hero__line hero__line--medium" pathLength="1" d="M450 0V54a18 18 0 0 0 18 18H954a18 18 0 0 1 18 18V126a18 18 0 0 0 18 18H1530a18 18 0 0 1 18 18V306"/>
+        <path class="hero__line hero__line--thin" pathLength="1" transform="translate(18 18)" d="M450 0V54a18 18 0 0 0 18 18H954a18 18 0 0 1 18 18V126a18 18 0 0 0 18 18H1530a18 18 0 0 1 18 18V306"/>
+        <!-- 3 · a short spur, lower left, thin -->
+        <path class="hero__line hero__line--medium" pathLength="1" d="M0 306H180a18 18 0 0 1 18 18V396"/>
+        <!-- 4 · a short spur, far right, off the top edge -->
+        <path class="hero__line hero__line--thin" pathLength="1" d="M1782 0V90a18 18 0 0 0 18 18H1980"/>
+        <!-- labels, sitting one pitch above the run they belong to -->
+        <text class="hero__line-label" x="36" y="145">BIM</text>
+        <text class="hero__line-label" x="738" y="199">Software</text>
+        <text class="hero__line-label" x="1008" y="127">Infrastructure</text>
+        <text class="hero__line-label" x="1242" y="343">Artificial intelligence</text>
+      </svg>
     </div>
 
     <div class="container">
@@ -919,7 +942,7 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/Draggable.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/InertiaPlugin.min.js"></script>
-<script src="assets/marquee.js?v=20260902115426"></script>
-<script src="assets/site.js?v=20260902115426"></script>
+<script src="assets/marquee.js?v=20260902120057"></script>
+<script src="assets/site.js?v=20260902120057"></script>
 </body>
 </html>

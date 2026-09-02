@@ -321,6 +321,8 @@ button, input { font: inherit; color: inherit; }
   margin: 0 -32px;
   height: clamp(220px, 43vh, 430px);
   background: var(--c-light-fg);
+  /* clips the schematic where the band stops, whatever its height */
+  overflow: hidden;
 }
 
 /* Copy row — the lede holds the left edge, the headline takes the
@@ -401,6 +403,55 @@ button, input { font: inherit; color: inherit; }
   top: 0;
   left: 0;
   z-index: 0;
+}
+
+/* Schematic lines over the dots — the inline SVG in the hero partial.
+   Same 18px pitch as the canvas, anchored to the band's top-left the
+   way the canvas is, so the runs pass through the dots rather than
+   floating over them. Drawn in absolute pixels, so on a narrower
+   viewport the composition is cropped by the band's edge instead of
+   being squeezed; the left-hand runs and the BIM label are what stays.
+   Above the canvas (z-index 1), still under nothing — the band carries
+   no other content. The site's one red, at three weights, the echoes
+   the lightest. */
+.hero__lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  overflow: visible;
+  pointer-events: none;
+  color: var(--c-red);
+  display: block;
+}
+.hero__line {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: butt;
+  /* draw-in on arrival: the run wipes along its own length once,
+     the way the loader's wipe reveals the page */
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: hero-line-draw 1.6s cubic-bezier(.65, 0, .35, 1) .35s forwards;
+}
+.hero__line--heavy  { stroke-width: 1.25px; }
+.hero__line--medium { stroke-width: 1px; }
+.hero__line--thin   { stroke-width: 0.75px; opacity: .45; animation-delay: .6s; }
+.hero__line-label {
+  fill: currentColor;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: var(--fw-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: hero-label-in .6s ease 1.4s forwards;
+}
+@keyframes hero-line-draw { to { stroke-dashoffset: 0; } }
+@keyframes hero-label-in  { to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .hero__line, .hero__line-label { animation: none; stroke-dashoffset: 0; opacity: 1; }
+  .hero__line--thin { opacity: .45; }
 }
 
 /* ============================================================
