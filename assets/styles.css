@@ -865,7 +865,7 @@ button, input { font: inherit; color: inherit; }
 .testimonial-lines__aside {
   display: flex;
   flex-direction: column;
-  padding: 56px var(--page-pad) 140px;
+  padding: 56px var(--page-pad);
   background: var(--c-dark-fg);
   color: var(--c-white);
 }
@@ -925,17 +925,21 @@ button, input { font: inherit; color: inherit; }
 
 /* The controls live outside the item stack, so they hold still while
    the slides change. Bottom left, over the ink panel. */
+/* Under the quote and on its left edge — the same 40% split plus the
+   page gutter the title above uses — with the section's own top
+   padding repeated beneath them, so the band sits level. They live
+   outside the slide stack, so they hold still as slides change. */
 .testimonial-lines__controls {
   position: absolute;
-  left: var(--page-pad);
+  left: calc(40% + var(--page-pad));
   bottom: 56px;
   z-index: 2;
   display: flex;
   align-items: center;
   gap: 20px;
-  color: var(--c-white);
+  color: var(--c-text);
 }
-.testimonial-lines__count { color: rgba(255, 255, 255, .6); }
+.testimonial-lines__count { color: #6b6b6b; }
 .testimonial-lines__buttons { display: flex; gap: 8px; }
 .testimonial-lines__button {
   display: flex;
@@ -944,24 +948,24 @@ button, input { font: inherit; color: inherit; }
   width: 36px;
   height: 36px;
   padding: 0;
-  border: 1px solid var(--c-border-dark);
+  border: 1px solid var(--c-border);
   border-radius: var(--radius);
   background: transparent;
   color: inherit;
   cursor: pointer;
   transition: background-color .25s ease, border-color .25s ease;
 }
-.testimonial-lines__button:hover { background: var(--c-red); border-color: var(--c-red); }
+.testimonial-lines__button:hover { background: var(--c-red); border-color: var(--c-red); color: var(--c-white); }
 .testimonial-lines__arrow { width: 12px; height: 12px; display: block; }
 
 @media screen and (max-width: 991px) {
   .testimonials { margin-top: var(--sec-lg); }
   .testimonials__title { margin-left: var(--page-pad); margin-bottom: 24px; }
   .testimonial-lines__item { grid-template-columns: 1fr; min-height: 0; }
-  .testimonial-lines__aside { padding: 40px var(--page-pad) 120px; }
+  .testimonial-lines__aside { padding: 40px var(--page-pad); }
   .testimonial-lines__firm { margin-left: 0; gap: 24px; }
-  .testimonial-lines__body { padding: 40px var(--page-pad) 56px; }
-  .testimonial-lines__controls { bottom: auto; top: 56px; right: var(--page-pad); left: auto; }
+  .testimonial-lines__body { padding: 40px var(--page-pad) 104px; }
+  .testimonial-lines__controls { left: var(--page-pad); bottom: 40px; }
 }
 
 /* ============================================================
