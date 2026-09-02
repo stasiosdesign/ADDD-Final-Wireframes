@@ -642,10 +642,13 @@ button, input { font: inherit; color: inherit; }
   position: relative;
   overflow: hidden;
   /* Taller than the card by design: the wrapper below keeps the card at
-     a viewport, and the extra is clear white under it before the
-     shutter closes over both. */
-  height: calc(100vh - var(--nav-h) + 22vh);
-  height: calc(100svh - var(--nav-h) + 22svh);
+     a viewport, and the extra is breathing room under it before the
+     shutter closes over both. Painted the same grey as the card itself
+     (not page white), so the ground is continuous until the shutter
+     hands off to the dark routes section. */
+  height: calc(100vh - var(--nav-h) + 30vh);
+  height: calc(100svh - var(--nav-h) + 30svh);
+  background: #d8d8d8;
 }
 .approach__slide[data-shutter-scroll-section] .approach__slide-wrapper {
   height: calc(100vh - var(--nav-h));
