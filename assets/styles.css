@@ -684,10 +684,15 @@ button, input { font: inherit; color: inherit; }
    painted in, so the two meet as one field rather than two panels.
    A touch more room above the eyebrow than the section default, which
    is the separation after the last card. */
+/* The row runs the width of the screen, so the section drops its own
+   side padding and the header keeps its container. */
 .routes {
   padding-top: 118px;
+  padding-left: 0;
+  padding-right: 0;
   background: var(--c-dark-fg);
 }
+.routes > .container { padding: 0 var(--page-pad); }
 
 /* ------------------------------------------------------------
    routes cards
@@ -697,11 +702,15 @@ button, input { font: inherit; color: inherit; }
    chip top-right and the icon in the middle of it, with the name
    and a one-line description beneath.
    ------------------------------------------------------------ */
+/* One gutter value everywhere: the same 20px between the cards and
+   from the outer cards to the viewport edges. */
 .routes__grid {
+  --routes-gutter: 20px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  gap: var(--routes-gutter);
   margin-top: 48px;
+  padding: 0 var(--routes-gutter);
 }
 .route-card {
   display: flex;
