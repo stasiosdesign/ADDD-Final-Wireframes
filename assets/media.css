@@ -16,8 +16,7 @@
 .card__media,
 .cover,
 .cta__portrait,
-.avatar__img,
-.mega-nav__card-visual {
+.avatar__img {
   background-image: var(--img-photo);
   background-size: cover;
   background-position: center;

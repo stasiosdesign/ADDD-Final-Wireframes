@@ -10,10 +10,10 @@
   --c-light-fg: #f2f2f2;
   --c-border: rgba(20, 20, 20, 0.15);
   --c-border-dark: rgba(255, 255, 255, 0.2);
-  /* the accent: a dark matte blood red, used for hover, active and
+  /* the accent: a clear signal red, used for hover, active and
      highlight states site-wide. One token — nothing declares a red of
      its own. */
-  --c-red: #920000;
+  --c-red: #C40000;
   --c-btn-soft: rgba(20, 20, 20, 0.05);
   --c-btn-soft-strong: rgba(0, 0, 0, 0.14);
   --c-placeholder: #141414;
@@ -141,7 +141,6 @@ button, input { font: inherit; color: inherit; }
 .field > label,
 .tile__num,
 .mega-nav__panel-label,
-.mega-nav__badge,
 .insight-card__meta,
 .filters button {
   font-family: var(--font-mono);
@@ -218,6 +217,63 @@ button, input { font: inherit; color: inherit; }
 .btn--near-dark { background: #141414; color: var(--c-white); }
 .btn--ghost-dark { background: rgba(255,255,255,.1); color: var(--c-white); }
 .btn--link { padding: 0; background: none; border: none; }
+/* The accent as a rest-state fill — the newsletter's Subscribe, and
+   only that. Hover darkens it from within rather than declaring a
+   second red. */
+.btn--red {
+  background: var(--c-red);
+  color: var(--c-white);
+  border-color: var(--c-red);
+  transition: opacity .15s ease, background-color .15s ease, box-shadow .15s ease;
+}
+.btn--red:hover { opacity: 1; box-shadow: inset 0 0 0 100px rgba(0, 0, 0, 0.16); }
+
+/* ------------------------------------------------------------
+   newsletter signup — one form, used in the Resources dropdown
+   and in the footer. The field and the button are one joined
+   row: the field takes the width and the button sits flush on
+   its right end. The dark modifier restyles the field for the
+   footer's ground, and the split modifier opens a gap between
+   the two so the button stands on its own.
+   ------------------------------------------------------------ */
+.newsletter-form {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+}
+.newsletter-form input {
+  flex: 1 0 0;
+  min-width: 0;
+  height: 44px;
+  padding: 0 14px;
+  background: var(--c-white);
+  border: 1px solid var(--c-border);
+  border-right: 0;
+  border-radius: var(--radius) 0 0 var(--radius);
+  font-family: var(--font-body);
+  font-size: var(--t-rg);
+  color: var(--c-text);
+  outline: none;
+  transition: border-color .2s ease;
+}
+.newsletter-form input::placeholder { color: #6b6b6b; }
+.newsletter-form input:focus { border-color: rgba(20, 20, 20, 0.5); }
+.newsletter-form .btn {
+  flex: none;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.newsletter-form.is--split { gap: 12px; }
+.newsletter-form.is--split input { border-right: 1px solid var(--c-border); border-radius: var(--radius); }
+.newsletter-form.is--split .btn { border-radius: var(--radius); }
+.newsletter-form.is--dark input {
+  background: transparent;
+  border-color: var(--c-border-dark);
+  color: var(--c-white);
+}
+.newsletter-form.is--dark input::placeholder { color: rgba(255, 255, 255, 0.5); }
+.newsletter-form.is--dark input:focus { border-color: rgba(255, 255, 255, 0.6); }
 
 /* icons are exported at their exact Figma dimensions — let them size intrinsically */
 .icon { flex: none; }
@@ -1277,7 +1333,7 @@ button, input { font: inherit; color: inherit; }
 .footer-wrap {
   position: relative;
   overflow: hidden;
-  background: var(--c-dark-bg);
+  background: var(--c-dark-fg);
 }
 .footer-wrap__dark {
   position: absolute;
@@ -1288,120 +1344,155 @@ button, input { font: inherit; color: inherit; }
   pointer-events: none;
 }
 
+/* ------------------------------------------------------------
+   A full-screen footer on the site's ink, laid out on one
+   four-column grid that the top and the bottom of it share.
+
+   Top: the newsletter holds the left half — a two-line heading,
+   one line on what it is, and the signup form — and the site's
+   link groups take the right half, two columns of them in two
+   rows, each under a mono eyebrow. Bottom, held to the foot of
+   the panel: the brand on the left, the copyright, the legal
+   links stacked, and the social marks on the right, each on one
+   of the same four columns so the two rows line up.
+
+   The panel runs to the page gutter rather than the 1280px
+   container, the way the hero and the routes row do, and stands
+   a full viewport tall, so the space between the two rows is
+   part of the composition rather than something to fill.
+   ------------------------------------------------------------ */
 .site-footer {
   position: relative;
-  background: var(--c-dark-bg);
-  color: var(--c-white);
-  padding: var(--sec-md) var(--page-pad) 40px;
-}
-.site-footer__inner {
-  width: 100%;
-  max-width: var(--container);
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  min-height: 100vh;
+  background: var(--c-dark-fg);
+  color: var(--c-white);
+  /* the fixed bar sits over the top of the panel when the page is
+     scrolled to its end, so the content starts clear of it */
+  padding: calc(var(--nav-h) + 28px) var(--page-pad) 36px;
 }
-/* Label voice for every eyebrow in here — DM Mono, uppercase, set
-   a step down from the body so four columns of links can breathe. */
+.site-footer__inner {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  gap: 96px;
+}
+/* The shared grid: the left half for the signup, the right half
+   split between two link columns. */
+.site-footer__top,
+.site-footer__bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1fr);
+  column-gap: 32px;
+}
+.site-footer__top { align-items: start; }
+
+/* Label voice for every eyebrow in here — DM Mono, uppercase, a step
+   down from the body, grey against the ink. */
 .site-footer__eyebrow {
   font-size: var(--t-xs);
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.5);
 }
 
-/* newsletter band */
-.site-footer__head {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px 64px;
-  align-items: end;
+/* newsletter */
+.site-footer__signup {
+  grid-column: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  max-width: 620px;
 }
-.site-footer__head-col { display: flex; flex-direction: column; gap: 16px; }
-.site-footer__head-col.is--form { gap: 12px; max-width: 440px; width: 100%; margin-left: auto; }
-.site-footer__lede {
+.site-footer__title {
   font-family: var(--font-display);
-  font-size: var(--t-h4);
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-  max-width: 13em;
+  font-weight: var(--fw-body);
+  font-size: clamp(30px, 2.7vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
 }
-.site-footer__form { display: flex; gap: 12px; }
-.site-footer__form input {
-  flex: 1 0 0;
+.site-footer__desc {
+  font-size: var(--t-rg);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 36em;
+}
+/* The shared form, a size up from the dropdown's: the reference's
+   52px field with the button standing on its own beside it. */
+.site-footer__signup .newsletter-form { margin-top: 12px; }
+.site-footer__signup .newsletter-form input { height: 52px; padding: 0 16px; }
+.site-footer__signup .newsletter-form .btn { height: 52px; padding: 0 32px; }
+
+/* link groups — a nested grid on the outer grid's right-hand pair of
+   columns, the same ratio and gutter, so its columns fall on theirs */
+.site-footer__groups {
+  grid-column: 3 / 5;
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 88px 32px;
+  align-items: start;
+}
+.site-footer__group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   min-width: 0;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid var(--c-border-dark);
-  border-radius: var(--radius);
-  padding: 9px 12px;
-  color: var(--c-white);
 }
-.site-footer__form input::placeholder { color: rgba(255, 255, 255, 0.6); }
-.site-footer__fine { font-size: var(--t-xs); line-height: 1.5; color: rgba(255, 255, 255, 0.5); }
-
-/* link columns */
-.site-footer__nav {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 40px;
-  padding-top: 48px;
-  border-top: 1px solid var(--c-border-dark);
-}
-.site-footer__col { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
-.site-footer__links { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
-/* Oversized for a footer but nowhere near display size — four columns
-   of real navigation have to fit across the container. */
-.site-footer__a {
-  font-family: var(--font-display);
-  font-size: clamp(16px, 1.35vw, 21px);
-  line-height: 1.3;
-  letter-spacing: -0.02em;
-}
-
-/* client strip */
-.site-footer__clients {
+.site-footer__links {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding-top: 48px;
-  border-top: 1px solid var(--c-border-dark);
+  align-items: flex-start;
+  gap: 5px;
 }
-.site-footer__logo-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 20px 28px;
+.site-footer__links a {
+  display: inline-block;
+  font-size: 17px;
+  line-height: 1.35;
+  white-space: nowrap;
 }
-/* The practice marks run from near-square to very wide, so each gets the
-   same box and is fitted inside it — the same treatment the logo wall on
-   the home page gives them. */
-.site-footer__logo-row img { width: 122px; height: 34px; object-fit: contain; object-position: left center; opacity: 0.6; }
 
-/* wordmark */
-.site-footer__wordmark-row {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding-top: 48px;
-  border-top: 1px solid var(--c-border-dark);
-}
-.site-footer__wordmark { display: block; width: 100%; }
-.site-footer__wordmark svg { width: 100%; height: auto; }
-
-/* credits */
-.site-footer__credits {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 24px;
-  padding-top: 32px;
-  border-top: 1px solid var(--c-border-dark);
-  font-size: var(--t-xs);
+/* bottom row */
+.site-footer__bottom {
+  align-items: end;
+  margin-top: auto;
+  font-size: var(--t-sm);
+  line-height: 1.6;
   color: rgba(255, 255, 255, 0.5);
 }
-.site-footer__credits-left { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
-.site-footer__social { display: flex; gap: 12px; }
-.site-footer__social a { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; opacity: 0.55; transition: opacity .15s ease; }
+.site-footer__bottom a { transition: color .2s ease; }
+.site-footer__bottom a:hover { color: var(--c-white); }
+.site-footer__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--c-white);
+}
+.site-footer__brand img { width: 40px; height: 40px; flex: none; }
+.site-footer__brand-name {
+  font-family: var(--font-display);
+  font-weight: var(--fw-heading-bold);
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.site-footer__legal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+.site-footer__legal a { display: inline-block; }
+.site-footer__end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+  white-space: nowrap;
+}
+.site-footer__social { display: flex; gap: 14px; }
+.site-footer__social a { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; opacity: 0.55; transition: opacity .15s ease; }
 .site-footer__social a:hover { opacity: 1; }
 .site-footer__social img { filter: brightness(0) invert(1); }
 
@@ -1474,13 +1565,17 @@ button, input { font: inherit; color: inherit; }
   .creds__media .ph:first-child { margin-top: 0; height: 320px; }
   .creds__media .ph:last-child { height: 320px; }
 
-  .site-footer__head { grid-template-columns: 1fr; }
-  .site-footer__head-col.is--form { margin-left: 0; max-width: 100%; }
-  .site-footer__nav { grid-template-columns: repeat(2, 1fr); gap: 32px 24px; padding-top: 40px; }
-  .site-footer__clients, .site-footer__wordmark-row { padding-top: 40px; }
-  .site-footer__logo-row { gap: 16px 24px; }
-  .site-footer__logo-row img { width: 92px; height: 24px; }
-  .site-footer__credits { flex-direction: column; align-items: flex-start; }
+  /* The split composition is a desktop one. Below this the panel goes
+     back to ordinary flow: signup, then the link groups two across, then
+     the bottom row stacked. */
+  .site-footer { min-height: 0; padding-top: 64px; }
+  .site-footer__inner { gap: 64px; }
+  .site-footer__top, .site-footer__bottom { grid-template-columns: 1fr; }
+  .site-footer__top { row-gap: 48px; }
+  .site-footer__signup, .site-footer__groups { grid-column: auto; }
+  .site-footer__groups { grid-template-columns: 1fr 1fr; gap: 40px 24px; }
+  .site-footer__bottom { row-gap: 20px; }
+  .site-footer__end { justify-content: flex-start; }
 
   .logos { padding: 80px 0; }
   .cta { padding: 120px var(--page-pad); }
@@ -1498,6 +1593,6 @@ button, input { font: inherit; color: inherit; }
   .compare__card { padding: 28px; }
   .cta__heading { flex-direction: column; gap: 0; }
   .cta__portrait { position: relative; top: 0; left: 0; transform: rotate(-5.94deg); margin: 8px 0; }
-  .site-footer__nav { grid-template-columns: 1fr; }
-  .site-footer__form { flex-direction: column; align-items: stretch; }
+  .site-footer__groups { grid-template-columns: 1fr; }
+  .site-footer__signup .newsletter-form { flex-direction: column; align-items: stretch; }
 }

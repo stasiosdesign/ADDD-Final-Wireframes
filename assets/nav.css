@@ -204,23 +204,28 @@
   overflow: hidden;
 }
 
-.mega-nav__dropdown-inner { display: flex; min-height: 22em; }
+/* The dropdown is as tall as whichever panel is open — each panel sets
+   its own height from its content, and the container animates between
+   the two. */
+.mega-nav__dropdown-inner { display: flex; align-items: stretch; }
 
 .mega-nav__panel-col {
-  grid-row-gap: 2.25em;
   border-right: 1px solid var(--c-border);
   flex-flow: column;
   flex: 1;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 3.25em 3em;
+  gap: 1.5em;
+  min-width: 0;
+  padding: 2.5em 3em;
   display: flex;
 }
 .mega-nav__panel-col:last-of-type { border-right: none; }
+/* The newsletter panel: tinted, and a fixed width, so the two research
+   columns split what is left evenly. */
 .mega-nav__panel-col.is--colored {
   background-color: var(--c-light-fg);
-  border-left: 1px solid var(--c-border);
-  flex: 0 0 25em;
+  flex: 0 0 24em;
 }
 
 .mega-nav__panel-label {
@@ -230,106 +235,100 @@
 }
 
 .mega-nav__panel-list {
-  grid-row-gap: 1.5em;
   flex-flow: column;
   align-items: stretch;
+  gap: 1.25em;
   width: 100%;
   margin: 0;
   padding: 0;
   list-style: none;
   display: flex;
 }
+/* A list of plain rows rules them off from each other. */
+.mega-nav__panel-list.is--divided { gap: 0; }
+.mega-nav__panel-list.is--divided > li + li {
+  margin-top: 1.5em;
+  padding-top: 1.5em;
+  border-top: 1px solid var(--c-border);
+}
 
-/* Icon chip on the left, wording on the right. The chip is deliberately
-   small against the type — it marks the row rather than leading it. */
+/* Icon chip on the left, wording on the right, the two centred on each
+   other: the chip is tall enough to carry a title and its line of
+   description beside it. */
 .mega-nav__panel-link {
   color: var(--c-text);
   flex-flow: row;
   justify-content: flex-start;
-  align-items: flex-start;
-  gap: 1em;
+  align-items: center;
+  gap: 1.125em;
+  width: 100%;
   padding: 0;
   text-decoration: none;
   display: flex;
 }
 .mega-nav__panel-link-body {
-  grid-row-gap: .125em;
   flex-flow: column;
   align-items: flex-start;
-  gap: .125em;
+  gap: .1875em;
   min-width: 0;
   display: flex;
 }
 
-/* The artwork is placeholder — swap the <svg> inside this span and nothing
-   else has to move. Size, tint and corner all live on the chip, and the
-   icons draw in currentColor, so a replacement only needs a 24x24 viewBox
-   and currentColor on its strokes or fills. */
+/* The chip: a 56px square on the site radius with the icon centred in it
+   at 24px. Light-tinted as standard; the lead row of a column takes the
+   ink so it reads first. Every chip turns the accent on hover — the same
+   mark the arrow chips make elsewhere. The icons draw in currentColor,
+   so a replacement only needs a 24x24 viewBox. */
 .mega-nav__panel-icon {
   flex: none;
   align-items: center;
   justify-content: center;
-  width: 2.5em;
-  height: 2.5em;
-  /* nudges the chip onto the cap height of the title beside it */
-  margin-top: .125em;
+  width: 3.5em;
+  height: 3.5em;
   border-radius: var(--radius);
   background-color: var(--c-light-fg);
   color: var(--c-text);
   display: flex;
-  transition: background-color .2s ease;
+  transition: background-color .25s ease, color .25s ease;
 }
-.mega-nav__panel-icon svg { width: 1.25em; height: 1.25em; }
-.mega-nav__panel-link:hover .mega-nav__panel-icon { background-color: rgba(20, 20, 20, .1); }
+.mega-nav__panel-icon svg { width: 1.5em; height: 1.5em; }
+.mega-nav__panel-link.is--lead .mega-nav__panel-icon {
+  background-color: var(--c-text);
+  color: var(--c-white);
+}
+.mega-nav__panel-link:hover .mega-nav__panel-icon {
+  background-color: var(--c-red);
+  color: var(--c-white);
+}
 
 .mega-nav__panel-link:hover .mega-nav__panel-link-text { opacity: .6; }
-.mega-nav__panel-link-text { font-size: 1.125em; font-weight: 400; line-height: 1.35; }
+.mega-nav__panel-link-text { font-size: 1.125em; font-weight: 400; line-height: 1.3; transition: opacity .2s ease; }
 .mega-nav__panel-link-desc { color: #6b6b6b; font-size: .9375em; font-weight: 400; line-height: 1.4; }
 
-/* Lead item in a panel list — the same link, one step up in size, with the
-   brand red carrying the tag. */
-.mega-nav__panel-link-head {
-  grid-column-gap: .625em;
-  align-items: center;
-  display: flex;
-}
+/* Lead item in a column — the same row, one step up in size. */
+.mega-nav__panel-link.is--lead .mega-nav__panel-link-text { font-size: 1.25em; }
 
-.mega-nav__panel-link.is--lead .mega-nav__panel-link-text { font-size: 1.375em; }
+/* Services panel — the four pathways as four panels built into the
+   dropdown, on the language of the routes cards on the home page: a
+   light-tinted media area carrying the engagement label as a chip
+   top-left, the arrow chip top-right and the service's own icon in the
+   middle, then the name and one line of description on white beneath.
+   The same icon stands for the same service in both places.
 
-.mega-nav__badge {
-  color: var(--c-white);
-  background-color: var(--c-red);
-  border-radius: var(--radius);
-  padding: .25em .5em;
-  font-size: .6875em;
-  line-height: 1;
-}
-
-/* Services panel — the four pathways as cards, built on the same
-   language as the routes cards on the home page: a white panel with a
-   hairline rule, a light-tinted media area carrying the engagement
-   label as a chip top-left, the arrow chip top-right and the service's
-   own icon in the middle, then the name and one line of description
-   under it. The same icon stands for the same service in both places.
-
-   The one deliberate difference is height. A dropdown has to be read
-   at a glance, so the media area is a short band rather than the
-   routes card's square, and the body is tighter — a little over a
-   third of the home page card. The row is centred in the panel, which
-   keeps the dropdown at the height it already had. */
-/* Four short cards need less room than the resources panel's three
-   columns, and the dropdown should be no taller than its content. */
-[data-nav-content="services"] .mega-nav__dropdown-inner { min-height: 0; }
+   Unlike the routes row there is no gutter and no outer frame. The four
+   run edge to edge and full height, ruled off from each other by a
+   hairline, so they read as one dropdown in four parts rather than as
+   cards sitting inside it. */
 .mega-nav__panel-col.is--services {
   flex: 1;
-  padding: 2.5em 3em;
-  justify-content: center;
+  gap: 0;
+  padding: 0;
   align-items: stretch;
 }
 
 .mega-nav__service-grid {
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.25em;
+  gap: 0;
   align-items: stretch;
   width: 100%;
   display: grid;
@@ -337,194 +336,173 @@
 
 .mega-nav__service-card {
   flex-flow: column;
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius);
-  overflow: hidden;
+  border-right: 1px solid var(--c-border);
   background-color: var(--c-white);
   color: var(--c-text);
+  min-width: 0;
   text-decoration: none;
   display: flex;
 }
+.mega-nav__service-card:last-child { border-right: none; }
 /* No lift on hover, unlike the routes cards: the panel animates these
-   very elements in on x, so GSAP owns their transform and a CSS one
-   would never apply. The nav's own hover language carries it instead —
-   the title fades and the arrow chip takes the accent. */
+   very elements in, so GSAP owns their transform and a CSS one would
+   never apply. The nav's own hover language carries it instead — the
+   title fades and the arrow chip takes the accent. */
 
 .mega-nav__service-card-media {
   position: relative;
   flex: none;
   align-items: center;
   justify-content: center;
-  height: 7em;
+  height: 11.5em;
   /* the icon centres in the space the chips leave, not in the whole
-     band — on a band this short, centring on the box puts it against
-     them */
-  padding-top: 1.5em;
+     band */
+  padding-top: 1.25em;
   background-color: var(--c-light-fg);
   display: flex;
 }
-/* The engagement label, sitting on the band as a chip. */
+/* The engagement label, sitting on the band as a chip. Inset so its
+   text lines up with the body text under it: the body's 1.5em less the
+   chip's own .5em. */
 .mega-nav__service-card-label {
   position: absolute;
-  top: .75em;
-  left: .75em;
+  top: 1em;
+  left: 1em;
   padding: .375em .5em;
   border-radius: var(--radius);
   background-color: var(--c-white);
 }
-/* The card's only affordance, and the site's one red: the arrow chip
-   takes the accent on hover exactly as it does on the routes cards. */
+/* The panel's one affordance: the arrow chip takes the accent on hover
+   exactly as it does on the routes cards. */
 .mega-nav__service-card-arrow {
   position: absolute;
-  top: .75em;
-  right: .75em;
+  top: 1em;
+  right: 1em;
   align-items: center;
   justify-content: center;
-  width: 1.875em;
-  height: 1.875em;
+  width: 2.25em;
+  height: 2.25em;
   border-radius: var(--radius);
   background-color: var(--c-text);
   color: var(--c-white);
   display: flex;
   transition: background-color .25s ease;
 }
-.mega-nav__service-card-arrow svg { width: .9375em; height: .9375em; transform: rotate(-45deg); }
+.mega-nav__service-card-arrow svg { width: 1.125em; height: 1.125em; transform: rotate(-45deg); }
 .mega-nav__service-card:hover .mega-nav__service-card-arrow { background-color: var(--c-red); }
 
 .mega-nav__service-card-icon { color: var(--c-text); display: block; }
-.mega-nav__service-card-icon svg { width: 2em; height: 2em; display: block; }
+.mega-nav__service-card-icon svg { width: 2.5em; height: 2.5em; display: block; }
 
 .mega-nav__service-card-text {
-  grid-row-gap: .25em;
   flex-flow: column;
   flex: 1;
   align-items: flex-start;
-  gap: .25em;
-  padding: 1em 1.125em 1.125em;
+  gap: .375em;
+  padding: 1.5em 1.5em 1.75em;
   display: flex;
 }
+.mega-nav__service-card .mega-nav__panel-link-text { font-size: 1.25em; }
 
 /* Same fade the panel links use, so hover reads the same across the nav. */
 .mega-nav__service-card:hover .mega-nav__panel-link-text { opacity: .6; }
 
-/* Stacked, each card keeping its shape — only the band shortens, so a
-   column of four still fits the slide-over panel. */
-@media screen and (max-width: 991px) {
-  .mega-nav__panel-col.is--services { padding: 1.25em; }
-  .mega-nav__service-grid { grid-template-columns: 1fr; gap: 1em; }
-  .mega-nav__service-card-media { height: 5.5em; }
-}
-
-.mega-nav__card {
-  background-color: var(--c-white);
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius);
-  flex-flow: column;
-  width: 100%;
-  display: flex;
-  overflow: hidden;
-}
-.mega-nav__card-visual { width: 100%; height: 8em; background: var(--c-placeholder); }
-.mega-nav__card-content {
-  grid-row-gap: 1.25em;
-  flex-flow: column;
-  align-items: flex-start;
-  padding: 1.25em;
-  display: flex;
-}
-.mega-nav__card-text { grid-row-gap: .125em; flex-flow: column; align-items: flex-start; display: flex; }
-.mega-nav__card-cta {
-  color: var(--c-white);
-  background-color: #141414;
-  border-radius: var(--radius);
-  justify-content: center;
-  align-items: center;
-  padding: .5em 1em;
-  text-decoration: none;
-  display: flex;
-}
-.mega-nav__card-cta-label { font-size: .9375em; font-weight: 400; line-height: 1.2; }
-.mega-nav__card-cta-icon { width: 1.25em; }
-
-/* The shared .inline-form lays out on one row against a full-width page
-   section; the dropdown column is far narrower, so it stacks here. Input
-   chrome matches the .field inputs used elsewhere on the site. */
-.mega-nav__card-form {
-  flex-flow: column;
-  grid-row-gap: .75em;
-  gap: .75em;
-  max-width: none;
-}
-.mega-nav__card-form input {
-  background-color: var(--c-light-fg);
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius);
-  flex: none;
-  width: 100%;
-  padding: .625em .75em;
-  font-family: var(--font-body);
-  font-size: .9375em;
-}
-.mega-nav__card-form .btn { width: 100%; font-size: .9375em; }
-
-/* The form and the secondary link read as one block, so they sit closer to
-   each other than the 1.25em the card content otherwise uses. */
-.mega-nav__card-actions {
-  grid-row-gap: .75em;
-  flex-flow: column;
-  align-items: flex-start;
-  gap: .75em;
-  width: 100%;
-  display: flex;
-}
-.mega-nav__card-sub {
-  color: #6b6b6b;
-  font-size: .875em;
-  line-height: 1.2;
-  text-decoration: none;
-}
-.mega-nav__card-sub:hover { color: var(--c-text); }
-
-/* Featured report — one focal point under the Reports link rather than a
-   second list. Built from the card parts already used in this dropdown, at
-   thumbnail scale so the research column stays the same height as its
-   neighbours. */
+/* Featured report — the latest report as one focal card under the
+   Reports link, on the insight card's parts at thumbnail scale: the
+   real cover image bleeding to the card's left edge at a report cover's
+   proportion, and the label, title and a call to read it beside it. */
 .mega-nav__featured {
   color: var(--c-text);
   background-color: var(--c-white);
   border: 1px solid var(--c-border);
   border-radius: var(--radius);
-  grid-column-gap: .875em;
-  align-items: center;
-  gap: .875em;
+  align-items: stretch;
   width: 100%;
-  padding: .75em;
+  min-height: 6.75em;
   text-decoration: none;
   display: flex;
   overflow: hidden;
+  transition: border-color .25s ease;
 }
+.mega-nav__featured:hover { border-color: rgba(20, 20, 20, .35); }
 .mega-nav__featured:hover .mega-nav__panel-link-text { opacity: .6; }
-.mega-nav__card-visual.is--thumb {
-  border-radius: var(--radius);
-  flex: none;
-  width: 4.5em;
-  height: 4.5em;
+.mega-nav__featured-media {
+  position: relative;
+  flex: 0 0 5.5em;
+  background-color: var(--c-light-fg);
+  overflow: hidden;
 }
+.mega-nav__featured-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .6s cubic-bezier(0.625, 0.05, 0, 1);
+}
+.mega-nav__featured:hover .mega-nav__featured-media img { transform: scale(1.05); }
 .mega-nav__featured-text {
-  grid-row-gap: .25em;
+  flex: 1;
   flex-flow: column;
+  justify-content: center;
   align-items: flex-start;
-  gap: .25em;
+  gap: .375em;
   min-width: 0;
+  padding: 1em 1.25em;
   display: flex;
 }
-.mega-nav__featured .mega-nav__panel-link-text { font-size: 1em; }
+.mega-nav__featured-label { color: #6b6b6b; font-size: .6875em; }
+.mega-nav__featured .mega-nav__panel-link-text { font-size: 1.0625em; line-height: 1.3; transition: opacity .2s ease; }
 .mega-nav__featured-cta {
   color: var(--c-red);
   font-size: .875em;
   font-weight: 400;
   line-height: 1.2;
+  margin-top: .25em;
 }
+
+/* Newsletter panel — the tinted column is the subscription panel
+   itself: the name and one line on what it is at the top, the signup
+   form and the link to the archive held to the foot, level with the
+   featured report beside it. The form is the shared .newsletter-form
+   from styles.css, the same one the footer uses. */
+.mega-nav__newsletter {
+  flex-flow: column;
+  flex: 1;
+  align-items: flex-start;
+  gap: 1.5em;
+  width: 100%;
+  display: flex;
+}
+.mega-nav__newsletter-text {
+  flex-flow: column;
+  align-items: flex-start;
+  gap: .375em;
+  display: flex;
+}
+.mega-nav__newsletter-title {
+  font-family: var(--font-display);
+  font-size: 1.5em;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+}
+.mega-nav__newsletter-actions {
+  flex-flow: column;
+  align-items: flex-start;
+  gap: .875em;
+  width: 100%;
+  margin-top: auto;
+  display: flex;
+}
+.mega-nav__newsletter-link {
+  color: #6b6b6b;
+  font-size: .875em;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: color .2s ease;
+}
+.mega-nav__newsletter-link:hover { color: var(--c-text); }
 
 /* Centre the link list against the bar itself rather than the space
    left over between the logo and the actions. Taking it out of flow
@@ -543,8 +521,9 @@
 @media screen and (max-width: 1200px) {
   .mega-nav__bar-list { grid-column-gap: 1.25em; }
   .mega-nav__bar-cta { padding: 0 1.5em; }
-  .mega-nav__panel-col { padding: 2.5em 2em; }
+  .mega-nav__panel-col { padding: 2em; }
   .mega-nav__panel-col.is--colored { flex: 0 0 20em; }
+  .mega-nav__service-card-media { height: 10em; }
 }
 
 @media screen and (max-width: 991px) {
@@ -615,16 +594,24 @@
   .mega-nav__dropdown-container { height: 100%; overflow: auto; }
   .mega-nav__dropdown-bg { display: none; }
   .mega-nav__dropdown-panel { background-color: var(--c-white); bottom: 0; overflow: auto; }
-  .mega-nav__dropdown-inner { flex-flow: column; min-height: 0; }
+  .mega-nav__dropdown-inner { flex-flow: column; }
 
   .mega-nav__panel-col {
     border-bottom: 1px solid var(--c-border);
     border-right-style: none;
-    grid-row-gap: 1.5em;
+    gap: 1.25em;
     padding: 1.75em 1.25em;
   }
-  .mega-nav__panel-col.is--colored { flex: 1; border-left: none; }
+  .mega-nav__panel-col.is--colored { flex: 1; }
   .mega-nav__panel-label { width: 100%; }
+
+  /* Stacked, each pathway keeping its shape — only the band shortens, so
+     a column of four still fits the slide-over panel. */
+  .mega-nav__panel-col.is--services { padding: 0; }
+  .mega-nav__service-grid { grid-template-columns: 1fr; }
+  .mega-nav__service-card { border-right: none; border-bottom: 1px solid var(--c-border); }
+  .mega-nav__service-card:last-child { border-bottom: none; }
+  .mega-nav__service-card-media { height: 6.5em; }
 }
 
 @media screen and (max-width: 479px) {
