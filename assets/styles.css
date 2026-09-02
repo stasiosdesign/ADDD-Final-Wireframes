@@ -519,6 +519,46 @@ button, input { font: inherit; color: inherit; }
    section follows it up the page. */
 .approach__slides { position: relative; }
 
+/* The last step carries the shutter, so it needs to be the positioned,
+   clipped box the rows are anchored inside. */
+.approach__slide[data-shutter-scroll-section] {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------
+   shutter scroll transition (see assets/site.js)
+   ------------------------------------------------------------
+   The reference component, dropped onto the last approach step in
+   its "cover" mode: rows grow from the bottom of the step as it
+   scrolls out, so the card is closed over rather than simply
+   leaving. currentColor is the routes section's own ground, which
+   is what makes the two read as one move.
+
+   One adaptation: the row height is a slice of the viewport rather
+   than a fixed em, because the step is a viewport tall — 18 rows at
+   6svh always cover it, at any screen height.
+   ------------------------------------------------------------ */
+.shutter-scroll-transition {
+  z-index: 10;
+  pointer-events: none;
+  color: var(--c-dark-fg);
+  position: absolute;
+  inset: auto 0% 0%;
+}
+[data-shutter-scroll-panel] {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+[data-shutter-scroll-row] {
+  height: 6svh;
+  width: 100%;
+  background-color: currentColor;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
 /* A card stacks under the fixed bar rather than behind it, so it is
    a viewport less the nav — the same --nav-h the hero clears. */
 .approach__slide {
@@ -632,7 +672,14 @@ button, input { font: inherit; color: inherit; }
 /* ============================================================
    5 — routes
    ============================================================ */
-.routes { padding-top: 78px; }
+/* The section the shutter hands over to — the same ink the rows are
+   painted in, so the two meet as one field rather than two panels.
+   A touch more room above the eyebrow than the section default, which
+   is the separation after the last card. */
+.routes {
+  padding-top: 118px;
+  background: var(--c-dark-fg);
+}
 
 /* ------------------------------------------------------------
    routes cards
