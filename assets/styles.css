@@ -1356,9 +1356,47 @@ button, input { font: inherit; color: inherit; }
   background: var(--c-dark-bg);
   color: var(--c-white);
   padding: 186px var(--page-pad);
-  text-align: center;
 }
-.cta__inner { position: relative; display: inline-flex; flex-direction: column; align-items: center; gap: 32px; }
+/* The page's closing composition, set the way the hero and the routes
+   intro are rather than as a centred stack: a label holding the left
+   edge, the heading and its buttons set in from it, and the mark out on
+   the right gutter. */
+.cta__grid {
+  display: flex;
+  align-items: flex-start;
+  gap: 64px;
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  text-align: left;
+}
+/* The hero's own lede width, so the closing heading starts on roughly
+   the line the opening one does. */
+.cta__label { flex: 0 0 clamp(280px, 24vw, 400px); }
+/* Takes the slack, so the mark is carried out to the right edge while
+   the heading and the buttons stay on one left edge of their own. */
+.cta__body {
+  flex: 0 1 auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* Enough for the buttons to clear the portrait tucked between the two
+     words above them: it hangs 155px below the heading's top, and the
+     heading is 86 of those. Centred, the buttons sat under the picture
+     and were let through on z-index; on one left edge they read better
+     out from under it. */
+  gap: 96px;
+}
+/* The same arrow the approach cards carry, at the same size, turned to
+   point back down into the buttons. */
+.cta__mark {
+  flex: none;
+  display: block;
+  width: clamp(40px, 4vw, 64px);
+  transform: rotate(135deg);
+}
+.cta__mark svg { width: 100%; height: auto; display: block; }
 .cta__heading { position: relative; display: flex; align-items: center; gap: 130px; }
 .cta__portrait {
   position: absolute;
@@ -1632,6 +1670,13 @@ button, input { font: inherit; color: inherit; }
 
   .logos { padding: 80px 0; }
   .cta { padding: 120px var(--page-pad); }
+  /* The split is a desktop composition, as it is in the hero: stacked,
+     the label leads and the mark has no gutter left to sit in. */
+  .cta__grid { flex-direction: column; gap: 32px; }
+  .cta__label { flex: none; }
+  /* The portrait is smaller here but still hangs over the buttons. */
+  .cta__body { margin-right: 0; gap: 88px; }
+  .cta__mark { display: none; }
   .cta__heading { gap: 70px; }
   .cta__portrait { width: 140px; height: 176px; top: -46px; }
 
@@ -1645,6 +1690,9 @@ button, input { font: inherit; color: inherit; }
   .card__body--lg { padding: 28px; }
   .compare__card { padding: 28px; }
   .cta__heading { flex-direction: column; gap: 0; }
+  /* In flow at this width, so nothing is hanging over the buttons and
+     the row can close back up. */
+  .cta__body { gap: 40px; }
   .cta__portrait { position: relative; top: 0; left: 0; transform: rotate(-5.94deg); margin: 8px 0; }
   .site-footer__groups { grid-template-columns: 1fr; }
   .site-footer__signup .newsletter-form { flex-direction: column; align-items: stretch; }
