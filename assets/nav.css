@@ -5,18 +5,46 @@
 
 [data-menu-wrap] { --nav-height: 4.6em; }
 
+/* Two navigation states, one implementation.
+   Every colour the bar paints itself with is a variable declared here,
+   so the dark state is a block of eight redeclarations rather than a
+   second copy of the navbar. Light is the default; a page that marks
+   itself .page--dark takes the dark set, and .mega-nav.is--dark is the
+   escape hatch for anything that needs to set it directly. */
 .mega-nav {
+  --nav-bg: var(--c-white);
+  --nav-fg: var(--c-text);
+  --nav-rule: var(--c-border);
+  --nav-cta-bg: #141414;
+  --nav-cta-fg: var(--c-white);
+  --nav-alt-bg: var(--c-white);
+  --nav-alt-fg: var(--c-text);
+  --nav-alt-hover: var(--c-light-fg);
+  --nav-burger-bg: var(--c-light-fg);
+
   z-index: 100;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
 }
+body:has(.page--dark) .mega-nav,
+.mega-nav.is--dark {
+  --nav-bg: var(--c-dark-fg);
+  --nav-fg: var(--c-white);
+  --nav-rule: var(--c-border-dark);
+  --nav-cta-bg: var(--c-white);
+  --nav-cta-fg: var(--c-text);
+  --nav-alt-bg: transparent;
+  --nav-alt-fg: var(--c-white);
+  --nav-alt-hover: rgba(255, 255, 255, .1);
+  --nav-burger-bg: rgba(255, 255, 255, .12);
+}
 
 .mega-nav__bar {
   z-index: 3;
-  background-color: var(--c-white);
-  border-bottom: 1px solid var(--c-border);
+  background-color: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-rule);
   width: 100%;
   position: relative;
 }
@@ -76,7 +104,7 @@
 .mega-nav__bar-action { display: flex; }
 
 .mega-nav__bar-link {
-  color: var(--c-text);
+  color: var(--nav-fg);
   background-color: transparent;
   border: 0;
   justify-content: flex-start;
@@ -100,10 +128,12 @@
   display: none;
 }
 
-/* Sign in (light) and Contact (dark) blocks */
+/* Sign in (light) and Contact (dark) blocks — inverted as a pair in
+   the dark state, so the Contact block stays the one that reads as
+   filled against whatever the bar is painted. */
 .mega-nav__bar-cta {
-  color: var(--c-white);
-  background-color: #141414;
+  color: var(--nav-cta-fg);
+  background-color: var(--nav-cta-bg);
   justify-content: center;
   align-items: center;
   gap: .25em;
@@ -113,19 +143,19 @@
   font-weight: 400;
   white-space: nowrap;
 }
-.mega-nav__bar-cta:hover { background-color: #141414; }
+.mega-nav__bar-cta:hover { background-color: var(--nav-cta-bg); }
 .mega-nav__bar-cta .mega-nav__bar-link-label { font-size: 1.0625em; font-weight: 400; }
 
 .mega-nav__bar-cta.is--secondary {
-  color: var(--c-text);
-  background-color: var(--c-white);
-  border-left: 1px solid var(--c-border);
+  color: var(--nav-alt-fg);
+  background-color: var(--nav-alt-bg);
+  border-left: 1px solid var(--nav-rule);
 }
-.mega-nav__bar-cta.is--secondary:hover { background-color: var(--c-light-fg); }
+.mega-nav__bar-cta.is--secondary:hover { background-color: var(--nav-alt-hover); }
 
 .mega-nav__burger {
   grid-row-gap: .2em;
-  background-color: var(--c-light-fg);
+  background-color: var(--nav-burger-bg);
   border: 0;
   border-radius: var(--radius);
   flex-flow: column;
@@ -139,7 +169,7 @@
 }
 .mega-nav__burger-line {
   z-index: 1;
-  background-color: var(--c-text);
+  background-color: var(--nav-fg);
   border-radius: var(--radius);
   flex: none;
   width: 1.25em;
@@ -546,7 +576,7 @@
   }
 
   .mega-nav__bar-link {
-    border-bottom: 1px solid var(--c-border);
+    border-bottom: 1px solid var(--nav-rule);
     width: 100%;
     padding: .75em 0;
   }
@@ -565,7 +595,7 @@
     flex: 1;
     text-align: center;
   }
-  .mega-nav__bar-cta.is--secondary { border: 1px solid var(--c-border); }
+  .mega-nav__bar-cta.is--secondary { border: 1px solid var(--nav-rule); }
 
   .mega-nav__bar-inner {
     opacity: 0;
@@ -574,7 +604,11 @@
     left: 0;
     right: 0;
     top: var(--nav-height);
-    background-color: var(--c-white);
+    /* The drawer is the bar continued down the screen, so it takes the
+       bar's own theme — white on a light page, near-black on a dark
+       one — rather than a fixed white the dark state's links would
+       disappear into. */
+    background-color: var(--nav-bg);
     flex-flow: column;
     justify-content: space-between;
     align-items: center;

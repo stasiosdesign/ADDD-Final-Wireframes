@@ -171,17 +171,48 @@ button, input { font: inherit; color: inherit; }
 .section--light { background: var(--c-light-fg); }
 .section--dark { background: var(--c-dark-bg); color: var(--c-white); }
 
+/* The standard section intro — the same composition the hero, the
+   problem head and the routes head are set on, so every intro on the
+   site reads as one pattern: supporting copy holding the left edge in
+   a narrow column, and the heading pushed out to the right with its
+   eyebrow directly above it.
+
+   The eyebrow belongs to the heading and sits in its column, never
+   beside the copy. Both columns start on one line. */
 .section-title {
-  max-width: 768px;
-  margin: 0 auto;
+  max-width: var(--container);
+  margin: 0;
+  display: flex;
+  gap: 64px;
+  align-items: flex-start;
+  text-align: left;
+}
+/* The hero's lede measure, so the two openings share one left column. */
+.section-title > .text-md,
+.section-title > p:not([class]) {
+  flex: 0 0 clamp(280px, 24vw, 400px);
+  /* Optical, not box, alignment: the paragraph's 1.5 line-height opens
+     more space above its caps than the display face's 1.2 does, so the
+     three pieces are each pulled back by their own half-leading and
+     line up on the letters rather than on the boxes. */
+  margin-top: 0.26em;
+}
+.section-title__body {
+  flex: 0 1 auto;
+  margin-left: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  text-align: center;
+  align-items: flex-start;
+  gap: 20px;
 }
+.section-title__body > .tagline,
+.section-title__body > .tagline--plain { margin-top: 0.33em; }
+.section-title .h1,
 .section-title .h2 { width: 100%; }
-.section-title__body { display: flex; flex-direction: column; align-items: center; gap: 24px; width: 100%; }
+/* Only when the heading opens its column — with an eyebrow above it
+   the interval is already set by the stack's gap. */
+.section-title__body > .h1:first-child,
+.section-title__body > .h2:first-child { margin-top: -0.03em; }
 
 /* black placeholders standing in for photography / video */
 .ph {
@@ -1299,9 +1330,25 @@ button, input { font: inherit; color: inherit; }
    top-right, same body proportions. Everything structural is shared
    with .route-card above; only what the image and the metadata line
    need is declared here. */
-/* The archive pages centre their hero, and that cascades — the card
-   always sets its own alignment. */
 .insight-card { height: 100%; text-align: left; }
+/* A contained card rather than a picture with copy loose underneath
+   it: a tint a step off the page white, and a hairline to close it.
+   Light enough that a row of them still reads as content on the page
+   and not as a row of grey panels. */
+.insight-card {
+  background: #fafafa;
+  border: 1px solid rgba(20, 20, 20, .08);
+}
+.insight-card:hover { border-color: rgba(20, 20, 20, .16); }
+/* Shorter than the square the routes panel uses — the picture is
+   framing the piece, not carrying it, and the square was making the
+   card overshoot. */
+.insight-card__media { aspect-ratio: 4 / 3; }
+/* A step more compact all round, with the type and the hierarchy
+   inside it untouched. */
+.insight-card__body { gap: 6px; padding: 20px; }
+.insight-card__h { font-size: 20px; }
+.insight-card__meta { padding-top: 10px; }
 .insight-card__media { overflow: hidden; }
 /* The image fills the media area rather than sitting inside it as a
    framed picture — the card reads as one object, with the two chips
@@ -1410,7 +1457,6 @@ button, input { font: inherit; color: inherit; }
 .arrows button[disabled] { opacity: .35; cursor: default; }
 .arrows button[disabled]:hover { background: var(--c-light-fg); }
 
-.research__head { display: flex; flex-direction: column; gap: 24px; max-width: 768px; }
 .research__controls {
   display: flex;
   align-items: center;
@@ -1477,10 +1523,21 @@ button, input { font: inherit; color: inherit; }
   transform: rotate(135deg);
 }
 .cta__mark svg { width: 100%; height: auto; display: block; }
-/* One line of copy carrying the section on its own. Capped so it
-   breaks over three lines rather than running the full width of the
-   body column. */
-.cta__heading { max-width: 720px; }
+/* One line of copy carrying the section on its own. A step under the
+   --t-h1 it was set at, with the leading closed up so the three lines
+   read as one block, and capped so it breaks there rather than running
+   the full width of the body column. */
+.cta__heading {
+  max-width: 720px;
+  font-size: clamp(34px, 4.1vw, 58px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  /* Optical top alignment with the label opposite: the heading's line
+   box opens further above its caps than the 13px label's does, so the
+   difference is taken off here rather than trusting the two boxes. */
+  margin-top: -0.045em;
+}
+.cta__label { margin-top: 0.2em; }
 .cta .btn,
 .cta .button-043 { position: relative; z-index: 2; }
 
@@ -1709,6 +1766,18 @@ button, input { font: inherit; color: inherit; }
 
 @media (max-width: 991px) {
   :root { --t-h1: 48px; --t-h2: 38px; --t-h3: 32px; --t-h4: 28px; --sec-lg: 80px; --sec-md: 64px; --page-pad: 32px; }
+
+  /* The split is a desktop composition. Stacked, the heading and its
+     eyebrow lead and the supporting copy follows it — order reverses
+     the two, since the markup puts the left column first. */
+  .section-title { display: flex; flex-direction: column; gap: 0; }
+  .section-title__body { display: block; order: 1; }
+  .section-title__body > .tagline,
+  .section-title__body > .tagline--plain { margin: 0 0 12px; }
+  .section-title__body > .h1:first-child,
+  .section-title__body > .h2:first-child { margin-top: 0; }
+  .section-title > .text-md,
+  .section-title > p:not([class]) { order: 2; flex: none; margin-top: 20px; max-width: 640px; }
 
   /* The split is a desktop composition. Below this the hero goes back to
      ordinary flow and the three parts stack in reading order. */

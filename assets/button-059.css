@@ -144,9 +144,12 @@
    the right edge, replacing the old solid Contact block.
    ============================================================ */
 .mega-nav .button-059 {
-  --button-059-color: var(--c-white);
-  --button-059-color-background: #141414;
-  --button-059-color-focus: #141414;
+  /* Painted from the bar's own theme variables, so the blocks invert
+     with it in the dark state instead of staying near-black on
+     near-black. */
+  --button-059-color: var(--nav-cta-fg);
+  --button-059-color-background: var(--nav-cta-bg);
+  --button-059-color-focus: var(--nav-cta-bg);
   --button-059-padding: 0 2em;
   --button-059-border-radius: 0;
   --button-059-block-border-radius: 0;

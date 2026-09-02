@@ -9,7 +9,6 @@
 .pg-hero__grid { display: flex; gap: 80px; align-items: flex-start; }
 .pg-hero__col { flex: 1 0 0; min-width: 0; display: flex; flex-direction: column; gap: 32px; align-items: flex-start; }
 .pg-hero__col .h1, .pg-hero__col .h2 { max-width: 13ch; }
-.pg-hero--center { text-align: center; }
 
 /* full-bleed media band */
 .band { background: var(--c-placeholder); }
@@ -94,7 +93,9 @@
 .section--dark .table td { border-color: var(--c-border-dark); }
 
 /* filter pills */
-.filters { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 48px; }
+/* Left edge, following the intro above it now that it is a split
+   composition rather than a centred stack. */
+.filters { display: flex; justify-content: flex-start; gap: 8px; flex-wrap: wrap; margin-top: 48px; }
 .filters button {
   border: 1px solid var(--c-border);
   background: transparent;
@@ -133,7 +134,9 @@
 .form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .field { display: flex; flex-direction: column; gap: 8px; }
 .field > label { font-size: var(--t-sm); }
-.field input, .field select, .field textarea {
+/* Text inputs only — a radio or a checkbox inside a .field is a
+   control, not a box to fill the row with. */
+.field input:not([type="radio"]):not([type="checkbox"]), .field select, .field textarea {
   background: var(--c-light-fg);
   border: 1px solid var(--c-border);
   border-radius: var(--radius);
@@ -147,7 +150,8 @@
 .checkbox { display: flex; align-items: center; gap: 10px; font-size: var(--t-sm); }
 .inline-form { display: flex; gap: 12px; max-width: 460px; width: 100%; }
 .inline-form input { flex: 1 0 0; min-width: 0; }
-.section--dark .field input, .section--dark .field textarea, .section--dark .field select {
+.section--dark .field input:not([type="radio"]):not([type="checkbox"]), .section--dark .field textarea, .section--dark .field select,
+.page--dark .field input:not([type="radio"]):not([type="checkbox"]), .page--dark .field textarea, .page--dark .field select {
   background: rgba(255,255,255,.1);
   border-color: transparent;
   color: var(--c-white);
@@ -178,3 +182,31 @@
   .tile, .price-card { padding: 24px; }
   .table td + td, .table th + th { width: auto; }
 }
+
+/* ============================================================
+   page themes
+   ============================================================ */
+/* A page is light by default. .page--dark makes the whole page the
+   site's near-black — the same ink the footer is painted in, rather
+   than the #252525 an individual dark section uses — by redeclaring
+   --c-dark-bg on the page root. Every .section--dark, .pg-hero--dark
+   and the closing CTA already paint themselves from that token, so
+   they follow without a rule of their own and the page reads as one
+   continuous field instead of a stack of near-identical bands.
+   The nav picks the class up too (see nav.css). */
+.page--dark {
+  --c-dark-bg: var(--c-dark-fg);
+  background: var(--c-dark-fg);
+  color: var(--c-white);
+  /* native controls — checkboxes, radios, the select's own list —
+     render for the surface they are actually sitting on */
+  color-scheme: dark;
+}
+/* The hero and any plain section let the page's own ink through
+   rather than painting white over it. */
+.page--dark .pg-hero,
+.page--dark .section { background: transparent; }
+.page--dark .pg-hero--light,
+.page--dark .section--light { background: rgba(255, 255, 255, .06); }
+/* Rules and dividers flip to the light-on-dark pair. */
+.page--dark { --c-border: var(--c-border-dark); }
