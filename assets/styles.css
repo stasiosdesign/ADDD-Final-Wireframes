@@ -834,7 +834,16 @@ button, input { font: inherit; color: inherit; }
    Each item paints both panels, so the split reads as one fixed
    band while the content changes inside it.
    ------------------------------------------------------------ */
-.testimonials { position: relative; }
+/* Set off from the routes section above it, and its title carried in
+   to sit on the same line as the quote beneath — the band splits at
+   40%, so that is where the text column starts. */
+.testimonials {
+  position: relative;
+  margin-top: 96px;
+}
+.testimonials__title {
+  margin: 0 0 40px calc(40% + var(--page-pad));
+}
 .testimonial-lines { position: relative; }
 .testimonial-lines__list {
   display: grid;
@@ -944,6 +953,8 @@ button, input { font: inherit; color: inherit; }
 .testimonial-lines__arrow { width: 12px; height: 12px; display: block; }
 
 @media screen and (max-width: 991px) {
+  .testimonials { margin-top: 64px; }
+  .testimonials__title { margin-left: var(--page-pad); margin-bottom: 24px; }
   .testimonial-lines__item { grid-template-columns: 1fr; min-height: 0; }
   .testimonial-lines__aside { padding: 40px var(--page-pad) 120px; }
   .testimonial-lines__firm { margin-left: 0; gap: 24px; }
