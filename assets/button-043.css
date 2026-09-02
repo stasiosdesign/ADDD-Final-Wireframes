@@ -9,8 +9,8 @@
   --button-043-icon-color-background: #fff;
   --button-043-color-focus: #000;
   --button-043-padding: 0.6875em 0.6875em 0.6875em 0.9375em;
-  --button-043-border-radius: 0.25em;
-  --button-043-icon-border-radius: 0.125em;
+  --button-043-border-radius: var(--radius);
+  --button-043-icon-border-radius: var(--radius);
   --button-043-text-duplicate-distance: 1.5em;
   --button-043-focus-inset: -0.125em;
   --button-043-ease-click: cubic-bezier(0.4, 0, 0.2, 1);
@@ -186,8 +186,8 @@
   --button-043-color-focus: var(--c-text);
 
   /* squared off, matching the 4px the .btn utility uses site-wide */
-  --button-043-border-radius: 4px;
-  --button-043-icon-border-radius: 2px;
+  --button-043-border-radius: var(--radius);
+  --button-043-icon-border-radius: var(--radius);
 
   /* 13px block keeps the 44px box the .btn utility measures, so the
      two sit level in a shared row; the left inset is .btn's 24px and

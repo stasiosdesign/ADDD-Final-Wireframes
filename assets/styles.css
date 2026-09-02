@@ -47,7 +47,9 @@
   --container: 1280px;
   --sec-lg: 112px;
   --sec-md: 80px;
-  --radius: 3px;
+  /* corner radius — one value for cards, buttons, media and inputs;
+     enough to soften a corner, not enough to read as a rounded UI */
+  --radius: 2px;
 }
 
 /* ============================================================
@@ -197,7 +199,7 @@ button, input { font: inherit; color: inherit; }
   justify-content: center;
   gap: 8px;
   padding: 10px 24px;
-  border-radius: 4px;
+  border-radius: var(--radius);
   border: 1px solid transparent;
   font-weight: var(--fw-body);
   font-size: var(--t-rg);
@@ -813,7 +815,7 @@ button, input { font: inherit; color: inherit; }
   scroll-snap-align: start;
 }
 .research-card__logo { display: flex; align-items: center; gap: 10px; font-weight: var(--fw-body); }
-.research-card__logo span { width: 20px; height: 20px; background: rgba(255,255,255,.55); border-radius: 3px; }
+.research-card__logo span { width: 20px; height: 20px; background: rgba(255,255,255,.55); border-radius: var(--radius); }
 .research-card__author { line-height: 1.5; }
 .research-card__author strong { display: block; font-weight: var(--fw-body); font-size: var(--t-sm); }
 .research-card__author em { font-style: normal; font-size: var(--t-sm); opacity: .8; }
@@ -829,7 +831,7 @@ button, input { font: inherit; color: inherit; }
 .arrows { display: flex; gap: 16px; }
 .arrows button {
   width: 48px; height: 48px;
-  border-radius: 6px;
+  border-radius: var(--radius);
   border: 0;
   background: var(--c-light-fg);
   display: flex; align-items: center; justify-content: center;
@@ -892,7 +894,7 @@ button, input { font: inherit; color: inherit; }
   min-width: 0;
   background: rgba(255,255,255,.1);
   border: 1px solid transparent;
-  border-radius: 6px;
+  border-radius: var(--radius);
   padding: 8px 12px;
   color: var(--c-white);
 }

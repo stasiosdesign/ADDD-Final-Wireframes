@@ -98,7 +98,7 @@
 .filters button {
   border: 1px solid var(--c-border);
   background: transparent;
-  border-radius: 6px;
+  border-radius: var(--radius);
   padding: 8px 16px;
   font-size: var(--t-sm);
   cursor: pointer;
@@ -124,7 +124,7 @@
   display: inline-flex;
   align-items: center;
   border: 1px solid var(--c-border);
-  border-radius: 4px;
+  border-radius: var(--radius);
   padding: 2px 8px;
   font-size: var(--t-xs);
 }
@@ -141,7 +141,7 @@
 .field input, .field select, .field textarea {
   background: var(--c-light-fg);
   border: 1px solid var(--c-border);
-  border-radius: 6px;
+  border-radius: var(--radius);
   padding: 12px;
   width: 100%;
   font-family: var(--font-body);

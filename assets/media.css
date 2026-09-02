@@ -76,7 +76,7 @@
   align-items: center;
   align-self: flex-start;
   background: var(--c-white);
-  border-radius: 4px;
+  border-radius: var(--radius);
   padding: 6px 10px;
   gap: 0;
   max-width: 100%;

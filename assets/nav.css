@@ -127,7 +127,7 @@
   grid-row-gap: .2em;
   background-color: var(--c-light-fg);
   border: 0;
-  border-radius: .25em;
+  border-radius: var(--radius);
   flex-flow: column;
   justify-content: center;
   align-items: center;
@@ -140,7 +140,7 @@
 .mega-nav__burger-line {
   z-index: 1;
   background-color: var(--c-text);
-  border-radius: .125em;
+  border-radius: var(--radius);
   flex: none;
   width: 1.25em;
   height: .125em;
@@ -273,7 +273,7 @@
   height: 2.5em;
   /* nudges the chip onto the cap height of the title beside it */
   margin-top: .125em;
-  border-radius: 4px;
+  border-radius: var(--radius);
   background-color: var(--c-light-fg);
   color: var(--c-text);
   display: flex;
@@ -299,7 +299,7 @@
 .mega-nav__badge {
   color: var(--c-white);
   background-color: var(--c-red);
-  border-radius: .25em;
+  border-radius: var(--radius);
   padding: .25em .5em;
   font-size: .6875em;
   line-height: 1;
@@ -390,7 +390,7 @@
 .mega-nav__card {
   background-color: var(--c-white);
   border: 1px solid var(--c-border);
-  border-radius: .5em;
+  border-radius: var(--radius);
   flex-flow: column;
   width: 100%;
   display: flex;
@@ -408,7 +408,7 @@
 .mega-nav__card-cta {
   color: var(--c-white);
   background-color: #141414;
-  border-radius: 4px;
+  border-radius: var(--radius);
   justify-content: center;
   align-items: center;
   padding: .5em 1em;
@@ -430,7 +430,7 @@
 .mega-nav__card-form input {
   background-color: var(--c-light-fg);
   border: 1px solid var(--c-border);
-  border-radius: 4px;
+  border-radius: var(--radius);
   flex: none;
   width: 100%;
   padding: .625em .75em;
@@ -465,7 +465,7 @@
   color: var(--c-text);
   background-color: var(--c-white);
   border: 1px solid var(--c-border);
-  border-radius: .5em;
+  border-radius: var(--radius);
   grid-column-gap: .875em;
   align-items: center;
   gap: .875em;
@@ -477,7 +477,7 @@
 }
 .mega-nav__featured:hover .mega-nav__panel-link-text { opacity: .6; }
 .mega-nav__card-visual.is--thumb {
-  border-radius: .375em;
+  border-radius: var(--radius);
   flex: none;
   width: 4.5em;
   height: 4.5em;
@@ -553,7 +553,7 @@
   .mega-nav__bar-end { display: flex; }
   .mega-nav__bar-action { flex: 1; }
   .mega-nav__bar-cta {
-    border-radius: 4px;
+    border-radius: var(--radius);
     padding: .875em 1em;
     flex: 1;
     text-align: center;
