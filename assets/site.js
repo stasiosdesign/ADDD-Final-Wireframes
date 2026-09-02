@@ -1897,7 +1897,13 @@ function initShutterScrollTransition() {
   const defaultMode = "cover";
   const defaultScrollStart = { cover: "bottom bottom", reveal: "top bottom" };
   const defaultScrollEnd = { cover: "bottom top", reveal: "top center" };
-  const defaultScrub = 0.3;
+  // Raised from the reference's 0.3: at that value the rows sit almost
+  // directly on the scroll position, so a quick flick of the wheel puts
+  // the shutter through its whole range in a frame or two and it reads
+  // as a cut. Just under a second of catch-up keeps the rows moving
+  // after the scroll stops, which is what makes the move legible at
+  // speed. Only the approach step's shutter runs on the site.
+  const defaultScrub = 0.9;
   const defaultShutterDuration = 0.1;
   const defaultStaggerAmount = 0.01;
 

@@ -4,21 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ADDD &mdash; Technology strategy for architecture practices</title>
-<meta name="build" content="20260902113248">
+<meta name="build" content="20260902114332">
 <link rel="icon" href="assets/logo.svg">
 <link rel="preconnect" href="https://use.typekit.net" crossorigin>
 <link rel="stylesheet" href="https://use.typekit.net/lzu8hkz.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.2.3/dist/lenis.css">
-<link rel="stylesheet" href="assets/styles.css?v=20260902113248">
-<link rel="stylesheet" href="assets/pages.css?v=20260902113248">
-<link rel="stylesheet" href="assets/nav.css?v=20260902113248">
-<link rel="stylesheet" href="assets/media.css?v=20260902113248">
-<link rel="stylesheet" href="assets/button-059.css?v=20260902113248">
-<link rel="stylesheet" href="assets/button-043.css?v=20260902113248">
-<link rel="stylesheet" href="assets/accordion-css.css?v=20260902113248">
-<link rel="stylesheet" href="assets/dots.css?v=20260902113248">
-<link rel="stylesheet" href="assets/transition.css?v=20260902113248">
-<link rel="stylesheet" href="assets/loader.css?v=20260902113248">
+<link rel="stylesheet" href="assets/styles.css?v=20260902114332">
+<link rel="stylesheet" href="assets/pages.css?v=20260902114332">
+<link rel="stylesheet" href="assets/nav.css?v=20260902114332">
+<link rel="stylesheet" href="assets/media.css?v=20260902114332">
+<link rel="stylesheet" href="assets/button-059.css?v=20260902114332">
+<link rel="stylesheet" href="assets/button-043.css?v=20260902114332">
+<link rel="stylesheet" href="assets/accordion-css.css?v=20260902114332">
+<link rel="stylesheet" href="assets/dots.css?v=20260902114332">
+<link rel="stylesheet" href="assets/transition.css?v=20260902114332">
+<link rel="stylesheet" href="assets/loader.css?v=20260902114332">
 </head>
 <body data-barba="wrapper">
 <div data-load-wrap class="loader">
@@ -464,7 +464,11 @@
             </div>
           </div>
         </div>
-        <div data-shutter-scroll-transition="" data-rows="22" data-rows-tablet="14" data-rows-mobile="10" class="shutter-scroll-transition"></div>
+        <!-- Started 40% of a viewport before the step's bottom reaches the
+             fold rather than at it, which buys the rows 40% more scroll to
+             close in. The first of them grow below the fold, which is what
+             gives the move its run-up. -->
+        <div data-shutter-scroll-transition="" data-rows="22" data-rows-tablet="14" data-rows-mobile="10" data-scroll-start="bottom bottom+=40%" class="shutter-scroll-transition"></div>
       </div>
 
     </div>
@@ -911,7 +915,7 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/Draggable.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/InertiaPlugin.min.js"></script>
-<script src="assets/marquee.js?v=20260902113248"></script>
-<script src="assets/site.js?v=20260902113248"></script>
+<script src="assets/marquee.js?v=20260902114332"></script>
+<script src="assets/site.js?v=20260902114332"></script>
 </body>
 </html>

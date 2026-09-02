@@ -749,11 +749,16 @@ button, input { font: inherit; color: inherit; }
 }
 .approach__card-mark svg { width: 100%; height: auto; display: block; }
 
+/* Lifted clear of the card's bottom edge and set in from its left, so
+   the line is not read hard against the corner. The number and the
+   picture sit in this row, so they ride up with it and the bottom of
+   the card stays one composition. */
 .approach__card-bottom {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 40px;
+  padding: 0 0 24px 24px;
 }
 .approach__card-p {
   /* the reference measure — roughly a third of the viewport */
@@ -793,7 +798,9 @@ button, input { font: inherit; color: inherit; }
     padding: 32px var(--page-pad);
   }
   .approach__card-num { display: none; }
-  .approach__card-bottom { flex-direction: column; align-items: stretch; gap: 24px; }
+  /* Stacked and full-bleed inside the card's own padding, so the inset
+     the desktop row carries would throw the picture off centre. */
+  .approach__card-bottom { flex-direction: column; align-items: stretch; gap: 24px; padding: 0; }
   .approach__card-p { width: 100%; max-width: none; order: 2; }
   .approach__card-image { width: 100%; max-width: none; aspect-ratio: 16 / 10; }
 }
@@ -1028,6 +1035,11 @@ button, input { font: inherit; color: inherit; }
 }
 .testimonials__title {
   margin: 0 0 40px calc(40% + var(--page-pad));
+  /* The routes heading's size, so the two section heads carry the same
+     weight. Its leading comes with it: .h4's 1.3 is right at 36px and
+     far too airy at this scale. */
+  font-size: clamp(32px, 4.2vw, 60px);
+  line-height: 1.05;
 }
 .testimonial-lines { position: relative; }
 .testimonial-lines__list {

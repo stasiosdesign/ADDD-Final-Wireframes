@@ -190,7 +190,11 @@
             </div>
           </div>
         </div>
-        <div data-shutter-scroll-transition="" data-rows="22" data-rows-tablet="14" data-rows-mobile="10" class="shutter-scroll-transition"></div>
+        <!-- Started 40% of a viewport before the step's bottom reaches the
+             fold rather than at it, which buys the rows 40% more scroll to
+             close in. The first of them grow below the fold, which is what
+             gives the move its run-up. -->
+        <div data-shutter-scroll-transition="" data-rows="22" data-rows-tablet="14" data-rows-mobile="10" data-scroll-start="bottom bottom+=40%" class="shutter-scroll-transition"></div>
       </div>
 
     </div>
