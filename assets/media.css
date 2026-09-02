@@ -15,16 +15,12 @@
 .band,
 .card__media,
 .cover,
-.cta__portrait,
 .avatar__img {
   background-image: var(--img-photo);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
-
-/* the CTA portrait sits on the dark band — keep the rounded crop */
-.cta__portrait { background-position: center 20%; }
 
 /* avatars crop to the face rather than the centre of the frame */
 .avatar__img {

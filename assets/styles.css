@@ -841,6 +841,10 @@ button, input { font: inherit; color: inherit; }
 .approach__card-p {
   /* the reference measure — roughly a third of the viewport */
   width: 32vw;
+  /* Lifted well clear of the card's foot: bottom-aligned with the
+     picture the line sat too low in the frame, so it now rides up to
+     around the middle of the aside and the corner is left open. */
+  margin-bottom: clamp(48px, 9vh, 120px);
   max-width: 520px;
   font-size: clamp(16px, 1.6vw, 24px);
   line-height: 1.25;
@@ -879,7 +883,7 @@ button, input { font: inherit; color: inherit; }
   /* Stacked and full-bleed inside the card's own padding, so the inset
      the desktop row carries would throw the picture off centre. */
   .approach__card-bottom { flex-direction: column; align-items: stretch; gap: 24px; padding: 0; }
-  .approach__card-p { width: 100%; max-width: none; order: 2; }
+  .approach__card-p { width: 100%; max-width: none; order: 2; margin-bottom: 0; }
   .approach__card-image { width: 100%; max-width: none; aspect-ratio: 16 / 10; }
 }
 
@@ -1459,12 +1463,10 @@ button, input { font: inherit; color: inherit; }
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  /* Enough for the buttons to clear the portrait tucked between the two
-     words above them: it hangs 155px below the heading's top, and the
-     heading is 86 of those. Centred, the buttons sat under the picture
-     and were let through on z-index; on one left edge they read better
-     out from under it. */
-  gap: 96px;
+  /* Text-led now that the portrait is gone, so the buttons sit a
+     normal heading-to-actions step below the line rather than the
+     clearance the picture used to need. */
+  gap: 48px;
 }
 /* The same arrow the approach cards carry, at the same size, turned to
    point back down into the buttons. */
@@ -1475,18 +1477,10 @@ button, input { font: inherit; color: inherit; }
   transform: rotate(135deg);
 }
 .cta__mark svg { width: 100%; height: auto; display: block; }
-.cta__heading { position: relative; display: flex; align-items: center; gap: 130px; }
-.cta__portrait {
-  position: absolute;
-  top: -70px;
-  left: 50%;
-  transform: translateX(-50%) rotate(-5.94deg);
-  width: 187px;
-  height: 234px;
-  background: var(--c-placeholder);
-  border-radius: var(--radius);
-  z-index: 1;
-}
+/* One line of copy carrying the section on its own. Capped so it
+   breaks over three lines rather than running the full width of the
+   body column. */
+.cta__heading { max-width: 720px; }
 .cta .btn,
 .cta .button-043 { position: relative; z-index: 2; }
 
@@ -1711,7 +1705,6 @@ button, input { font: inherit; color: inherit; }
 
   .creds__media { flex: 1 0 0; }
   .creds__text { padding-top: 200px; }
-  .cta__heading { gap: 90px; }
 }
 
 @media (max-width: 991px) {
@@ -1752,11 +1745,9 @@ button, input { font: inherit; color: inherit; }
      the label leads and the mark has no gutter left to sit in. */
   .cta__grid { flex-direction: column; gap: 32px; }
   .cta__label { flex: none; }
-  /* The portrait is smaller here but still hangs over the buttons. */
-  .cta__body { margin-right: 0; gap: 88px; }
+  .cta__body { margin-right: 0; gap: 40px; }
   .cta__mark { display: none; }
-  .cta__heading { gap: 70px; }
-  .cta__portrait { width: 140px; height: 176px; top: -46px; }
+  .cta__heading { max-width: none; }
 
   .case__quote-wrap { padding: 56px 32px 40px; min-height: 0; }
   .quote { font-size: 24px; }
@@ -1767,11 +1758,7 @@ button, input { font: inherit; color: inherit; }
   .tagline { font-size: 13px; }
   .card__body--lg { padding: 28px; }
   .compare__card { padding: 28px; }
-  .cta__heading { flex-direction: column; gap: 0; }
-  /* In flow at this width, so nothing is hanging over the buttons and
-     the row can close back up. */
-  .cta__body { gap: 40px; }
-  .cta__portrait { position: relative; top: 0; left: 0; transform: rotate(-5.94deg); margin: 8px 0; }
+  .cta__body { gap: 32px; }
   .site-footer__groups { grid-template-columns: 1fr; }
   .site-footer__signup .newsletter-form { flex-direction: column; align-items: stretch; }
 }
