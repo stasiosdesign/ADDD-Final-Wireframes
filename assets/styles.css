@@ -819,17 +819,137 @@ button, input { font: inherit; color: inherit; }
 .avatar { display: flex; flex-direction: column; align-items: center; gap: 16px; }
 .avatar__img { width: 56px; height: 56px; border-radius: 50%; background: var(--c-placeholder); }
 .avatar__name { font-weight: var(--fw-body); }
-.case__tabs { display: flex; }
-.case__tab {
-  flex: 1 0 0;
-  height: 104px;
+
+/* ------------------------------------------------------------
+   testimonial carousel (see assets/site.js — initLineRevealTestimonials)
+   ------------------------------------------------------------
+   The reference component's structure and behaviour are kept: the
+   items sit in one grid cell, only the active one is visible, and
+   its lines are split and masked so a change wipes one set of lines
+   out and the next set in.
+
+   The composition is the split band from the design: an ink panel
+   holding the quote mark, the firm's logo on a white tile and the
+   attribution, and an off-white panel holding the quote itself.
+   Each item paints both panels, so the split reads as one fixed
+   band while the content changes inside it.
+   ------------------------------------------------------------ */
+.testimonials { position: relative; }
+.testimonial-lines { position: relative; }
+.testimonial-lines__list {
+  display: grid;
+  width: 100%;
+}
+.testimonial-lines__item {
+  grid-area: 1 / 1;
+  display: grid;
+  grid-template-columns: 40% 1fr;
+  width: 100%;
+  min-height: 620px;
+  opacity: 0;
+  visibility: hidden;
+}
+.testimonial-lines__item.is--active { opacity: 1; visibility: visible; }
+
+.testimonial-lines__aside {
+  display: flex;
+  flex-direction: column;
+  padding: 56px var(--page-pad) 140px;
+  background: var(--c-dark-fg);
+  color: var(--c-white);
+}
+.testimonial-lines__mark {
+  font-family: var(--font-display);
+  font-weight: var(--fw-heading-bold);
+  font-size: 64px;
+  line-height: .8;
+}
+/* Set in from the panel's edge, the way the reference sits its
+   portrait and attribution off the left. */
+.testimonial-lines__firm {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  margin: 40px 0 0 22%;
+}
+.testimonial-lines__logo {
+  width: 120px;
+  aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  padding: 18px;
+  border-radius: var(--radius);
+  background: var(--c-white);
 }
-.case__tab--active { background: rgba(20,20,20,.06); }
-.case__tab span { background: var(--c-placeholder); display: block; }
+/* contained, never stretched */
+.testimonial-lines__logo img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+.testimonial-lines__meta { display: flex; flex-direction: column; gap: 6px; }
+.testimonial-lines__name { font-size: var(--t-rg); line-height: 1.3; }
+.testimonial-lines__role { color: rgba(255, 255, 255, .6); }
+
+.testimonial-lines__body {
+  display: flex;
+  align-items: flex-start;
+  padding: 56px var(--page-pad);
+  background: var(--c-light-fg);
+  color: var(--c-text);
+}
+.testimonial-lines__h {
+  margin: 0;
+  max-width: 16em;
+  font-family: var(--font-display);
+  font-weight: var(--fw-body);
+  font-size: clamp(26px, 2.8vw, 42px);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+/* The controls live outside the item stack, so they hold still while
+   the slides change. Bottom left, over the ink panel. */
+.testimonial-lines__controls {
+  position: absolute;
+  left: var(--page-pad);
+  bottom: 56px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: var(--c-white);
+}
+.testimonial-lines__count { color: rgba(255, 255, 255, .6); }
+.testimonial-lines__buttons { display: flex; gap: 8px; }
+.testimonial-lines__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--c-border-dark);
+  border-radius: var(--radius);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color .25s ease, border-color .25s ease;
+}
+.testimonial-lines__button:hover { background: var(--c-red); border-color: var(--c-red); }
+.testimonial-lines__arrow { width: 12px; height: 12px; display: block; }
+
+@media screen and (max-width: 991px) {
+  .testimonial-lines__item { grid-template-columns: 1fr; min-height: 0; }
+  .testimonial-lines__aside { padding: 40px var(--page-pad) 120px; }
+  .testimonial-lines__firm { margin-left: 0; gap: 24px; }
+  .testimonial-lines__body { padding: 40px var(--page-pad) 56px; }
+  .testimonial-lines__controls { bottom: auto; top: 56px; right: var(--page-pad); left: auto; }
+}
 
 /* ============================================================
    7 — credentials
@@ -1072,8 +1192,6 @@ button, input { font: inherit; color: inherit; }
   .compare__card { padding: 28px; }
   .cta__heading { flex-direction: column; gap: 0; }
   .cta__portrait { position: relative; top: 0; left: 0; transform: rotate(-5.94deg); margin: 8px 0; }
-  .case__tabs { flex-wrap: wrap; }
-  .case__tab { flex: 1 0 50%; }
   .footer__col { flex: 1 0 100%; }
   .research-card { width: 280px; }
 }
