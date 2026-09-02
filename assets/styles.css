@@ -514,21 +514,10 @@ button, input { font: inherit; color: inherit; }
    copy. The intro above them stays on the same white as the problem
    section before it, so the two read as one argument.
    ------------------------------------------------------------ */
-/* The trailing space is what keeps the routes section from rising
-   behind the last card while it is still pinned and fading — with a
-   viewport of room after the slides, the pin plays out over empty
-   page and the next section only arrives once it has finished. */
-.approach__slides {
-  position: relative;
-  /* A viewport plus the nav, plus a beat. The viewport is what scrolls
-     behind the last card while it is pinned; the --nav-h is the amount
-     its fade runs past the pin, since a slide is that much shorter
-     than the screen; and the 30svh is the pause after it has gone, so
-     the routes section arrives on empty page rather than treading on
-     the end of the animation. */
-  padding-bottom: calc(100vh + var(--nav-h) + 30vh);
-  padding-bottom: calc(100svh + var(--nav-h) + 30svh);
-}
+/* No trailing space any more: the last step does not pin, so there is
+   nothing left to play out after it. It simply scrolls on and the next
+   section follows it up the page. */
+.approach__slides { position: relative; }
 
 /* A card stacks under the fixed bar rather than behind it, so it is
    a viewport less the nav — the same --nav-h the hero clears. */
@@ -560,8 +549,9 @@ button, input { font: inherit; color: inherit; }
   padding: 40px;
   box-shadow: 0 -12px 40px rgba(13, 13, 13, 0.12);
 }
-/* Three tones, each well clear of the page white behind the stack
-   and stepping darker as the steps progress. */
+/* Three tones, stepping lighter as the steps progress: the first
+   card is the darkest thing on the page and the last is a grey close
+   enough to the page white to read as part of it. */
 .approach__card.is--grey { background: #d8d8d8; color: var(--c-text); }
 .approach__card.is--dark { background: var(--c-dark-bg); color: var(--c-white); }
 .approach__card.is--ink { background: var(--c-dark-fg); color: var(--c-white); }

@@ -1318,10 +1318,15 @@ function initApproachSlides() {
 
   const tweens = [];
 
-  slides.forEach((slide) => {
+  slides.forEach((slide, index) => {
     const wrapper = slide.querySelector(".approach__slide-wrapper");
     const card = slide.querySelector(".approach__card");
     if (!wrapper || !card) return;
+
+    // The last step is where the sequence ends, so it is left alone:
+    // no pin, no tip, no fade. It arrives like any other block on the
+    // page and scrolls on into the section below it.
+    if (index === slides.length - 1) return;
 
     tweens.push(gsap.to(card, {
       rotationZ: (Math.random() - 0.5) * 10, // between -5 and 5 degrees
