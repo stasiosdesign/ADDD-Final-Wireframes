@@ -133,7 +133,7 @@ button, input { font: inherit; color: inherit; }
 .tagline,
 .tagline--plain,
 .tag,
-.footer__col h3,
+.site-footer__eyebrow,
 .transition__label,
 .field > label,
 .tile__num,
@@ -1107,51 +1107,167 @@ button, input { font: inherit; color: inherit; }
 /* ============================================================
    11 — footer
    ============================================================ */
+/* The panel is revealed with a parallax: it starts a quarter of its
+   own height high inside a clipping wrap and settles as the wrap
+   scrolls into place, with a black scrim clearing off it on the way.
+   Both are driven from initFooterParallax() in site.js. The wrap
+   carries the same background as the panel, so the strip the panel
+   vacates mid-reveal reads as part of the footer. */
+.footer-wrap {
+  position: relative;
+  overflow: hidden;
+  background: var(--c-dark-bg);
+}
+.footer-wrap__dark {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .site-footer {
+  position: relative;
   background: var(--c-dark-bg);
   color: var(--c-white);
-  padding: var(--sec-md) var(--page-pad);
+  padding: var(--sec-md) var(--page-pad) 40px;
 }
-.footer__card {
-  background: var(--c-dark-fg);
-  border-radius: var(--radius);
-  padding: 58px 48px 112px;
+.site-footer__inner {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
   display: flex;
-  gap: 128px;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 48px;
 }
-.footer__links { flex: 1 0 0; min-width: 0; display: flex; gap: 40px; align-items: flex-start; }
-.footer__col { flex: 1 0 0; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
-.footer__col h3 { margin: 0; font-size: var(--t-sm); font-weight: var(--fw-body); }
-.footer__col li a { display: block; padding: 8px 0; font-size: var(--t-sm); }
-.footer__col li a:hover { opacity: .7; }
-.footer__logo { width: 40px; height: 40px; }
-.footer__news { width: 400px; flex: none; display: flex; flex-direction: column; gap: 24px; }
-.footer__news-copy { display: flex; flex-direction: column; gap: 16px; }
-.footer__form { display: flex; gap: 16px; }
-.footer__form input {
+/* Label voice for every eyebrow in here — DM Mono, uppercase, set
+   a step down from the body so four columns of links can breathe. */
+.site-footer__eyebrow {
+  font-size: var(--t-xs);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* newsletter band */
+.site-footer__head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px 64px;
+  align-items: end;
+}
+.site-footer__head-col { display: flex; flex-direction: column; gap: 16px; }
+.site-footer__head-col.is--form { gap: 12px; max-width: 440px; width: 100%; margin-left: auto; }
+.site-footer__lede {
+  font-family: var(--font-display);
+  font-size: var(--t-h4);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  max-width: 13em;
+}
+.site-footer__form { display: flex; gap: 12px; }
+.site-footer__form input {
   flex: 1 0 0;
   min-width: 0;
-  background: rgba(255,255,255,.1);
-  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--c-border-dark);
   border-radius: var(--radius);
-  padding: 8px 12px;
+  padding: 9px 12px;
   color: var(--c-white);
 }
-.footer__form input::placeholder { color: rgba(255,255,255,.6); }
-.footer__credits {
+.site-footer__form input::placeholder { color: rgba(255, 255, 255, 0.6); }
+.site-footer__fine { font-size: var(--t-xs); line-height: 1.5; color: rgba(255, 255, 255, 0.5); }
+
+/* link columns */
+.site-footer__nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  padding-top: 48px;
+  border-top: 1px solid var(--c-border-dark);
+}
+.site-footer__col { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.site-footer__links { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+/* Oversized for a footer but nowhere near display size — four columns
+   of real navigation have to fit across the container. */
+.site-footer__a {
+  font-family: var(--font-display);
+  font-size: clamp(16px, 1.35vw, 21px);
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+/* client strip */
+.site-footer__clients {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 48px;
+  border-top: 1px solid var(--c-border-dark);
+}
+.site-footer__logo-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px 28px;
+}
+/* The practice marks run from near-square to very wide, so each gets the
+   same box and is fitted inside it — the same treatment the logo wall on
+   the home page gives them. */
+.site-footer__logo-row img { width: 122px; height: 34px; object-fit: contain; object-position: left center; opacity: 0.6; }
+
+/* wordmark */
+.site-footer__wordmark-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 48px;
+  border-top: 1px solid var(--c-border-dark);
+}
+.site-footer__wordmark { display: block; width: 100%; }
+.site-footer__wordmark svg { width: 100%; height: auto; }
+
+/* credits */
+.site-footer__credits {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 24px;
-  margin-top: 32px;
-  font-size: var(--t-sm);
+  padding-top: 32px;
+  border-top: 1px solid var(--c-border-dark);
+  font-size: var(--t-xs);
+  color: rgba(255, 255, 255, 0.5);
 }
-.footer__credits-left { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
-.footer__credits-left a { text-decoration: underline; }
-.footer__social { display: flex; gap: 12px; }
-.footer__social a { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
-.footer__social img { filter: brightness(0) invert(1); }
+.site-footer__credits-left { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+.site-footer__social { display: flex; gap: 12px; }
+.site-footer__social a { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; opacity: 0.55; transition: opacity .15s ease; }
+.site-footer__social a:hover { opacity: 1; }
+.site-footer__social img { filter: brightness(0) invert(1); }
+
+/* ------------------------------------------------------------
+   underline-on-hover link — the rule wipes in from the left and
+   out to the right, so a pointer crossing a column of links
+   reads as one continuous gesture.
+   ------------------------------------------------------------ */
+[data-underline-link] { position: relative; text-decoration: none; }
+[data-underline-link]::before {
+  content: "";
+  position: absolute;
+  bottom: -0.0625em;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: currentColor;
+  transform: scaleX(0) rotate(0.001deg);
+  transform-origin: right;
+  transition: transform .735s cubic-bezier(0.625, 0.05, 0, 1);
+}
+@media (hover: hover) and (pointer: fine) {
+  [data-underline-link]:hover::before {
+    transform: scaleX(1) rotate(0.001deg);
+    transform-origin: left;
+  }
+}
 
 /* ============================================================
    placeholder pages
@@ -1197,11 +1313,13 @@ button, input { font: inherit; color: inherit; }
   .creds__media .ph:first-child { margin-top: 0; height: 320px; }
   .creds__media .ph:last-child { height: 320px; }
 
-  .footer__card { flex-direction: column; gap: 48px; padding: 48px 32px 64px; }
-  .footer__news { width: 100%; }
-  .footer__links { flex-wrap: wrap; gap: 32px; }
-  .footer__col { flex: 1 0 40%; }
-  .footer__credits { flex-direction: column; align-items: flex-start; }
+  .site-footer__head { grid-template-columns: 1fr; }
+  .site-footer__head-col.is--form { margin-left: 0; max-width: 100%; }
+  .site-footer__nav { grid-template-columns: repeat(2, 1fr); gap: 32px 24px; padding-top: 40px; }
+  .site-footer__clients, .site-footer__wordmark-row { padding-top: 40px; }
+  .site-footer__logo-row { gap: 16px 24px; }
+  .site-footer__logo-row img { width: 92px; height: 24px; }
+  .site-footer__credits { flex-direction: column; align-items: flex-start; }
 
   .logos { padding: 80px 0; }
   .cta { padding: 120px var(--page-pad); }
@@ -1220,6 +1338,7 @@ button, input { font: inherit; color: inherit; }
   .compare__card { padding: 28px; }
   .cta__heading { flex-direction: column; gap: 0; }
   .cta__portrait { position: relative; top: 0; left: 0; transform: rotate(-5.94deg); margin: 8px 0; }
-  .footer__col { flex: 1 0 100%; }
+  .site-footer__nav { grid-template-columns: 1fr; }
+  .site-footer__form { flex-direction: column; align-items: stretch; }
   .research-card { width: 280px; }
 }

@@ -4,21 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contact &mdash; ADDD</title>
-<meta name="build" content="20260902015755">
+<meta name="build" content="20260902021136">
 <link rel="icon" href="assets/logo.svg">
 <link rel="preconnect" href="https://use.typekit.net" crossorigin>
 <link rel="stylesheet" href="https://use.typekit.net/lzu8hkz.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.2.3/dist/lenis.css">
-<link rel="stylesheet" href="assets/styles.css?v=20260902015755">
-<link rel="stylesheet" href="assets/pages.css?v=20260902015755">
-<link rel="stylesheet" href="assets/nav.css?v=20260902015755">
-<link rel="stylesheet" href="assets/media.css?v=20260902015755">
-<link rel="stylesheet" href="assets/button-059.css?v=20260902015755">
-<link rel="stylesheet" href="assets/button-043.css?v=20260902015755">
-<link rel="stylesheet" href="assets/accordion-css.css?v=20260902015755">
-<link rel="stylesheet" href="assets/dots.css?v=20260902015755">
-<link rel="stylesheet" href="assets/transition.css?v=20260902015755">
-<link rel="stylesheet" href="assets/loader.css?v=20260902015755">
+<link rel="stylesheet" href="assets/styles.css?v=20260902021136">
+<link rel="stylesheet" href="assets/pages.css?v=20260902021136">
+<link rel="stylesheet" href="assets/nav.css?v=20260902021136">
+<link rel="stylesheet" href="assets/media.css?v=20260902021136">
+<link rel="stylesheet" href="assets/button-059.css?v=20260902021136">
+<link rel="stylesheet" href="assets/button-043.css?v=20260902021136">
+<link rel="stylesheet" href="assets/accordion-css.css?v=20260902021136">
+<link rel="stylesheet" href="assets/dots.css?v=20260902021136">
+<link rel="stylesheet" href="assets/transition.css?v=20260902021136">
+<link rel="stylesheet" href="assets/loader.css?v=20260902021136">
 </head>
 <body data-barba="wrapper">
 <div data-load-wrap class="loader">
@@ -311,78 +311,112 @@
   </section>
 
 </main>
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer__card">
-      <div class="footer__links">
-        <div class="footer__col">
-          <a href="index.html" aria-label="ADDD home"><img class="footer__logo" src="assets/logo.svg" alt="ADDD"></a>
-        </div>
-        <div class="footer__col">
-          <h3>Services</h3>
-          <ul>
-            <li><a href="workshops-audits.html">Workshops &amp; Audits</a></li>
-            <li><a href="technology-blueprint.html">Technology Blueprint</a></li>
-            <li><a href="advisory.html">Advisory</a></li>
-            <li><a href="stack-diagnostic.html">Stack Diagnostic</a></li>
-            <li><a href="software-licensing-audit.html">Software &amp; Licensing Audit</a></li>
-            <li><a href="contact.html">Contact</a></li>
-          </ul>
-        </div>
-        <div class="footer__col">
-          <h3>Resources</h3>
-          <ul>
-            <li><a href="newsletter.html">Newsletter</a></li>
-            <li><a href="https://database.addd.co.uk" target="_blank" rel="noopener">Software Database</a></li>
-            <li><a href="https://database.addd.co.uk" target="_blank" rel="noopener">Explore tools</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="https://aectechjobs.com/" target="_blank" rel="noopener">AEC Jobs</a></li>
-          </ul>
-        </div>
-        <div class="footer__col">
-          <h3>Company</h3>
-          <ul>
-            <li><a href="technology-blueprint.html">Technology Blueprint</a></li>
-            <li><a href="advisory.html">Advisory</a></li>
-            <li><a href="reports.html">Reports</a></li>
-            <li><a href="https://database.addd.co.uk" target="_blank" rel="noopener">Software Database</a></li>
-            <li><a href="about.html">About</a></li>
-          </ul>
-        </div>
-      </div>
+<!-- The footer is revealed with a parallax: the panel starts high inside a
+     clipping wrap and settles as the wrap scrolls up, with a scrim clearing
+     off it at the same time. Both are driven from initFooterParallax(). -->
+<div data-footer-parallax="" class="footer-wrap">
+  <footer data-footer-parallax-inner="" class="site-footer">
+    <div class="site-footer__inner">
 
-      <div class="footer__news">
-        <div class="footer__news-copy">
-          <h3 style="margin:0;font-size:16px;font-weight:400">Newsletter</h3>
-          <p>Address</p>
+      <div class="site-footer__head">
+        <div class="site-footer__head-col">
+          <p class="site-footer__eyebrow">Newsletter</p>
+          <p class="site-footer__lede">Architecture technology and digital leadership, distilled into one email a month.</p>
         </div>
-        <div style="display:flex;flex-direction:column;gap:12px">
-          <form class="footer__form" onsubmit="return false">
-            <input type="email" placeholder="your email" aria-label="Your email">
-            <button class="btn btn--ghost-dark" type="submit">Subscribe</button>
+        <div class="site-footer__head-col is--form">
+          <form class="site-footer__form" onsubmit="return false">
+            <input type="email" placeholder="your email" aria-label="Your email" required>
+            <button class="btn btn--white" type="submit">Subscribe</button>
           </form>
-          <p class="text-xs">By subscribing you agree to our Privacy Policy and consent to receive updates from ADDD.</p>
+          <p class="site-footer__fine">By subscribing you agree to our Privacy Policy and consent to receive updates from ADDD.</p>
         </div>
       </div>
-    </div>
 
-    <div class="footer__credits">
-      <div class="footer__credits-left">
-        <p>© 2025 ADDD. All rights reserved.</p>
-        <a href="#">Privacy policy</a>
-        <a href="#">Terms of service</a>
-        <a href="#">Cookie settings</a>
+      <div class="site-footer__nav">
+        <div class="site-footer__col">
+          <p class="site-footer__eyebrow">Services</p>
+          <div class="site-footer__links">
+            <a data-underline-link="" href="workshops-audits.html" class="site-footer__a">Workshops &amp; Audits</a>
+            <a data-underline-link="" href="technology-blueprint.html" class="site-footer__a">Technology Blueprint</a>
+            <a data-underline-link="" href="advisory.html" class="site-footer__a">ADDDvisory</a>
+            <a data-underline-link="" href="stack-diagnostic.html" class="site-footer__a">Stack Diagnostic</a>
+            <a data-underline-link="" href="software-licensing-audit.html" class="site-footer__a">Software &amp; Licensing Audit</a>
+          </div>
+        </div>
+        <div class="site-footer__col">
+          <p class="site-footer__eyebrow">Resources</p>
+          <div class="site-footer__links">
+            <a data-underline-link="" href="https://database.addd.co.uk" target="_blank" rel="noopener" class="site-footer__a">Software Database &#8599;</a>
+            <a data-underline-link="" href="reports.html" class="site-footer__a">Reports</a>
+            <a data-underline-link="" href="newsletter.html" class="site-footer__a">Newsletter</a>
+            <a data-underline-link="" href="https://aectechjobs.com/" target="_blank" rel="noopener" class="site-footer__a">AEC Jobs &#8599;</a>
+          </div>
+        </div>
+        <div class="site-footer__col">
+          <p class="site-footer__eyebrow">Company</p>
+          <div class="site-footer__links">
+            <a data-underline-link="" href="index.html" class="site-footer__a">Home</a>
+            <a data-underline-link="" href="about.html" class="site-footer__a">About</a>
+            <a data-underline-link="" href="contact.html" class="site-footer__a">Contact</a>
+            <a data-underline-link="" href="https://app.addd.io/login" target="_blank" rel="noopener" class="site-footer__a">Sign in &#8599;</a>
+          </div>
+        </div>
+        <div class="site-footer__col">
+          <p class="site-footer__eyebrow">Contact</p>
+          <div class="site-footer__links">
+            <a data-underline-link="" href="mailto:allister@addd.io" class="site-footer__a">allister@addd.io</a>
+            <a data-underline-link="" href="tel:+442071833675" class="site-footer__a">+44 (0) 207 183 3675</a>
+            <a data-underline-link="" href="contact.html" class="site-footer__a">Book a call</a>
+          </div>
+        </div>
       </div>
-      <div class="footer__social">
-        <a href="#" aria-label="Facebook"><img src="assets/icons/facebook.svg" alt=""></a>
-        <a href="#" aria-label="Instagram"><img src="assets/icons/instagram.svg" alt=""></a>
-        <a href="#" aria-label="X"><img src="assets/icons/x.svg" alt=""></a>
-        <a href="#" aria-label="LinkedIn"><img src="assets/icons/linkedin.svg" alt=""></a>
-        <a href="#" aria-label="YouTube"><img src="assets/icons/youtube.svg" alt=""></a>
+
+      <div class="site-footer__clients">
+        <p class="site-footer__eyebrow">Trusted by leading practices</p>
+        <div class="site-footer__logo-row">
+          <img src="assets/logos/White/ADAM-Logo.png" alt="ADAM Architecture" loading="lazy">
+          <img src="assets/logos/White/studio-seilern-logo.png" alt="Studio Seilern Architects" loading="lazy">
+          <img src="assets/logos/White/Haworth-Tompkins-Logo.png" alt="Haworth Tompkins" loading="lazy">
+          <img src="assets/logos/White/epr-architects-logo.png" alt="EPR Architects" loading="lazy">
+          <img src="assets/logos/White/Morris-Company-Logo.png" alt="Morris + Company" loading="lazy">
+          <img src="assets/logos/White/Architecture-PLB-Logo.png" alt="Architecture PLB" loading="lazy">
+          <img src="assets/logos/White/ackroyd-lowrie-logo.png" alt="Ackroyd Lowrie" loading="lazy">
+          <img src="assets/logos/White/Ormsss-Logo.png" alt="ORMS" loading="lazy">
+        </div>
       </div>
+
+      <div class="site-footer__wordmark-row">
+        <p class="site-footer__eyebrow">Technology strategy for architecture practices</p>
+        <a href="index.html" class="site-footer__wordmark" aria-label="ADDD home">
+          <!-- textLength spreads the tracking to fill the column exactly,
+               without distorting the glyphs, whatever width the display
+               face resolves to. -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 168" fill="none" role="img" aria-hidden="true" focusable="false">
+            <text x="0" y="162" textLength="1000" lengthAdjust="spacing" font-family="elza, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="500" font-size="222" fill="currentColor">ADDD</text>
+          </svg>
+        </a>
+      </div>
+
+      <div class="site-footer__credits">
+        <div class="site-footer__credits-left">
+          <p>&copy; 2025 ADDD. All rights reserved.</p>
+          <a data-underline-link="" href="#">Privacy policy</a>
+          <a data-underline-link="" href="#">Terms of service</a>
+          <a data-underline-link="" href="#">Cookie settings</a>
+        </div>
+        <div class="site-footer__social">
+          <a href="#" aria-label="LinkedIn"><img src="assets/icons/linkedin.svg" alt=""></a>
+          <a href="#" aria-label="Instagram"><img src="assets/icons/instagram.svg" alt=""></a>
+          <a href="#" aria-label="X"><img src="assets/icons/x.svg" alt=""></a>
+          <a href="#" aria-label="Facebook"><img src="assets/icons/facebook.svg" alt=""></a>
+          <a href="#" aria-label="YouTube"><img src="assets/icons/youtube.svg" alt=""></a>
+        </div>
+      </div>
+
     </div>
-  </div>
-</footer>
+  </footer>
+  <div data-footer-parallax-dark="" class="footer-wrap__dark"></div>
+</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@barba/core@2.10.3/dist/barba.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.2.3/dist/lenis.min.js"></script>
@@ -390,7 +424,7 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/CustomEase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"></script>
-<script src="assets/marquee.js?v=20260902015755"></script>
-<script src="assets/site.js?v=20260902015755"></script>
+<script src="assets/marquee.js?v=20260902021136"></script>
+<script src="assets/site.js?v=20260902021136"></script>
 </body>
 </html>

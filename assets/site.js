@@ -163,6 +163,7 @@ function initBeforeEnterFunctions(next) {
   if (has('[data-shutter-scroll-transition]')) initShutterScrollTransition();
   if (has('[data-accordion-css-init]')) initAccordionCSS();
   if (has('[data-dots-canvas-init]')) initInteractiveDotsGrid();
+  if (has("[data-footer-parallax]")) initFooterParallax();
   if (has('[data-marquee-scroll-direction-target]')) {
     initMarqueeScrollDirection(nextPage);
     registerPageCleanup(destroyMarqueeScrollDirection);
@@ -2237,5 +2238,60 @@ function initInteractiveDotsGrid() {
     window.removeEventListener("pointerdown", onPointerDown);
     window.removeEventListener("pointerup", onPointerUp);
     canvases.forEach(state => state.canvas.remove());
+  });
+}
+
+
+
+/* ============================================================
+   FOOTER PARALLAX
+   ------------------------------------------------------------
+   The footer sits in a clipping wrap and is revealed at a
+   different rate to the page above it: the panel starts a
+   quarter of its own height high inside the wrap and is scrubbed
+   down to rest as the wrap travels from the bottom of the
+   viewport to the top of it. A black scrim over the panel clears
+   off on the same scrub, so the footer lifts out of shadow
+   rather than simply sliding in.
+
+   clamp() on the ScrollTrigger bounds keeps the reveal honest on
+   a page short enough that the footer is already on screen at
+   load — the start is pinned to the current scroll position
+   instead of a point above it, so the panel is never caught
+   mid-animation with nowhere left to scroll.
+   ============================================================ */
+function initFooterParallax() {
+  if (!hasScrollTrigger) return;
+
+  const wraps = nextPage.querySelectorAll("[data-footer-parallax]");
+  if (!wraps.length) return;
+
+  const timelines = [];
+
+  wraps.forEach(wrap => {
+    const inner = wrap.querySelector("[data-footer-parallax-inner]");
+    const scrim = wrap.querySelector("[data-footer-parallax-dark]");
+    if (!inner && !scrim) return;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: wrap,
+        start: "clamp(top bottom)",
+        end: "clamp(top top)",
+        scrub: true
+      }
+    });
+
+    if (inner) tl.from(inner, { yPercent: -25, ease: "none" });
+    if (scrim) tl.from(scrim, { opacity: 0.5, ease: "none" }, "<");
+
+    timelines.push(tl);
+  });
+
+  registerPageCleanup(() => {
+    timelines.forEach(tl => {
+      if (tl.scrollTrigger) tl.scrollTrigger.kill();
+      tl.kill();
+    });
   });
 }
