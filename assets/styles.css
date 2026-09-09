@@ -128,12 +128,19 @@ button, input { font: inherit; color: inherit; }
 /* The line remains in normal flow; only the decorative cover is positioned. */
 .highlight-marker-wrap { position: relative; display: inline-block; }
 .highlight-marker-bar {
+  display: grid;
   position: absolute;
   inset: -0.08em 0;
   width: 100%;
   height: calc(100% + 0.16em);
   z-index: 1;
   pointer-events: none;
+}
+.highlight-marker-row {
+  min-height: 0;
+  /* Slight overlap prevents hairline gaps between fully expanded shutters. */
+  margin-bottom: -0.5px;
+  backface-visibility: hidden;
 }
 
 .text-md { font-size: var(--t-md); line-height: 1.5; }

@@ -1,11 +1,9 @@
-/* Highlight Marker Text Reveal — SplitText lines with a layered pixel wipe.
-   Keep real text in the DOM; canvas only paints the two temporary cover layers. */
+/* Highlight Marker Text Reveal: layered shutter rows fan open over real text.
+   SplitText and the page lifecycle keep wrapping, replay and cleanup consistent. */
 function initHighlightMarkerTextReveal(root) {
   if (reducedMotion || !hasSplitText) return;
-  const ease = CustomEase.create("marker-wipe", "0.85, 0, 0.15, 1");
-  const duration = 0.532, offset = 0.105, hold = 0.035;
-  const reveal = offset + duration + hold;
-  const end = reveal + offset + duration;
+  const coverDuration = 0.18, revealDuration = 0.2, layerOffset = 0.04;
+  const rowStagger = 0.012;
 
   root.querySelectorAll("[data-highlight-marker-reveal]").forEach((el) => {
     if (el._highlightMarkerReveal) return;
@@ -14,8 +12,8 @@ function initHighlightMarkerTextReveal(root) {
     const color = theme.startsWith("--")
       ? getComputedStyle(el).getPropertyValue(theme).trim()
       : ({ pink: "#C700EF", white: "#FFFFFF" }[theme] || theme);
-    const parsedStagger = Number(el.dataset.markerStagger ?? 100);
-    const stagger = Number.isFinite(parsedStagger) ? Math.max(0, parsedStagger) / 1000 : 0.1;
+    const parsedStagger = Number(el.dataset.markerStagger ?? 40);
+    const stagger = Number.isFinite(parsedStagger) ? Math.max(0, parsedStagger) / 1000 : 0.04;
 
     function cleanup() {
       observer?.disconnect();
@@ -57,67 +55,38 @@ function initHighlightMarkerTextReveal(root) {
           while (line.firstChild) text.appendChild(line.firstChild);
           wrap.appendChild(text);
           line.appendChild(wrap);
-          const canvas = document.createElement("canvas");
-          canvas.className = "highlight-marker-bar";
-          canvas.setAttribute("aria-hidden", "true");
-          wrap.appendChild(canvas);
-          const ctx = canvas.getContext("2d");
-          if (!ctx) { canvas.remove(); return; }
-
-          const bounds = canvas.getBoundingClientRect();
-          const width = Math.ceil(bounds.width), height = Math.ceil(bounds.height);
-          const dpr = Math.min(window.devicePixelRatio || 1, 2);
-          canvas.width = width * dpr;
-          canvas.height = height * dpr;
-          ctx.scale(dpr, dpr);
-          const cell = Math.max(3, Math.min(7, parseFloat(getComputedStyle(el).fontSize) / 8));
-          const band = Math.min(52, width * 0.2);
-          const ink = getComputedStyle(text).color;
-          const state = { time: 0 };
-          const segment = (t, start) => ease(Math.max(0, Math.min(1, (t - start) / duration)));
-
-          // Stable cell thresholds keep the frayed edge textured without
-          // random frame-to-frame flashes or a second animation loop.
-          function edge(x, direction, seed, time) {
-            for (let col = Math.floor((x - band) / cell); col <= Math.ceil((x + band) / cell); col++) {
-              const cx = (col + 0.5) * cell;
-              if (cx < 0 || cx > width) continue;
-              for (let row = 0; row * cell < height; row++) {
-                const noise = Math.sin(col * 127.1 + row * 311.7 + seed) * 43758.5453;
-                const threshold = noise - Math.floor(noise);
-                const shimmer = Math.sin(time * 24 + col + row * 2) * 0.17;
-                if (direction * (cx - x) / band * 0.5 + 0.5 + shimmer > threshold) {
-                  ctx.fillRect(col * cell, row * cell, cell + 0.8, cell + 0.8);
-                }
-              }
+          const rowCount = window.matchMedia("(max-width: 478px)").matches ? 3 : 4;
+          function createLayer(fill) {
+            const layer = document.createElement("span");
+            layer.className = "highlight-marker-bar";
+            layer.setAttribute("aria-hidden", "true");
+            layer.style.gridTemplateRows = `repeat(${rowCount}, 1fr)`;
+            for (let i = 0; i < rowCount; i++) {
+              const row = document.createElement("span");
+              row.className = "highlight-marker-row";
+              row.style.backgroundColor = fill;
+              layer.appendChild(row);
             }
+            wrap.appendChild(layer);
+            return Array.from(layer.children);
           }
-          function bar(position, fill, seed, time) {
-            const left = position * width, right = left + width;
-            ctx.fillStyle = fill;
-            const from = Math.max(0, left + band), to = Math.min(width, right - band);
-            if (to > from) ctx.fillRect(from, 0, to - from, height);
-            edge(left, 1, seed, time);
-            edge(right, -1, seed, time);
-          }
-          function draw() {
-            const t = state.time;
-            ctx.clearRect(0, 0, width, height);
-            text.style.opacity = t >= reveal ? "1" : "0";
-            // GSAP rounds numeric tween values; tolerate that rounding at rest.
-            if (t <= 0 || t >= end - 0.000001) return;
-            ctx.save();
-            if (el.dataset.markerDirection === "left") {
-              ctx.translate(width, 0);
-              ctx.scale(-1, 1);
-            }
-            bar(segment(t, 0) - 1 + segment(t, reveal + offset), color, 0, t);
-            bar(segment(t, offset) - 1 + segment(t, reveal), ink, 91, t);
-            ctx.restore();
-          }
-          draw();
+          const accentRows = createLayer(color);
+          const inkRows = createLayer(getComputedStyle(text).color);
+          const rows = [...accentRows, ...inkRows];
           const order = el.dataset.markerStaggerStart === "end" ? self.lines.length - 1 - index : index;
-          timeline.to(state, { time: end, duration: end, ease: "none", onUpdate: draw }, order * stagger);
+          const start = order * stagger;
+          const reveal = start + coverDuration + layerOffset + (rowCount - 1) * rowStagger + 0.015;
+          const fan = { each: rowStagger, from: "end" };
+
+          gsap.set(text, { opacity: 0 });
+          gsap.set(rows, { scaleY: 0, transformOrigin: "bottom center" });
+          timeline.to(accentRows, { scaleY: 1, duration: coverDuration, stagger: fan, ease: "power2.inOut" }, start);
+          timeline.to(inkRows, { scaleY: 1, duration: coverDuration, stagger: fan, ease: "power2.inOut" }, start + layerOffset);
+          // Text becomes visible only once both layers completely cover it.
+          timeline.set(text, { opacity: 1 }, reveal);
+          timeline.set(rows, { transformOrigin: "top center" }, reveal);
+          timeline.to(inkRows, { scaleY: 0, duration: revealDuration, stagger: fan, ease: "power2.inOut" }, reveal);
+          timeline.to(accentRows, { scaleY: 0, duration: revealDuration, stagger: fan, ease: "power2.inOut" }, reveal + layerOffset);
         });
         // Font/viewport reflows must not hide text that is already being read.
         if (started) timeline.progress(1);
@@ -127,13 +96,13 @@ function initHighlightMarkerTextReveal(root) {
     if ("IntersectionObserver" in window) {
       observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.35) play();
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.15) play();
           else if (!entry.isIntersecting) {
             started = false;
             timeline?.pause(0);
           }
         });
-      }, { threshold: [0, 0.35], rootMargin: "0px 0px -8% 0px" });
+      }, { threshold: [0, 0.15] });
     }
     rmMQ.addEventListener("change", onMotionChange);
     registerPageCleanup(cleanup);
