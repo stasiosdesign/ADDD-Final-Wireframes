@@ -8,9 +8,13 @@ function initAnimatedGrid() {
   // Shift + G and deliberately does not retain that state in local storage.
   let isOpen = false;
   let animation;
-  // Columns enter horizontally from the left, then leave through the right.
-  gsap.set(cols, { xPercent: -100 });
-  gsap.set(grid, { display: 'block' });
+  // Clip each column within its own bounds: translating by its width merely
+  // moves it into the neighbouring column and leaves it visible.
+  const hiddenLeft = 'inset(0% 100% 0% 0%)';
+  const visible = 'inset(0% 0% 0% 0%)';
+  const hiddenRight = 'inset(0% 0% 0% 100%)';
+  gsap.set(cols, { clipPath: hiddenLeft });
+  gsap.set(grid, { display: 'none' });
 
   function syncState() {
     grid.dataset.gridOpen = String(isOpen);
@@ -21,16 +25,21 @@ function initAnimatedGrid() {
     // from the current positions instead of jumping to a fromTo start value.
     const inFlight = animation?.isActive();
     animation?.kill();
-    if (isOpen && !inFlight) gsap.set(cols, { xPercent: -100 });
+    if (isOpen && !inFlight) gsap.set(cols, { clipPath: hiddenLeft });
+    if (isOpen) gsap.set(grid, { display: 'block' });
     if (rmMQ.matches) {
-      gsap.set(cols, { xPercent: isOpen ? 0 : 100 });
+      gsap.set(cols, { clipPath: isOpen ? visible : hiddenRight });
+      gsap.set(grid, { display: isOpen ? 'block' : 'none' });
     } else {
       animation = gsap.to(cols, {
-        xPercent: isOpen ? 0 : 100,
+        clipPath: isOpen ? visible : hiddenRight,
         duration: 1,
         ease: 'expo.inOut',
         stagger: { each: 0.03, from: 'start' },
-        overwrite: true
+        overwrite: true,
+        onComplete() {
+          if (!isOpen) gsap.set(grid, { display: 'none' });
+        }
       });
     }
     syncState();
@@ -47,7 +56,8 @@ function initAnimatedGrid() {
   rmMQ.addEventListener('change', event => {
     if (!event.matches) return;
     animation?.kill();
-    gsap.set(cols, { xPercent: isOpen ? 0 : 100 });
+    gsap.set(cols, { clipPath: isOpen ? visible : hiddenRight });
+    gsap.set(grid, { display: isOpen ? 'block' : 'none' });
   });
   syncState();
 }
