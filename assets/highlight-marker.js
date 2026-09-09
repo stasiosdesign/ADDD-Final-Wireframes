@@ -2,8 +2,8 @@
    SplitText and the page lifecycle keep wrapping, replay and cleanup consistent. */
 function initHighlightMarkerTextReveal(root) {
   if (reducedMotion || !hasSplitText) return;
-  const coverDuration = 0.18, revealDuration = 0.2, layerOffset = 0.04;
-  const rowStagger = 0.012;
+  const coverDuration = 0.28, revealDuration = 0.32, layerOffset = 0.055;
+  const rowStagger = 0.018;
 
   root.querySelectorAll("[data-highlight-marker-reveal]").forEach((el) => {
     if (el._highlightMarkerReveal) return;
@@ -82,13 +82,13 @@ function initHighlightMarkerTextReveal(root) {
           // Stagger the horizontal strips to fan the moving edge. Both cover
           // and reveal travel left to right; the text itself stays stationary.
           gsap.set(rows, { scaleX: 0, transformOrigin: "left center" });
-          timeline.to(accentRows, { scaleX: 1, duration: coverDuration, stagger: fan, ease: "power2.inOut" }, start);
-          timeline.to(inkRows, { scaleX: 1, duration: coverDuration, stagger: fan, ease: "power2.inOut" }, start + layerOffset);
+          timeline.to(accentRows, { scaleX: 1, duration: coverDuration, stagger: fan, ease: "sine.inOut" }, start);
+          timeline.to(inkRows, { scaleX: 1, duration: coverDuration, stagger: fan, ease: "sine.inOut" }, start + layerOffset);
           // Text becomes visible only once both layers completely cover it.
           timeline.set(text, { opacity: 1 }, reveal);
           timeline.set(rows, { transformOrigin: "right center" }, reveal);
-          timeline.to(inkRows, { scaleX: 0, duration: revealDuration, stagger: fan, ease: "power2.inOut" }, reveal);
-          timeline.to(accentRows, { scaleX: 0, duration: revealDuration, stagger: fan, ease: "power2.inOut" }, reveal + layerOffset);
+          timeline.to(inkRows, { scaleX: 0, duration: revealDuration, stagger: fan, ease: "sine.inOut" }, reveal);
+          timeline.to(accentRows, { scaleX: 0, duration: revealDuration, stagger: fan, ease: "sine.inOut" }, reveal + layerOffset);
         });
         // Font/viewport reflows must not hide text that is already being read.
         if (started) timeline.progress(1);

@@ -3,14 +3,14 @@
   position: fixed;
   inset: 0;
   z-index: 200;
-  padding-inline: var(--page-pad);
+  padding-inline: 16px;
   pointer-events: none;
 }
-.animated-grid__container { height: 100%; }
+.animated-grid__container { height: 100%; max-width: none; }
 .animated-grid__row {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 24px;
+  gap: 18px;
   height: 100%;
   overflow: clip;
 }
@@ -25,6 +25,7 @@
   .animated-grid__col:nth-child(n + 7) { display: none; }
 }
 @media (max-width: 767px) {
-  .animated-grid__row { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .animated-grid { padding-inline: 12px; }
+  .animated-grid__row { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
   .animated-grid__col:nth-child(n + 5) { display: none; }
 }
