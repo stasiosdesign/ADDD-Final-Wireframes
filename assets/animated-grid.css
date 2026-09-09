@@ -17,18 +17,9 @@
 .animated-grid__col {
   height: 100%;
   min-height: 100%;
-  background: var(--c-red);
-  opacity: 0.12;
+  background: #d9d9d9;
+  opacity: 0.2;
 }
-.animated-grid-toggle {
-  padding: 0;
-  border: 0;
-  background: none;
-  font: inherit;
-  cursor: pointer;
-}
-.animated-grid-toggle:hover { color: var(--c-white); }
-.animated-grid-toggle:focus-visible { outline: 1px solid currentColor; outline-offset: 4px; }
 @media (max-width: 991px) {
   .animated-grid__row { grid-template-columns: repeat(6, minmax(0, 1fr)); }
   .animated-grid__col:nth-child(n + 7) { display: none; }

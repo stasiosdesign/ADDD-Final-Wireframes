@@ -160,7 +160,6 @@ function initBeforeEnterFunctions(next) {
 
   // Page-level behaviour — rebound on every navigation because the
   // container these live in is replaced.
-  syncAnimatedGridToggles(nextPage);
   if (has('[data-highlight-marker-reveal]')) initHighlightMarkerTextReveal(nextPage);
   if (has('[data-slider]')) initInsightSlider();
   if (has('[data-approach-slides-init]')) initApproachSlides();
