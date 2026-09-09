@@ -526,7 +526,7 @@ button, input { font: inherit; color: inherit; }
 .logos { padding: 142px 0; text-align: center; }
 .logos__title { margin-bottom: 58px; }
 .logos__track { overflow: hidden; }
-.logos__row { display: flex; gap: 24px; }
+.logos__row { display: flex; gap: 18px; }
 .logo-tile {
   flex: none;
   width: 201px;
@@ -543,7 +543,7 @@ button, input { font: inherit; color: inherit; }
 .marquee-advanced { overflow: hidden; }
 .marquee-advanced__scroll { display: flex; }
 .marquee-advanced__collection { display: flex; flex: none; align-items: center; }
-.logos .marquee-advanced__collection { gap: 24px; }
+.logos .marquee-advanced__collection { gap: 18px; }
 
 /* ============================================================
    3 — problems
