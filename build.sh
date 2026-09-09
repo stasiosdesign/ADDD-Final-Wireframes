@@ -25,6 +25,7 @@ build () {
     cat partials/loader.html
     cat partials/transition.html
     cat partials/nav.html
+    cat partials/animated-grid.html
     printf '<div data-barba="container" data-page-name="%s">\n' "$page_name"
     cat "pages/$slug.body.html"
     cat partials/footer.html

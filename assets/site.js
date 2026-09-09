@@ -114,6 +114,7 @@ function initOnceFunctions() {
   // The nav and the Contact button live outside the Barba container, so
   // they survive every navigation and are only ever wired up once.
   initMegaNavDirectionalHover();
+  initAnimatedGrid();
 
   // Width measurement waits on the webfont so the label is not measured
   // against the fallback face.
@@ -159,6 +160,7 @@ function initBeforeEnterFunctions(next) {
 
   // Page-level behaviour — rebound on every navigation because the
   // container these live in is replaced.
+  syncAnimatedGridToggles(nextPage);
   if (has('[data-highlight-marker-reveal]')) initHighlightMarkerTextReveal(nextPage);
   if (has('[data-slider]')) initInsightSlider();
   if (has('[data-approach-slides-init]')) initApproachSlides();
