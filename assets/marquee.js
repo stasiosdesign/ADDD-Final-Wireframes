@@ -75,18 +75,19 @@ function initMarqueeScrollDirection(root) {
       '[data-marquee-collection-target]'
     );
 
-    const animation = gsap.to(marqueeItems, {
+    const animation = gsap.fromTo(marqueeItems, { xPercent: 0 }, {
       xPercent: -100,
       repeat: -1,
       duration: marqueeSpeed,
-      ease: 'linear'
-    }).totalProgress(0.5);
+      ease: 'linear',
+      // Infinite repeats extend forward only; replenish the reverse timeline
+      // by whole cycles so reversing never stops at time zero or changes phase.
+      onReverseComplete() {
+        this.totalTime(this.rawTime() + this.duration() * 100);
+      }
+    }).totalTime(marqueeSpeed * 100.5);
 
-    gsap.set(marqueeItems, {
-      xPercent: marqueeDirectionAttr === 1 ? 100 : -100
-    });
-
-    animation.timeScale(marqueeDirectionAttr);
+    animation.timeScale(-marqueeDirectionAttr);
     animation.play();
 
     marquee.setAttribute('data-marquee-status', 'normal');
@@ -114,7 +115,7 @@ function initMarqueeScrollDirection(root) {
         trigger: marquee,
         start: '0% 100%',
         end: '100% 0%',
-        scrub: 0
+        scrub: 0.5
       }
     });
 
