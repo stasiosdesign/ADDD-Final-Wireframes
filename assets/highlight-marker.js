@@ -1,4 +1,4 @@
-/* Highlight Marker Text Reveal: layered shutter rows fan open over real text.
+/* Highlight Marker Text Reveal: layered strips fan from left to right over text.
    SplitText and the page lifecycle keep wrapping, replay and cleanup consistent. */
 function initHighlightMarkerTextReveal(root) {
   if (reducedMotion || !hasSplitText) return;
@@ -79,14 +79,16 @@ function initHighlightMarkerTextReveal(root) {
           const fan = { each: rowStagger, from: "end" };
 
           gsap.set(text, { opacity: 0 });
-          gsap.set(rows, { scaleY: 0, transformOrigin: "bottom center" });
-          timeline.to(accentRows, { scaleY: 1, duration: coverDuration, stagger: fan, ease: "power2.inOut" }, start);
-          timeline.to(inkRows, { scaleY: 1, duration: coverDuration, stagger: fan, ease: "power2.inOut" }, start + layerOffset);
+          // Stagger the horizontal strips to fan the moving edge. Both cover
+          // and reveal travel left to right; the text itself stays stationary.
+          gsap.set(rows, { scaleX: 0, transformOrigin: "left center" });
+          timeline.to(accentRows, { scaleX: 1, duration: coverDuration, stagger: fan, ease: "power2.inOut" }, start);
+          timeline.to(inkRows, { scaleX: 1, duration: coverDuration, stagger: fan, ease: "power2.inOut" }, start + layerOffset);
           // Text becomes visible only once both layers completely cover it.
           timeline.set(text, { opacity: 1 }, reveal);
-          timeline.set(rows, { transformOrigin: "top center" }, reveal);
-          timeline.to(inkRows, { scaleY: 0, duration: revealDuration, stagger: fan, ease: "power2.inOut" }, reveal);
-          timeline.to(accentRows, { scaleY: 0, duration: revealDuration, stagger: fan, ease: "power2.inOut" }, reveal + layerOffset);
+          timeline.set(rows, { transformOrigin: "right center" }, reveal);
+          timeline.to(inkRows, { scaleX: 0, duration: revealDuration, stagger: fan, ease: "power2.inOut" }, reveal);
+          timeline.to(accentRows, { scaleX: 0, duration: revealDuration, stagger: fan, ease: "power2.inOut" }, reveal + layerOffset);
         });
         // Font/viewport reflows must not hide text that is already being read.
         if (started) timeline.progress(1);
