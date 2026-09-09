@@ -159,6 +159,7 @@ function initBeforeEnterFunctions(next) {
 
   // Page-level behaviour — rebound on every navigation because the
   // container these live in is replaced.
+  if (has('[data-highlight-marker-reveal]')) initHighlightMarkerTextReveal(nextPage);
   if (has('[data-slider]')) initInsightSlider();
   if (has('[data-approach-slides-init]')) initApproachSlides();
   if (has('[data-problem-grid-init]')) initProblemGrid();
@@ -180,6 +181,9 @@ function initBeforeEnterFunctions(next) {
 // never shift the layout the user is already looking at.
 function initAfterEnterFunctions(next) {
   nextPage = next || document;
+  nextPage.querySelectorAll('[data-highlight-marker-reveal]').forEach(el => {
+    el._highlightMarkerReveal?.activate();
+  });
 }
 
 
@@ -492,7 +496,8 @@ barba.init({
         initOnceFunctions();
         initBeforeEnterFunctions(data.next.container);
 
-        return runPageOnceAnimation(data.next.container);
+        await runPageOnceAnimation(data.next.container);
+        initAfterEnterFunctions(data.next.container);
       },
 
       // Current page leaves
